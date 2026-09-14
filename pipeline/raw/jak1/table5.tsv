@@ -1,0 +1,10 @@
+# Table 5 of Zhuo et al. 2026: investigation of the pyrazole hinge-binding motif.
+# Everything else in the molecule is held constant: only the hinge binder changes.
+# Compound 18 carries the 7H-pyrrolo[2,3-d]pyrimidine and is the comparator.
+# The trade is stark: 22 is 44-fold weaker than 18 on the enzyme and nearly twice as
+# selective, and it is the one that works in a dog.
+entry	compound_id	hinge_binder	jak1_ic50	jak2_ic50	jak2_jak1_fold
+1	20	1H-pyrazol-4-yl	314	7319	23
+2	21	3-methyl-1H-pyrazol-4-yl	19	910	48
+3	22	3,5-dimethyl-1H-pyrazol-4-yl	11	505	46
+4	18	7H-pyrrolo[2,3-d]pyrimidin-4-yl	0.25	6.1	25

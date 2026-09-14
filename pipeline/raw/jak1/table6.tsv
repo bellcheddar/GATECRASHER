@@ -1,0 +1,8 @@
+# Table 6 of Zhuo et al. 2026: povorcitinib (22) against compound 18, across three species.
+# This is the table the campaign turns on. In rat and cynomolgus both compounds look good.
+# In dog, 18 is cleared at 82 per cent of hepatic blood flow and reaches 1 per cent oral
+# bioavailability; 22 is cleared at 4 per cent and reaches 100 per cent.
+# NC in the published table means not calculated.
+entry	compound_id	jak1_ic50	jak2_ic50	jak2_jak1_fold	ina6_ic50	wb_il6	wb_tpo	wb_tpo_il6_fold	caco2_papp	proj_h_cl	proj_h_f	rat_cl_hbf	rat_iv_t_half	rat_po_auc	rat_po_t_half	rat_po_f	cyno_cl_hbf	cyno_iv_t_half	cyno_po_auc	cyno_po_t_half	cyno_po_f	dog_cl_hbf	dog_iv_t_half	dog_po_auc	dog_po_t_half	dog_po_f	dose_note
+1	22	11	505	46	97	405	6389	16	4.5	0.7	48	8	3.7	45210	4.2	>100	4	13	137199		100	4	22	165386	23	100	Rat 2.5 mg/kg IV and 5 mg/kg PO; cyno 2.5 and 5; dog 2.5 and 5
+2	18	0.25	6.1	25	70	207	1167	6	8.5	0.7	42	11	3.7	11884	4.6	54	3	8.4	75984	16	54	82	1.1	65	0.9	1	Rat 2 mg/kg IV and 5 mg/kg PO; cyno 2.5 and 5; dog 2.0 and 4

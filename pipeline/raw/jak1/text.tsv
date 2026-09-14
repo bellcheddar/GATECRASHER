@@ -1,0 +1,10 @@
+# Values stated in the running text of Zhuo et al. 2026 rather than in a numbered table.
+# These are the assays that establish the in vivo efficacy was driven by JAK1 specifically,
+# which is the claim the whole selectivity argument needs.
+#
+# From page G: IL-2 stimulated human T cells (JAK1/JAK3 dependent) inhibited at
+# "approximately 10-30 nM" for pSTAT3, pSTAT5 and proliferation; IL-6 stimulated whole
+# blood pSTAT1 360 nM and pSTAT3 690 nM; IL-6 stimulated MCP-1 in human PBMCs 178 nM.
+# From page H: hERG inhibition IC50 above 20 uM.
+compound_id	il2_t_cell	wb_il6_pstat1	wb_il6_pstat3	pbmc_mcp1	herg_ic50	range_note
+22	20	360	690	178	>20	The IL-2 T cell figure is published as a range, 10 to 30 nM, across pSTAT3, pSTAT5 and proliferation: 20 nM is its midpoint and the range is what the paper actually states

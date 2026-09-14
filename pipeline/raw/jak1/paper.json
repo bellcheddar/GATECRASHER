@@ -1,0 +1,72 @@
+{
+  "slug": "jak1",
+  "title": "Discovery of the Orally Bioavailable Isoform Selective Janus Kinase 1 (JAK1) Compound Povorcitinib (INCB054707) for the Treatment of Inflammatory and Autoimmune Diseases",
+  "authors_short": "Zhuo et al.",
+  "authors_full": "Jincong Zhuo, Yun-Long Li, Ding-Quan Qian, David M. Burns, Song Mei, Maria Rafalski, Meizhong Xu, Ganfeng Cao, Yongchun Pan, Zhongjiang Jia, Ravi Jalluri, Leslie B. Epling, Gustavo Fenalti, Marc C. Deller, Jessica Procak, Maryanne Covington, Xin He, Robert Collins, Matthew Stubbs, Krista Burke, Julian Oliver, Alex Margulis, Jason Boer, Richard Wynn, Peggy Scherle, Sharon Diamond, Robert Newton, Yan Zhang, Brian Metcalf, Wenqing Yao",
+  "journal": "J. Med. Chem.",
+  "year": 2026,
+  "volume": null,
+  "pages": null,
+  "doi": "10.1021/acs.jmedchem.5c03753",
+  "target": {
+    "name": "JAK1",
+    "partner": null,
+    "family": "JAK tyrosine kinase",
+    "uniprot": "P23458"
+  },
+  "anti_targets": [
+    { "name": "JAK2", "partner": null, "uniprot": "O60674" },
+    { "name": "JAK3", "partner": null, "uniprot": "P52333" },
+    { "name": "TYK2", "partner": null, "uniprot": "P29597" }
+  ],
+  "one_line": "Sparing JAK2 is the whole point: inhibit it and you take the patient's blood counts with you.",
+  "abstract": "Aberrant JAK2 signaling is a key driver in cancers such as myeloproliferative neoplasms (MPNs), whereas JAK1 acts as a central mediator of autoimmune and inflammatory diseases. Since JAK2 supports blood cell production, its inhibition can lead to anemia and other cytopenias, making selective JAK1 inhibition a potentially safer therapeutic strategy opposed to dual JAK1/JAK2 inhibition. We initially identified novel scaffold 9, which selectively inhibited JAK1 over JAK2. Iterative breakthroughs led to the discovery of povorcitinib (INCB054707, 22), which showed improved pharmacokinetics due to intramolecular hydrogen bonding of the amide moiety and a reduced ring size in the hinge binding motif. Protein crystallography suggested that JAK1 selectivity was conferred by the amide's alkyl group accessing a small lipophilic groove formed by the P-loop conformation of JAK1 that was distinct from JAK2. In murine arthritis models, povorcitinib demonstrated dose-dependent efficacy and reduced inflammatory signaling, supporting its therapeutic potential in immunological disorders.",
+  "graphical_abstract": {
+    "panels": [
+      {
+        "kind": "compound",
+        "compound_id": "9",
+        "caption": "The isopropyl amide that bought selectivity",
+        "values": [
+          { "assay_id": "jak1_ic50", "display": "1.6 nM" },
+          { "assay_id": "jak2_jak1_fold", "display": "19-fold" },
+          { "assay_id": "caco2_papp", "display": "0.9" }
+        ]
+      },
+      {
+        "kind": "arrow",
+        "reason": "An ortho-fluorine folds the amide into an internal hydrogen bond, and permeability and exposure follow."
+      },
+      {
+        "kind": "compound",
+        "compound_id": "18",
+        "caption": "Excellent in rat and monkey, hopeless in dog",
+        "values": [
+          { "assay_id": "jak1_ic50", "display": "0.25 nM" },
+          { "assay_id": "caco2_papp", "display": "8.5" },
+          { "assay_id": "dog_po_f", "display": "1%" }
+        ]
+      },
+      {
+        "kind": "arrow",
+        "reason": "Shrinking the hinge binder cost 44-fold of enzyme potency and fixed the dog."
+      },
+      {
+        "kind": "compound",
+        "compound_id": "22",
+        "caption": "Povorcitinib: 100 per cent oral in dog",
+        "values": [
+          { "assay_id": "jak1_ic50", "display": "11 nM" },
+          { "assay_id": "jak2_jak1_fold", "display": "46-fold" },
+          { "assay_id": "dog_po_f", "display": "100%" }
+        ]
+      }
+    ]
+  },
+  "problem": {
+    "disease": "Autoimmune and inflammatory disease, where signalling runs predominantly through JAK1 heterodimers. The approved dual JAK1/JAK2 inhibitors work, and their JAK2 activity brings anaemia and other cytopenias with it.",
+    "selectivity": "JAK2 supports haematopoiesis, so inhibiting it costs the patient red cells and platelets. The four JAK family kinases share a highly conserved ATP site, and the two isoforms in question differ subtly enough that the paper's own selectivity explanation is offered as a hypothesis rather than a result.",
+    "property": "This campaign is almost entirely a pharmacokinetics story. Potency was adequate early; oral exposure was not, and the dog was where every candidate failed until the hinge binder itself was replaced."
+  },
+  "bundle_version": "1.0.0"
+}

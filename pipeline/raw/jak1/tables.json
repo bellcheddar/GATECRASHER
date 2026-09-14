@@ -1,0 +1,135 @@
+{
+  "_comment": [
+    "Column to assay mapping for the JAK1 bundle. Five sources: Tables 1, 2, 4, 5, 6 and the",
+    "values stated only in prose. Table 3 is deliberately absent: it lists two earlier Incyte",
+    "drugs against entirely different targets, shown as precedent for the hydrogen bonding",
+    "tactic, and they are not compounds of this campaign. See ISSUES.md.",
+    "Every PK table carries its own dose note, because the doses differ row by row."
+  ],
+  "tables": [
+    {
+      "file": "table1.tsv",
+      "source_table": "T1",
+      "keys": ["compound_id"],
+      "columns": {
+        "jak1_ic50": "jak1_ic50",
+        "jak2_ic50": "jak2_ic50",
+        "jak2_jak1_fold": "jak2_jak1_fold",
+        "ina6_ic50": "ina6_ic50",
+        "wb_il6": "wb_il6",
+        "wb_tpo": "wb_tpo",
+        "wb_tpo_il6_fold": "wb_tpo_il6_fold",
+        "caco2_papp": "caco2_papp",
+        "proj_h_cl": "proj_h_cl",
+        "proj_h_f": "proj_h_f"
+      }
+    },
+    {
+      "file": "table2.tsv",
+      "source_table": "T2",
+      "keys": ["compound_id"],
+      "note_column": "dose_note",
+      "columns": {
+        "rat_cl_hbf": "rat_cl_hbf",
+        "rat_vdss": "rat_vdss",
+        "rat_iv_t_half": "rat_iv_t_half",
+        "rat_po_auc": "rat_po_auc",
+        "rat_po_f": "rat_po_f",
+        "cyno_cl_hbf": "cyno_cl_hbf",
+        "cyno_vdss": "cyno_vdss",
+        "cyno_iv_t_half": "cyno_iv_t_half",
+        "cyno_po_auc": "cyno_po_auc",
+        "cyno_po_f": "cyno_po_f",
+        "dog_cl_hbf": "dog_cl_hbf",
+        "dog_vdss": "dog_vdss",
+        "dog_iv_t_half": "dog_iv_t_half",
+        "dog_po_auc": "dog_po_auc",
+        "dog_po_f": "dog_po_f"
+      }
+    },
+    {
+      "file": "table4.tsv",
+      "source_table": "T4",
+      "keys": ["compound_id"],
+      "note_column": "dose_note",
+      "columns": {
+        "jak1_ic50": "jak1_ic50",
+        "jak2_ic50": "jak2_ic50",
+        "jak2_jak1_fold": "jak2_jak1_fold",
+        "ina6_ic50": "ina6_ic50",
+        "wb_il6": "wb_il6",
+        "wb_tpo": "wb_tpo",
+        "wb_tpo_il6_fold": "wb_tpo_il6_fold",
+        "caco2_papp": "caco2_papp",
+        "proj_h_cl": "proj_h_cl",
+        "proj_h_f": "proj_h_f",
+        "rat_cl_hbf": "rat_cl_hbf",
+        "rat_iv_t_half": "rat_iv_t_half",
+        "rat_po_auc": "rat_po_auc",
+        "rat_po_t_half": "rat_po_t_half",
+        "rat_po_f": "rat_po_f",
+        "cyno_cl_hbf": "cyno_cl_hbf",
+        "cyno_iv_t_half": "cyno_iv_t_half",
+        "cyno_po_auc": "cyno_po_auc",
+        "cyno_po_t_half": "cyno_po_t_half",
+        "cyno_po_f": "cyno_po_f"
+      }
+    },
+    {
+      "file": "table5.tsv",
+      "source_table": "T5",
+      "keys": ["compound_id"],
+      "columns": {
+        "jak1_ic50": "jak1_ic50",
+        "jak2_ic50": "jak2_ic50",
+        "jak2_jak1_fold": "jak2_jak1_fold"
+      }
+    },
+    {
+      "file": "table6.tsv",
+      "source_table": "T6",
+      "keys": ["compound_id"],
+      "note_column": "dose_note",
+      "columns": {
+        "jak1_ic50": "jak1_ic50",
+        "jak2_ic50": "jak2_ic50",
+        "jak2_jak1_fold": "jak2_jak1_fold",
+        "ina6_ic50": "ina6_ic50",
+        "wb_il6": "wb_il6",
+        "wb_tpo": "wb_tpo",
+        "wb_tpo_il6_fold": "wb_tpo_il6_fold",
+        "caco2_papp": "caco2_papp",
+        "proj_h_cl": "proj_h_cl",
+        "proj_h_f": "proj_h_f",
+        "rat_cl_hbf": "rat_cl_hbf",
+        "rat_iv_t_half": "rat_iv_t_half",
+        "rat_po_auc": "rat_po_auc",
+        "rat_po_t_half": "rat_po_t_half",
+        "rat_po_f": "rat_po_f",
+        "cyno_cl_hbf": "cyno_cl_hbf",
+        "cyno_iv_t_half": "cyno_iv_t_half",
+        "cyno_po_auc": "cyno_po_auc",
+        "cyno_po_t_half": "cyno_po_t_half",
+        "cyno_po_f": "cyno_po_f",
+        "dog_cl_hbf": "dog_cl_hbf",
+        "dog_iv_t_half": "dog_iv_t_half",
+        "dog_po_auc": "dog_po_auc",
+        "dog_po_t_half": "dog_po_t_half",
+        "dog_po_f": "dog_po_f"
+      }
+    },
+    {
+      "file": "text.tsv",
+      "source_table": "Text pG-H",
+      "keys": ["compound_id"],
+      "note_column": "range_note",
+      "columns": {
+        "il2_t_cell": "il2_t_cell",
+        "wb_il6_pstat1": "wb_il6_pstat1",
+        "wb_il6_pstat3": "wb_il6_pstat3",
+        "pbmc_mcp1": "pbmc_mcp1",
+        "herg_ic50": "herg_ic50"
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+# Hand-curated motif overrides for the JAK1 bundle.
+#
+# This bundle holds two DIFFERENT proteins, so every row is scoped to its structure with a
+# pdb_id column. Without that, JAK1's His885 and JAK2's Asn859 would each be stamped onto
+# the other structure at the same residue number, which would be nonsense: these are not
+# equivalent positions, they are unrelated residues of two different sequences.
+#
+# Glu930 and Leu932 are the hinge in both isoforms. That is a coincidence of numbering, not
+# an alignment, and the role_note says so.
+#
+# Source: Zhuo et al. 2026, Figure 4 and the accompanying selectivity discussion.
+pdb_id	chain	resnum	motif	role_note
+10PI	A	930	hinge	Glu930, JAK1 hinge. Its main-chain carbonyl accepts from a pyrazole nitrogen
+10PI	A	931	hinge	JAK1 hinge
+10PI	A	932	hinge	Leu932, JAK1 hinge. Its main-chain amide donates to the other pyrazole nitrogen
+10PI	A	885	P_loop	His885, JAK1. Directed towards solvent, which leaves the P-loop sitting about 2 A higher than JAK2's and opens the small lipophilic groove the trifluoromethyl group uses. The authors call this explanation speculative
+10PI	A	1042	DFG	Asp1042, JAK1
+10PI	B	930	hinge	Second copy in the asymmetric unit. Glu930 hinge
+10PI	B	932	hinge	Second copy in the asymmetric unit. Leu932 hinge
+10PI	B	885	P_loop	Second copy in the asymmetric unit. His885
+10PJ	A	930	hinge	Glu930, JAK2 hinge. Same contact as in JAK1, and the same residue number by coincidence rather than by alignment
+10PJ	A	931	hinge	JAK2 hinge
+10PJ	A	932	hinge	Leu932, JAK2 hinge
+10PJ	A	859	P_loop	Asn859, JAK2. Bent towards the binding pocket and hydrogen bonding Glu1015, which the authors suggest closes the pocket against this compound
+10PJ	A	860	P_loop	Phe860, JAK2. May orient the phenyl ring into a closed disposition, akin to a DFG pocket. Speculative
+10PJ	A	1015	back_pocket	Glu1015, JAK2. Hydrogen bonds Asn859 in the interaction the authors propose closes the pocket
+10PJ	B	930	hinge	Second copy in the asymmetric unit. Glu930 hinge
+10PJ	B	932	hinge	Second copy in the asymmetric unit. Leu932 hinge
+10PJ	B	859	P_loop	Second copy in the asymmetric unit. Asn859
+10PJ	B	860	P_loop	Second copy in the asymmetric unit. Phe860

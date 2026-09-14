@@ -1,0 +1,89 @@
+{
+  "_comment": [
+    "Five beats for the JAK1 campaign. Residue ids are 10PI (JAK1) numbering; JAK2's residues",
+    "are cited in the text by their own numbers, because the two proteins are not aligned.",
+    "Beat 5 marks the selectivity explanation as the authors' hypothesis, which is what they",
+    "call it themselves."
+  ],
+  "beats": [
+    {
+      "id": "jak1-1",
+      "kicker": "Why sparing the twin matters",
+      "title": "Inhibit JAK2 and you take the blood counts with you",
+      "body_specialist": "The approved dual JAK1/JAK2 inhibitors work in inflammatory disease, and their JAK2 activity brings anaemia and other cytopenias with it, because JAK2 carries the signals that maintain haematopoiesis. Autoimmune and inflammatory signalling runs predominantly through JAK1 heterodimers, so a JAK1-selective inhibitor should keep the benefit and leave blood cell production alone. The difficulty is that the four JAK kinases share a highly conserved ATP site, and the campaign's own starting candidate, itacitinib, managed only 21-fold.",
+      "body_plain": "Drugs of this class already work for inflammatory disease. The problem is that they also block a near-identical enzyme the body uses to make blood cells, so patients can become anaemic. The aim here was to block one and not the other. That is hard, because the two enzymes are nearly the same shape where the drug binds, and the company's previous attempt managed only a twenty-fold preference.",
+      "focus": {
+        "structure": "10PI",
+        "residues": ["A:930", "A:932"],
+        "compound": "3",
+        "plot": "selectivity",
+        "camera": "hinge"
+      },
+      "evidence": "T2"
+    },
+    {
+      "id": "jak1-2",
+      "kicker": "Rigidity and a simpler amide",
+      "title": "The scaffold that first bought selectivity",
+      "body_specialist": "The urea capping group of the early scaffold was holding the ADME back. Replacing it with a phenyl amide improved potency and took Caco-2 from 0.3 to 2.1; shrinking the piperidine to an azetidine added three-fold more through rigidity. Opening the methylpyrrolidine to a simple isopropyl amide then brought projected human clearance to 0.7 L/h/kg, removed a metabolic liability, held potency at 1.6 nM, and doubled whole blood isoform selectivity to 12-fold. That is compound 9, and its dog pharmacokinetics were worse than itacitinib's.",
+      "body_plain": "Three changes in a row, each simplifying the molecule: a different chemical group at one end, a smaller and more rigid ring in the middle, and then opening a ring into something simpler still. Potency held, the liver slowed down, and the margin over the enzyme to avoid doubled. Then the compound was given to dogs, where it did worse than the drug it was meant to beat.",
+      "focus": {
+        "structure": "10PI",
+        "residues": ["A:932"],
+        "compound": "9",
+        "edit": "jak1-e03",
+        "plot": "property",
+        "camera": "hinge"
+      },
+      "evidence": "T1"
+    },
+    {
+      "id": "jak1-3",
+      "kicker": "A molecule holding its own hand",
+      "title": "One fluorine, and the compound learns to cross membranes",
+      "body_specialist": "An ortho-fluorine lets the amide N-H fold back into an intramolecular hydrogen bond, masking polar surface and lifting Caco-2 three-fold with a four-fold gain in rat exposure. Adding the trifluoromethyl on top gave compound 16: Caco-2 up five-fold and cynomolgus exposure up 52-fold against compound 9. The trifluoromethyl alone, without the ortho-fluorine, did essentially nothing, so the two changes only work together. The tactic was not new here: the same trick had produced an approved c-Met inhibitor and a clinical 11-beta-HSD1 inhibitor in earlier in-house programmes.",
+      "body_plain": "A single fluorine atom, placed beside the amide, lets the molecule tuck one of its own polar ends against itself. Hidden that way it slips through membranes far more easily, and fifty times more of it reached the bloodstream of a monkey. The same fluorine added on its own to a different position did nothing: the two changes only pay together.",
+      "focus": {
+        "structure": "10PI",
+        "residues": ["A:885"],
+        "compound": "16",
+        "edit": "jak1-e05",
+        "plot": "pk",
+        "camera": "front"
+      },
+      "evidence": "T4"
+    },
+    {
+      "id": "jak1-4",
+      "kicker": "The experiment that proves it",
+      "title": "Take the fluorine off again and watch it fall over",
+      "body_specialist": "Compound 19 is compound 18 with the ortho-fluorine removed and nothing else changed. Enzymatic potency is identical at 0.25 nM. Caco-2 falls from 8.5 to 1.4, rat exposure from 11,884 to 5,606 nM.h, rat bioavailability from 54 to 21 per cent. That is the difference between a hypothesis about an intramolecular hydrogen bond and a demonstration of one, and it costs a single atom to run.",
+      "body_plain": "To prove the fluorine was doing what they thought, the chemists made the same molecule without it. It was exactly as potent and far worse at everything else: six times less able to cross a membrane, half the exposure in an animal. Undoing a change and watching the benefit vanish is the cleanest evidence in this whole set of four papers.",
+      "focus": {
+        "structure": "10PI",
+        "residues": ["A:885", "A:932"],
+        "compound": "19",
+        "edit": "jak1-e07",
+        "plot": "property",
+        "camera": "front"
+      },
+      "evidence": "T4"
+    },
+    {
+      "id": "jak1-5",
+      "kicker": "One ligand, two proteins",
+      "title": "Giving away 44-fold to fix the dog",
+      "body_specialist": "The pyrrolo[2,3-d]pyrimidine hinge binder is electron-rich and prone to CYP oxidation, so it was replaced by a 3,5-dimethylpyrazole: 44-fold weaker on the enzyme, nearly twice as isoform-selective at 46-fold, and in beagle dogs clearance fell from 82 to 4 per cent of hepatic blood flow with oral bioavailability rising from 1 to 100 per cent. Povorcitinib was then crystallised in both JAK1 and JAK2, the only true twin structure in this set. The hinge contacts to Glu930 and Leu932 are identical in both. The authors attribute the selectivity to JAK1's P-loop sitting about 2 A higher, opening a lipophilic groove for the trifluoromethyl, with JAK2's Asn859, Phe860 and Glu1015 closing that space, and they state plainly that this is speculative.",
+      "body_plain": "The last change replaced the part that grips the protein with something smaller and harder for the body to destroy. It cost a great deal of raw potency and fixed the dog completely: a compound that had been almost entirely destroyed before absorption now arrived intact. The drug was then crystallised in both proteins, the one it should block and the one it should spare. It grips both identically at the hinge, and the explanation for its preference lies around the edges of the pocket, which the chemists are careful to call a hypothesis.",
+      "focus": {
+        "structure": "10PJ",
+        "residues": ["A:930", "A:932", "A:859", "A:860"],
+        "compound": "22",
+        "edit": "jak1-e10",
+        "plot": "pk",
+        "camera": "ligand"
+      },
+      "evidence": "T6"
+    }
+  ]
+}

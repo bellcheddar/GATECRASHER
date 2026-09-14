@@ -1,0 +1,11 @@
+# Table 1 of Zhuo et al. 2026: internal lead compounds with JAK1 isoform selectivity.
+# Transcribed by hand from the published table image, which is laid out with compounds as
+# COLUMNS and assays as rows. Compound 4 has no whole blood or clearance data published.
+# The h-Clr column carries the projected oral fraction absorbed in brackets.
+entry	compound_id	jak1_ic50	jak2_ic50	jak2_jak1_fold	ina6_ic50	wb_il6	wb_tpo	wb_tpo_il6_fold	caco2_papp	proj_h_cl	proj_h_f
+1	4	20	170	9						0.1
+2	5	6.3	135	21	1600	406	2800	7	0.3	>1.1	7
+3	6	7.5	178	24	2000	1051	6350	6	1.3	>1.1	<10
+4	7	3.3	48	15	612	736	1550	2	2.1	>1.1	<10
+5	8	1.3	16	12	226	321	1600	5	2.3	>1.1	11
+6	9	1.6	31	19	306	331	4050	12	0.9	0.7	42

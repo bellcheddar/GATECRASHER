@@ -159,7 +159,9 @@ def residues(slug: str, entry: dict, sse: dict, pocket: dict, overrides: dict) -
             continue
         resnum = res.seqid.num
         klifs = pocket.get(resnum)
-        override = overrides.get(f"{chain_id}:{resnum}", {})
+        # A structure-scoped override wins over an unscoped one.
+        override = (overrides.get(f"{entry['pdb_id'].upper()}|{chain_id}:{resnum}")
+                    or overrides.get(f"{chain_id}:{resnum}", {}))
         rows.append({
             "pdb_id": entry["pdb_id"],
             "chain": chain_id,
@@ -174,14 +176,22 @@ def residues(slug: str, entry: dict, sse: dict, pocket: dict, overrides: dict) -
 
 
 def read_overrides(slug: str) -> dict:
-    """Optional hand-curated motif table: required for KRAS, which has no KLIFS mapping."""
+    """Optional hand-curated motif table: required for KRAS, which has no KLIFS mapping.
+
+    An optional pdb_id column scopes a row to one structure. That matters whenever a bundle
+    holds two DIFFERENT proteins: JAK1's His885 and JAK2's Asn859 are unrelated residues, and
+    without scoping each would be stamped onto the other structure at the same number.
+    """
     path = paths.raw_dir(slug) / "motifs.tsv"
     if not path.exists():
         return {}
     out = {}
     with path.open() as fh:
         for row in csv.DictReader((l for l in fh if not l.startswith("#")), delimiter="\t"):
+            pdb_id = (row.get("pdb_id") or "").strip().upper()
             key = f"{row['chain'].strip()}:{int(row['resnum'])}"
+            if pdb_id:
+                key = f"{pdb_id}|{key}"
             out[key] = {"motif": row["motif"].strip(),
                         "role_note": (row.get("role_note") or "").strip() or None}
     return out

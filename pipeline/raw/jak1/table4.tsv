@@ -1,0 +1,16 @@
+# Table 4 of Zhuo et al. 2026: SAR of intramolecular hydrogen bonded amides to improve PK.
+# X is the fluorine ortho to the amide, the one that folds the amide into an internal
+# hydrogen bond. Y is the fluorine ortho to the azetidine, added for potency.
+# Compound 19 is the control that proves the point: it has Y but not X, and its Caco-2 and
+# exposure collapse back towards compound 9.
+# Doses differ per compound, so each row carries its own dose note.
+# Blank cells are genuinely absent from the published table (compounds 14 and 17 have
+# incomplete cynomolgus data).
+entry	compound_id	x	y	jak1_ic50	jak2_ic50	jak2_jak1_fold	ina6_ic50	wb_il6	wb_tpo	wb_tpo_il6_fold	caco2_papp	proj_h_cl	proj_h_f	rat_cl_hbf	rat_iv_t_half	rat_po_auc	rat_po_t_half	rat_po_f	cyno_cl_hbf	cyno_iv_t_half	cyno_po_auc	cyno_po_t_half	cyno_po_f	dose_note
+1	9	H	H	1.5	31	21	308	310	3400	11	0.9	0.7	42	29	5.3	3793	5.7	31	25	1.9	1549		9	Rat 2.5 mg/kg IV, 5 mg/kg PO; cyno 2 and 4
+2	14	H	H	0.8	24	30	150	374	3182	9	1.1	0.6	53	31	1.7	2501	4.8	31						Rat 2 mg/kg IV, 4 mg/kg PO; no cyno data published
+3	15	F	H	1.7	19	11	192	258	860	3	3.1	0.8	34	15	3.7	14954	4.2	61	21	2.1	2169	3.9	11	Rat 2.5 mg/kg IV, 5 mg/kg PO; cyno 2 and 4
+4	16	F	H	0.56	11	19	126	175	782	5	4.7	0.6	49	6	3.5	28766	4.3	60	2	10	80964	7.0	38	Rat 2.5 mg/kg IV, 5 mg/kg PO; cyno 2.5 and 5, both dose adjusted
+5	17	F	F	0.46	5.5	12	60	135	417	3	4.6	0.8	35	8	2.4	28559	2.5	70			5275	4.0		Rat 2 mg/kg IV, 4 mg/kg PO; cyno oral only, 4 mg/kg
+6	18	F	F	0.25	6.1	25	70	207	1167	6	8.5	0.7	42	11	3.7	11884	4.6	54	3	8.4	74984	16	54	Rat 2 mg/kg IV, 5 mg/kg PO; cyno 2.5 and 5
+7	19	H	F	0.25	7.8	25	83	243	1161	5	1.4	<0.5	>60	12	2.2	5606	2.2	21	7	4.3	14445	6.0	28	Rat 2 mg/kg IV, 5 mg/kg PO; cyno 2.5 and 5. The control without the ortho-fluorine

@@ -1,0 +1,7 @@
+# Table 2 of Zhuo et al. 2026: in vivo PK comparison of compound 9 to itacitinib (3).
+# The row that matters is the dog: compound 9 is worse than itacitinib there, which is what
+# sent the campaign into the intramolecular hydrogen bond work of Table 4.
+# The phosphate salt of 9 was used in the dog study and the TFA salt in rat and cyno.
+entry	compound_id	rat_cl_hbf	rat_vdss	rat_iv_t_half	rat_po_auc	rat_po_f	cyno_cl_hbf	cyno_vdss	cyno_iv_t_half	cyno_po_auc	cyno_po_f	dog_cl_hbf	dog_vdss	dog_iv_t_half	dog_po_auc	dog_po_f	dose_note
+1	9	29	0.87	5.3	3793	31	25	0.57	1.9	1549	9	49	0.54	2.8	610	6	Phosphate salt in dog; TFA salt in rat and cyno
+2	3	100	2.9	1.1	532	19	26	0.76	1.2	2610	19	37	0.82	1.2	5630	43	Itacitinib, the prior clinical candidate

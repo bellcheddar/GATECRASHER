@@ -26,6 +26,15 @@
    "target": "KRAS G12D",
    "one_line": "Aspartate is not cysteine, so the covalent trick that beat KRAS G12C does not work here. This one binds without a warhead.",
    "bundle_version": "1.0.0"
+  },
+  {
+   "slug": "jak1",
+   "title": "Discovery of the Orally Bioavailable Isoform Selective Janus Kinase 1 (JAK1) Compound Povorcitinib (INCB054707) for the Treatment of Inflammatory and Autoimmune Diseases",
+   "authors_short": "Zhuo et al.",
+   "year": 2026,
+   "target": "JAK1",
+   "one_line": "Sparing JAK2 is the whole point: inhibit it and you take the patient's blood counts with you.",
+   "bundle_version": "1.0.0"
   }
  ]
 }
