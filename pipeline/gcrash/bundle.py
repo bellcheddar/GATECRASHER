@@ -143,6 +143,44 @@ def build(slug: str) -> dict:
         shutil.copy2(build_d / "residues.csv", out / "residues.csv")
     if (build_d / "superpositions.json").exists():
         shutil.copy2(build_d / "superpositions.json", out / "superpositions.json")
+
+    # Short-MD products, where gc dynamics has produced them. A trajectory whose verdict is
+    # not "supports" is absent BY DESIGN (BUILD_SPEC Stage 4), so the manifest carries the
+    # verdict either way: the page can then say what was run and what it showed, rather than
+    # offering a control that does nothing or, worse, implying a run that never happened.
+    if (build_d / "dynamics").is_dir():
+        dynamics_out = out / "dynamics"
+        dynamics_out.mkdir(exist_ok=True)
+        manifest: dict[str, dict] = {}
+        for src in sorted((build_d / "dynamics").iterdir()):
+            if src.is_file():
+                shutil.copy2(src, dynamics_out / src.name)
+        for report_path in sorted((build_d / "dynamics").glob("*.json")):
+            report = json.loads(report_path.read_text())
+            pdb_id = (report.get("pdb_id") or report_path.stem).upper()
+            entry = {
+                "report": f"dynamics/{report_path.name}",
+                "verdict": report.get("verdict"),
+                "production_ps": report.get("production_ps"),
+                "ligand_rmsd_median_a": (report.get("ligand") or {}).get("rmsd_median_a"),
+                "claims": [{k: claim[k] for k in ("id", "label", "expect", "occupancy", "pass")}
+                           for claim in report.get("claims", [])],
+                # One number per residue, which the ruler draws as a second band. A few kB,
+                # and the alternative is a second fetch per structure for a track that is
+                # part of the first view.
+                "rmsf": report.get("rmsf", []),
+            }
+            trajectory = report.get("trajectory")
+            if trajectory:
+                entry["trajectory"] = {
+                    "topology": f"dynamics/{trajectory['topology']}",
+                    "xtc": f"dynamics/{trajectory['xtc']}",
+                    "frames": trajectory["frames"],
+                    "atoms": trajectory["atoms"],
+                    "bytes": trajectory["bytes"],
+                }
+            manifest[pdb_id] = entry
+        (out / "dynamics.json").write_text(json.dumps(manifest, indent=1))
     if (build_d / "interactions").is_dir():
         target = out / "interactions"
         target.mkdir(exist_ok=True)

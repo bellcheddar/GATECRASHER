@@ -213,6 +213,33 @@ export class StructureViewer {
     return this.loaded.get(name);
   }
 
+  /* Play a short MD in place of the static structure: a topology and its coordinates.
+   *
+   * The vendored build carries coordinates-from-xtc and trajectory-from-model-and-coordinates,
+   * so a PDB topology with an XTC beside it is loaded natively rather than frame by frame.
+   * The entry replaces whatever was under `name`, so the viewer never holds a structure and
+   * its own trajectory at once. */
+  async playTrajectory(name, topologyUrl, coordinatesUrl) {
+    if (!StructureViewer.available()) throw new Error('Mol* is not loaded');
+    if (this.loaded.has(name)) await this.clear(name);
+    await this.viewer.loadTrajectory({
+      model: { kind: 'model-url', url: topologyUrl, format: 'pdb' },
+      coordinates: { kind: 'coordinates-url', url: coordinatesUrl, format: 'xtc', isBinary: true },
+      preset: 'default',
+    });
+    this.playing = name;
+    return true;
+  }
+
+  /* Whether the animation is running, so a control can say Play or Pause honestly. */
+  toggleAnimation(on) {
+    const animate = this.plugin?.managers?.animation;
+    if (!animate) return false;
+    if (on) animate.play();
+    else animate.stop();
+    return Boolean(on);
+  }
+
   async clear(name) {
     const entry = this.loaded.get(name);
     if (!entry) return;

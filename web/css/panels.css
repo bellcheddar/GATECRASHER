@@ -296,6 +296,14 @@ html[data-booting] main { visibility: hidden; }
 }
 
 .ruler svg { display: block; min-width: 100%; }
+
+/* The RMSF band under the motif cells: how far each residue moved in the short MD. */
+.rmsf-cell { stroke: none; }
+
+/* A claim the trajectory held, and one it did not. Colour is not the only signal: the chip
+ * carries the occupancy as a number, and its title says what was expected. */
+.chip.claim-held { border-color: var(--gain); color: var(--gain); }
+.chip.claim-broke { border-color: var(--loss); color: var(--loss); }
 .ruler-cell { cursor: pointer; }
 .ruler-cell:hover { stroke: var(--ink); stroke-width: 1; }
 .ruler-cell[aria-selected="true"] { stroke: var(--focus); stroke-width: 1.5; }

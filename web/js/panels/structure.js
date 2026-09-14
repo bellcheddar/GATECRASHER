@@ -283,10 +283,116 @@ export function initStructure(state) {
       }
     });
 
+    /* A second row under the motif cells: how far each residue moved during the short MD.
+     * Same track, same cell width, same residue keys, so a position reads across: this is a
+     * measurement of THIS structure, not a generic flexibility prediction. Drawn only where
+     * a run exists, because an empty row implying "rigid" would be a lie. */
+    const run = bundle.dynamics?.[entry.pdb_id.toUpperCase()];
+    const rmsf = run ? rmsfByResidue(entry.pdb_id) : null;
+    if (rmsf && rmsf.size) {
+      const values = [...rmsf.values()];
+      const highest = Math.max(...values, 0.01);
+      const band = svg('g', { class: 'ruler-rmsf' }, root);
+      track.forEach((residue, i) => {
+        const value = rmsf.get(`${residue.chain}:${residue.resnum}`);
+        if (value === undefined) return;
+        const cell = svg('rect', {
+          class: 'rmsf-cell',
+          x: i * cellWidth,
+          y: 32,
+          width: cellWidth - 1,
+          height: 6,
+          rx: 1,
+          fill: cssToken('--measure'),
+          'fill-opacity': (0.15 + 0.85 * (value / highest)).toFixed(2),
+        }, band);
+        const title = svg('title', {}, cell);
+        title.textContent = `${residue.resname}${residue.resnum} · RMSF ${value.toFixed(2)} Å `
+          + `over ${(run.production_ps / 1000).toFixed(1)} ns`;
+      });
+    }
+
     if (!track.length) {
       el.ruler.replaceChildren(emptyState('No residue annotation yet',
         'Run gc struct for this paper to build the pocket ruler.'));
     }
+  }
+
+  /* The RMSF track, keyed the way the ruler keys its cells. The analysis writes one row per
+   * CA, so a residue the run did not cover simply has no cell rather than a zero. */
+  let rmsfCache = { pdbId: null, values: null };
+
+  function rmsfByResidue(pdbId) {
+    if (rmsfCache.pdbId === pdbId) return rmsfCache.values;
+    rmsfCache = { pdbId, values: new Map() };
+    const run = bundle.dynamics?.[pdbId.toUpperCase()];
+    if (!run?.rmsf) return rmsfCache.values;
+    for (const row of run.rmsf) {
+      rmsfCache.values.set(`${row.chain}:${row.resnum}`, row.rmsf_a);
+    }
+    return rmsfCache.values;
+  }
+
+  /* What the short MD showed, and the trajectory where one earned its place. A run whose
+   * verdict is not "supports" ships no trajectory (BUILD_SPEC Stage 4), and this says so
+   * rather than leaving a dead control or implying no run happened. */
+  async function renderDynamics() {
+    const host = document.getElementById('structure-dynamics');
+    if (!host || !bundle) return;
+    const entry = primaryStructure();
+    const run = entry ? bundle.dynamics?.[entry.pdb_id.toUpperCase()] : null;
+    host.replaceChildren();
+    if (!run) return;
+
+    const nanoseconds = (run.production_ps || 0) / 1000;
+    const summary = document.createElement('span');
+    summary.className = 'chip no-dot';
+    summary.textContent = `${nanoseconds.toFixed(1)} ns MD`;
+    summary.title = `OpenMM, Amber14 and TIP3P water, ligand by OpenFF with AM1-BCC charges. `
+      + `Ligand drift ${run.ligand_rmsd_median_a} Å median.`;
+    host.append(summary);
+
+    for (const claim of run.claims || []) {
+      const chip = document.createElement('span');
+      chip.className = `chip no-dot ${claim.pass ? 'claim-held' : 'claim-broke'}`;
+      chip.textContent = `${claim.label}: ${Math.round(claim.occupancy * 100)}%`;
+      chip.title = `${claim.expect === 'present' ? 'Expected to hold' : 'Expected to be absent'}`
+        + `, measured in ${Math.round(claim.occupancy * 100)} per cent of frames`;
+      host.append(chip);
+    }
+
+    if (!run.trajectory) {
+      const withheld = document.createElement('span');
+      withheld.className = 'chip no-dot claim-broke';
+      withheld.textContent = 'trajectory withheld';
+      withheld.title = 'The run did not support what the paper claims, so it is not published.';
+      host.append(withheld);
+      return;
+    }
+
+    const play = document.createElement('button');
+    play.type = 'button';
+    play.className = 'chip no-dot';
+    play.textContent = `Play ${run.trajectory.frames} frames`;
+    play.title = 'Replace the static structure with the trajectory from the short MD';
+    play.addEventListener('click', async () => {
+      const viewer = await ensureTarget();
+      if (!viewer) return;
+      play.disabled = true;
+      play.textContent = 'Loading…';
+      try {
+        await viewer.playTrajectory('target', `${bundle.dir}/${run.trajectory.topology}`,
+          `${bundle.dir}/${run.trajectory.xtc}`);
+        viewer.toggleAnimation(true);
+        play.textContent = 'Playing';
+      } catch (err) {
+        console.warn('[structure] trajectory did not load', err);
+        play.textContent = 'Trajectory did not load';
+      } finally {
+        play.disabled = false;
+      }
+    });
+    host.append(play);
   }
 
   function scrollRulerTo(residueKey) {
@@ -584,6 +690,7 @@ export function initStructure(state) {
     renderContacts();
     renderCaption();
     renderDownloads();
+    renderDynamics();
     loadTargetWhenVisible().catch((err) => console.warn('[structure] viewer load failed', err));
   });
   state.on(['motif'], () => { if (bundle) renderChips(); });
@@ -598,6 +705,9 @@ export function initStructure(state) {
       unlock = null;
       anti?.dispose();
       anti = null;
+      /* Per-paper state, cleared with the rest of it: the RMSF track is keyed by structure,
+       * and a cache carried across a paper change would draw the previous run's track. */
+      rmsfCache = { pdbId: null, values: null };
       el.antiFrame.hidden = true;
       el.antiToggle.setAttribute('aria-pressed', 'false');
       figures = null;
@@ -614,12 +724,14 @@ export function initStructure(state) {
       renderContacts();
       renderCaption();
       renderDownloads();
+      renderDynamics();
       await renderSelected();
     },
     render() {
       renderChips();
       renderRuler();
       renderContacts();
+      renderDynamics();
       renderCaption();
       renderSelected();
     },
