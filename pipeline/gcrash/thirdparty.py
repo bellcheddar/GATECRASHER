@@ -19,6 +19,10 @@ what it uses it for, and under what licence.
 **Nothing copyleft is linked into this project.** PLIP is GPL-2.0 and Open Babel, which it
 loads, is GPL-2.0: PLIP is invoked as a subprocess and never imported, so neither is
 linked into our code, and neither is redistributed. PyMOL is likewise run as a subprocess.
+The molecular dynamics stack sits behind the same boundary: OpenMM is LGPL-3.0-or-later
+and MDTraj is LGPL-2.1-or-later, and both are imported only inside `pipeline/md/`, which
+runs under a different interpreter launched as a subprocess. No module of `gcrash` imports
+either, nothing they produce carries their code, and no trajectory tool reaches the browser.
 PDF handling uses pypdfium2 rather than PyMuPDF, because PyMuPDF is AGPL-3.0 and this
 pipeline imports its PDF library.
 

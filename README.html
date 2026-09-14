@@ -2,7 +2,7 @@
 <blockquote>
 <p><strong>Four drug discovery campaigns, opened up: the pocket, the structure-activity relationships, the chemical edits, and the structural basis of selectivity.</strong></p>
 </blockquote>
-<p><a href="https://gatecrasher.mdeller.com"><img alt="live" src="https://img.shields.io/badge/live-gatecrasher.mdeller.com-00d084?logo=icloud&amp;logoColor=white"></a> <img alt="python" src="https://img.shields.io/badge/python-3.12.13-3776AB?logo=python&amp;logoColor=white"> <img alt="rdkit" src="https://img.shields.io/badge/rdkit-2026.3.6-8B0000"> <img alt="gemmi" src="https://img.shields.io/badge/gemmi-0.7.5-2E8B57"> <img alt="biotite" src="https://img.shields.io/badge/biotite-1.7.1-4B8BBE"> <img alt="plip" src="https://img.shields.io/badge/plip-3.0.1-6A5ACD"> <img alt="opsin" src="https://img.shields.io/badge/opsin-1.2.0-C71585"> <img alt="molstar" src="https://img.shields.io/badge/mol*-5.11.0-1B6FA8"> <img alt="plotly" src="https://img.shields.io/badge/plotly-2.35.2-3F4F75?logo=plotly&amp;logoColor=white"> <img alt="rdkit.js" src="https://img.shields.io/badge/rdkit.js-2025.3.4-8B0000"> <img alt="browser checks" src="https://img.shields.io/badge/browser%20checks-73%20passing-00d084"> <img alt="bundles" src="https://img.shields.io/badge/bundles-4%20validating-00d084"> <img alt="data" src="https://img.shields.io/badge/data-RCSB%20PDB%20·%20KLIFS%20·%20PubChem-fcb900"> <img alt="phase" src="https://img.shields.io/badge/phase-stage%204-ff6900"> <img alt="licence" src="https://img.shields.io/badge/licence-not%20yet%20chosen-lightgrey"> <img alt="author" src="https://img.shields.io/badge/author-Marc%20C.%20Deller-1C244B"></p>
+<p><a href="https://gatecrasher.mdeller.com"><img alt="live" src="https://img.shields.io/badge/live-gatecrasher.mdeller.com-00d084?logo=icloud&amp;logoColor=white"></a> <img alt="python" src="https://img.shields.io/badge/python-3.12.13-3776AB?logo=python&amp;logoColor=white"> <img alt="rdkit" src="https://img.shields.io/badge/rdkit-2026.3.6-8B0000"> <img alt="gemmi" src="https://img.shields.io/badge/gemmi-0.7.5-2E8B57"> <img alt="biotite" src="https://img.shields.io/badge/biotite-1.7.1-4B8BBE"> <img alt="plip" src="https://img.shields.io/badge/plip-3.0.1-6A5ACD"> <img alt="opsin" src="https://img.shields.io/badge/opsin-1.2.0-C71585"> <img alt="openmm" src="https://img.shields.io/badge/openmm-8.5.2-D2691E"> <img alt="openff" src="https://img.shields.io/badge/openff--toolkit-0.18.0-2E8B57"> <img alt="mdtraj" src="https://img.shields.io/badge/mdtraj-1.11.1-4B8BBE"> <img alt="molstar" src="https://img.shields.io/badge/mol*-5.11.0-1B6FA8"> <img alt="plotly" src="https://img.shields.io/badge/plotly-2.35.2-3F4F75?logo=plotly&amp;logoColor=white"> <img alt="rdkit.js" src="https://img.shields.io/badge/rdkit.js-2025.3.4-8B0000"> <img alt="bundles" src="https://img.shields.io/badge/bundles-4%20validating-00d084"> <img alt="data" src="https://img.shields.io/badge/data-RCSB%20PDB%20·%20KLIFS%20·%20PubChem-fcb900"> <img alt="licence" src="https://img.shields.io/badge/licence-MIT-blue"> <img alt="author" src="https://img.shields.io/badge/author-Marc%20C.%20Deller-1C244B"></p>
 <div class="emd-table-wrap"><table class="emd-data-table">
 <thead>
 <tr>
@@ -134,121 +134,74 @@
 </tbody>
 </table></div>
 <p><strong>A molecular formula check is not enough, and this is not a theoretical concern.</strong> While curating the FGFR bundle, a hand-built scaffold reproduced the paper's published formula exactly while having the wrong connectivity: in a SMILES prefix fragment the bond to the next atom comes from the fragment's <em>last</em> atom, so every cyclic ether had attached through a ring carbon with its oxygen left dangling. Same atoms, wrong molecule, identical formula. Only comparing against the structure parsed from the published name caught it. Fragments are now joined with <code>molzip</code> at labelled attachment points, and the scheme is proved by rebuilding each verified anchor exactly.</p>
-<h2>🏗️ How it is built</h2>
-<p>Two halves, and the boundary between them is the point:</p>
-<ul>
-<li><strong><code>pipeline/</code></strong> runs on the Mac and never ships. It fetches coordinates, runs DSSP, asks KLIFS for pocket numbering, runs PLIP for contacts, computes descriptors and core-aligned depictions with RDKit, and writes validated JSON and CSV.</li>
-<li><strong><code>web/</code></strong> is what gets deployed: vanilla ES modules, no build step, no framework, no server. Mol*, Plotly and RDKit.js are vendored and served from the app's own origin.</li>
-</ul>
-<pre><code class="language-text">gc extract &lt;slug&gt; --pdf &lt;file&gt; --pages 1-10   # text and page images, for hand transcription
-gc chem    &lt;slug&gt;                             # descriptors, scaffold, core-aligned depictions
-gc struct  &lt;slug&gt;                             # mmCIF, DSSP, KLIFS, PLIP contacts
-gc bundle  &lt;slug&gt;                             # melt the published tables into web/data/
-gc validate [slug]                            # schema, provenance, chemistry, cross-references
-gc all     &lt;slug&gt;                             # the four above, in order
-</code></pre>
-<pre><code class="language-bash">bash tools/copy_check.sh                                  # the company is never named, no em dashes
-python3 tools/browser_check.py --base http://127.0.0.1:8099   # 67 checks in a real browser
-</code></pre>
-<h3>The validation gate</h3>
-<p><code>gc validate</code> fails the build, not a warning, when: a measurement has no <code>source_table</code>; an InChIKey does not match its SMILES; two compounds are the same molecule; an R-group fragment is not actually present in its parent; a residue cited by an edit or a story beat does not exist in the structure it is cited against; or an assay, compound or edit id is referenced but not defined.</p>
-<h2>🗂️ Repository layout</h2>
+<p>The same principle governs what gets drawn in the pocket: every distance in the app comes from a PLIP measurement on real coordinates, and nothing is hand-placed. A contact whose atoms cannot be located is listed but never drawn, because a measure line without a measurement is the one thing this drawing grammar forbids.</p>
+<h2>🧲 What the dynamics are for</h2>
+<p>The crystal structure is one pose at one temperature. The short molecular dynamics run asks a narrower and more useful question: <strong>does the contact the paper leans on actually hold?</strong></p>
+<p>Each primary structure gets a run under amber14-all with TIP3P water, the ligand parameterised by the Open Force Field small-molecule force field (openff-2.1.0) with AM1-BCC charges, in a 1 nm box at 0.15 M NaCl, 300 K, 2 fs steps with hydrogen mass repartitioning at 4 amu, a Monte Carlo barostat, 200 ps of restrained equilibration released in five steps, then 5 ns of production sampled every 20 ps.</p>
+<p>Each run carries the paper's own claims, written as testable statements before the run starts, and each is scored against thresholds fixed in advance:</p>
 <div class="emd-table-wrap"><table class="emd-data-table">
 <thead>
 <tr>
-<th>Path</th>
-<th>What it is</th>
+<th>Claim shape</th>
+<th>Passes when</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td data-label="Path"><code>pipeline/raw/&lt;slug&gt;/</code></td>
-<td data-label="What it is">Hand-curated source of truth: one file per published table, plus <code>ISSUES.md</code></td>
+<td data-label="Claim shape">A contact the paper says is present</td>
+<td data-label="Passes when">Held in at least <strong>50%</strong> of frames</td>
 </tr>
 <tr>
-<td data-label="Path"><code>pipeline/schemas/</code></td>
-<td data-label="What it is">JSON Schema for every published artefact</td>
+<td data-label="Claim shape">A contact the paper says is absent</td>
+<td data-label="Passes when">Present in at most <strong>20%</strong> of frames</td>
 </tr>
 <tr>
-<td data-label="Path"><code>pipeline/gcrash/</code></td>
-<td data-label="What it is">The <code>gc</code> command. Named <code>gcrash</code> because <code>gc</code> is a Python built-in module name and built-ins always win an import</td>
-</tr>
-<tr>
-<td data-label="Path"><code>web/data/papers/&lt;slug&gt;/</code></td>
-<td data-label="What it is">The deployed bundles</td>
-</tr>
-<tr>
-<td data-label="Path"><code>tools/</code></td>
-<td data-label="What it is">The browser check and the copy gate</td>
-</tr>
-<tr>
-<td data-label="Path"><code>deploy/</code></td>
-<td data-label="What it is">nginx site and the rsync deployment</td>
+<td data-label="Claim shape">The ligand stays where it was crystallised</td>
+<td data-label="Passes when">Median heavy-atom RMSD to the crystal pose at most <strong>2 Å</strong></td>
 </tr>
 </tbody>
 </table></div>
-<h2>📐 Reading the drawing</h2>
-<p>The app is laid out as a technical drawing, and the colours carry meaning rather than decoration:</p>
-<div class="emd-table-wrap"><table class="emd-data-table">
-<thead>
-<tr>
-<th>Colour</th>
-<th>Means</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td data-label="Colour">Amber</td>
-<td data-label="Means">A measured value or distance, always drawn from the PLIP measurement and never hand-placed</td>
-</tr>
-<tr>
-<td data-label="Colour">Cyan</td>
-<td data-label="Means">The protein you want to hit, and annotation leader lines</td>
-</tr>
-<tr>
-<td data-label="Colour">Rose</td>
-<td data-label="Means">The protein you must not hit</td>
-</tr>
-<tr>
-<td data-label="Colour">Green</td>
-<td data-label="Means">An edit that improved something</td>
-</tr>
-<tr>
-<td data-label="Colour">Coral</td>
-<td data-label="Means">A clash, a liability, or an edit that failed</td>
-</tr>
-</tbody>
-</table></div>
-<p>Dark is the default and light is a first-class citizen, not an afterthought. Both are contrast-checked in the browser test.</p>
+<p><strong>A trajectory that fails its claims is not published.</strong> The verdict is written either way, so the page can say what was run and what it showed, rather than offering a control that quietly does nothing. This runs in both directions in practice: the KRAS paper's assertion that the ligand does not contact Asp12 is reproduced at 0% occupancy, and a deliberately impossible claim, added as a control, correctly withheld its trajectory.</p>
+<p>Where a run passes, the page gains a per-residue RMSF band on the pocket ruler and a decimated trajectory of the pocket and ligand that plays in the viewer.</p>
 <h2>🔍 What the papers disagree with themselves about</h2>
 <p>Each bundle carries an <code>ISSUES.md</code> recording every place a paper contradicts itself, with both readings kept and neither averaged. Some of what is in there:</p>
 <ul>
 <li><strong>KRAS</strong>: the graphical abstract gives compound 10 at 451 nM and compound 23 at 2.2 nM where the tables give 410 nM and 22 nM. Both are shown, labelled by source.</li>
 <li><strong>JAK1</strong>: the PDB codes are printed two ways, and one spelling points at two real but unrelated entries (an RNA recognition motif and auto-inhibited c-Abl). Resolved against RCSB before anything was built.</li>
 <li><strong>JAK1</strong>: the abstract says the arthritis model was murine; the methods describe rats. The app says rats.</li>
+<li><strong>JAK1</strong>: the paper discusses both isoforms in JAK2 numbering, so its "Glu930" is an arginine in the app's own entry. Every cited residue is now checked against the coordinates it is cited against, and the hinge is labelled Glu957 and Leu959 in JAK1 numbering, as the structure has it.</li>
 <li><strong>FGFR</strong>: the RCSB entry title for 8E1X names compound 29, while the paper names compound 30. The deposited ligand's formula settles it: it is compound 30.</li>
 <li><strong>CDK2</strong>: Table 1 puts two isoform values in one cell, which reads like a value and a fold and is not.</li>
 </ul>
 <h2>⚖️ What this app does not reproduce</h2>
 <p>No publisher figure, graphical abstract or full text is reproduced here. Every molecule is drawn from SMILES with RDKit, every structure is rendered from coordinates fetched from the RCSB PDB, and the narrative is written fresh. Abstracts are quoted verbatim in a marked quotation block with their citation and DOI, which is ordinary scholarly quotation. The paper PDFs themselves are not in this repository and never will be.</p>
 <p>Where a paper's only record of something is a figure we may not copy, the app says so plainly rather than inventing a substitute: the KRAS paper's model of its final compound is described and not shown, because no coordinates exist for it.</p>
+<h2>🏗️ Running the pipeline</h2>
+<p><code>pipeline/</code> runs on the Mac and never ships; <code>web/</code> is what gets deployed, as vanilla ES modules with no build step and no server. Curated source tables live in <code>pipeline/raw/&lt;slug&gt;/</code>, published bundles in <code>web/data/papers/&lt;slug&gt;/</code>.</p>
+<pre><code class="language-text">gc extract  &lt;slug&gt; --pdf &lt;file&gt; --pages 1-10   # text and page images, for hand transcription
+gc chem     &lt;slug&gt;                             # descriptors, scaffold, core-aligned depictions
+gc struct   &lt;slug&gt;                             # mmCIF, DSSP, KLIFS, PLIP contacts
+gc dynamics &lt;slug&gt; --stage all                 # OpenMM run, RMSF track, claim verdicts
+gc bundle   &lt;slug&gt;                             # melt the published tables into web/data/
+gc validate [slug]                             # schema, provenance, chemistry, cross-references
+gc all      &lt;slug&gt;                             # the pipeline, in order
+</code></pre>
+<h3>The validation gate</h3>
+<p><code>gc validate</code> fails the build, not a warning, when: a measurement has no <code>source_table</code>; an InChIKey does not match its SMILES; two compounds are the same molecule; an R-group fragment is not actually present in its parent; a residue cited by an edit, a story beat or a contact does not exist in the structure it is cited against; or an assay, compound or edit id is referenced but not defined.</p>
 <h2>✅ To Do</h2>
+<p>Roadmap, roughly in dependency order.</p>
 <ul class="emd-tasklist">
-<li><span class="emd-check">&#9989;</span> <strong>Harvest pass</strong>: lift the PLIP runner, Mol* setup, KLIFS layer, Plotly conventions and track rendering from the existing repositories, and record what came from where in <code>HARVEST.md</code></li>
-<li><span class="emd-check">&#9989;</span> <strong>Data contract</strong>: long-format measurements, per-paper assay dictionaries, JSON Schema for every artefact, and a provenance gate that fails the build</li>
-<li><span class="emd-check">&#9989;</span> <strong>CDK2 end to end</strong>: 18 compounds, 251 measurements, 8UV0 with PLIP contacts and the KLIFS ruler</li>
-<li><span class="emd-check">&#9989;</span> <strong>Blueprint shell</strong>: tokens, sheets with live title blocks, the drawing grammar, <code>AppState</code> with URL-hash serialisation</li>
-<li><span class="emd-check">&#9989;</span> <strong>Structure, SAR and Properties sheets</strong>: Mol*, the pocket ruler, motif chips, contact list with measure lines, R-group grid, selectivity matrix, activity cliffs, the three Plotly figures</li>
-<li><span class="emd-check">&#9989;</span> <strong>Story and Edit Log</strong>: five beats per paper in two registers, the graphical abstract re-creation drawn from SMILES, change-type filtering</li>
-<li><span class="emd-check">&#9989;</span> <strong>All four papers</strong>: FGFR, KRAS and JAK1 curated, including the non-KLIFS path and the twin-structure anti-target</li>
-<li><span class="emd-check">&#9989;</span> <strong>Verification</strong>: OPSIN name-to-structure checking, <code>molzip</code> fragment assembly, 67 browser checks, the copy gate</li>
-<li><span class="emd-check">&#9989;</span> <strong>About sheet</strong>: the pipeline in six stages, every tool with its version, licence and DOI, the data sources, and the statement of what is rendered rather than reproduced, all rendered from <code>data/software.json</code></li>
-<li><span class="emd-check">&#9989;</span> <strong>Deploy</strong>: nginx and certbot on the droplet, HTTP/2 patched in the form nginx 1.24 wants, asset URLs stamped with their modification times so an immutable cache cannot hide a deploy, and the entry in the mdeller.com launcher</li>
-<li><span class="emd-check">&#11036;</span> <strong>In-browser search</strong>: chunk, embed once on the Mac, cosine search in the page, with "not stated in this paper" as a first-class answer</li>
-<li><span class="emd-check">&#11036;</span> <strong>Short molecular dynamics</strong>: an RMSF track on the ruler and a decimated trajectory per primary structure, and no trajectory ships that does not support what the paper claims</li>
-<li><span class="emd-check">&#11036;</span> <strong>PyMOL downloads</strong>: a <code>.pml</code> script and a <code>.pse</code> session per structure</li>
-<li><span class="emd-check">&#11036;</span> <strong>Performance budget</strong>: first meaningful paint under two seconds cold, under 1.5 MB initial transfer excluding Mol*, lazy-loaded structures</li>
-<li><span class="emd-check">&#11036;</span> <strong>Licence</strong>: not yet chosen</li>
+<li><span class="emd-check">&#9989;</span> <strong>Data contract.</strong> Long-format measurements, per-paper assay dictionaries, JSON Schema for every artefact, and a provenance gate that fails the build rather than warning</li>
+<li><span class="emd-check">&#9989;</span> <strong>CDK2 end to end.</strong> 18 compounds, 251 measurements, 8UV0 with PLIP contacts and the KLIFS pocket ruler, as the shape every later bundle had to fit</li>
+<li><span class="emd-check">&#9989;</span> <strong>All four campaigns.</strong> FGFR, KRAS and JAK1 curated, including the non-kinase path for KRAS where there is no KLIFS numbering, and the twin-structure anti-target for JAK1</li>
+<li><span class="emd-check">&#9989;</span> <strong>Chemical verification.</strong> OPSIN name-to-structure checking and <code>molzip</code> fragment assembly on verified cores, after a formula check passed a molecule with the wrong connectivity</li>
+<li><span class="emd-check">&#9989;</span> <strong>Structural annotation.</strong> DSSP secondary structure, KLIFS pocket numbering, PLIP contacts per structure, and a gate that every cited residue exists in the coordinates it is cited against, which caught a hinge labelled on an arginine</li>
+<li><span class="emd-check">&#9989;</span> <strong>Selectivity analysis.</strong> The anti-target twin view with the two structures superposed before drawing, the selectivity matrix, and activity cliffs ranked from the primary potency only</li>
+<li><span class="emd-check">&#9989;</span> <strong>Papers checked against themselves.</strong> An <code>ISSUES.md</code> per bundle recording every internal contradiction, both readings kept and neither averaged</li>
+<li><span class="emd-check">&#9989;</span> <strong>In-browser search.</strong> BM25 over this project's own prose and data, indexed once on the Mac and scored in the page, with "not stated in this project" as a first-class answer. Embeddings were the plan, but a static site cannot embed a query without a server or a model shipped to the page</li>
+<li><span class="emd-check">&#9989;</span> <strong>Take the view away.</strong> A PyMOL script, session and still image per structure, so the pocket leaves the browser</li>
+<li><span class="emd-check">&#11036;</span> <strong>Short molecular dynamics.</strong> A 5 ns run per primary structure with an RMSF track on the pocket ruler and a playable trajectory, and no trajectory ships that does not support what the paper claims. The verdict logic is proved in both directions; the production runs are in progress</li>
+<li><span class="emd-check">&#11036;</span> <strong>Per-residue dynamics on the anti-target.</strong> The twin view compares two crystal poses; comparing their flexibility is the obvious next question and is not answered yet</li>
 </ul>
 <h2>📚 Citations</h2>
 <div class="emd-table-wrap"><table class="emd-data-table">
@@ -304,7 +257,7 @@ python3 tools/browser_check.py --base http://127.0.0.1:8099   # 67 checks in a r
 </tr>
 <tr>
 <td data-label="Tool"><a href="https://gemmi.readthedocs.io/">gemmi</a></td>
-<td data-label="Used for">mmCIF handling</td>
+<td data-label="Used for">mmCIF handling and structure superposition</td>
 <td data-label="Licence">MPL-2.0</td>
 </tr>
 <tr>
@@ -316,6 +269,41 @@ python3 tools/browser_check.py --base http://127.0.0.1:8099   # 67 checks in a r
 <td data-label="Tool"><a href="https://github.com/PDB-REDO/dssp">DSSP</a></td>
 <td data-label="Used for">Secondary structure</td>
 <td data-label="Licence">BSD-2-Clause</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://openbabel.org/">Open Babel</a></td>
+<td data-label="Used for">Chemical perception inside PLIP</td>
+<td data-label="Licence">GPL-2.0, reached only inside the PLIP subprocess</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://openmm.org/">OpenMM</a></td>
+<td data-label="Used for">The molecular dynamics engine</td>
+<td data-label="Licence">LGPL-3.0-or-later, run as a subprocess under a separate interpreter</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://github.com/openforcefield/openff-toolkit">OpenFF Toolkit</a></td>
+<td data-label="Used for">Ligand parameters with AM1-BCC charges</td>
+<td data-label="Licence">MIT</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://github.com/openmm/pdbfixer">PDBFixer</a></td>
+<td data-label="Used for">Missing atoms and protonation before solvation</td>
+<td data-label="Licence">MIT</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://mdtraj.org/">MDTraj</a></td>
+<td data-label="Used for">RMSF, ligand RMSD and contact occupancy from the trajectories</td>
+<td data-label="Licence">LGPL-2.1-or-later, run as a subprocess under a separate interpreter</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://github.com/schrodinger/pymol-open-source">PyMOL</a></td>
+<td data-label="Used for">The downloadable script, session and still per structure</td>
+<td data-label="Licence">Open-Source PyMOL licence, invoked as a subprocess</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://github.com/pypdfium2-team/pypdfium2">pypdfium2</a></td>
+<td data-label="Used for">Text and page images out of the PDFs, on the Mac only</td>
+<td data-label="Licence">BSD-3-Clause / Apache-2.0</td>
 </tr>
 <tr>
 <td data-label="Tool"><a href="https://molstar.org/">Mol*</a></td>
@@ -349,6 +337,7 @@ python3 tools/browser_check.py --base http://127.0.0.1:8099   # 67 checks in a r
 </tr>
 </tbody>
 </table></div>
+<p>GATECRASHER is released under the <a href="LICENSE">MIT licence</a>. Nothing copyleft is linked in: the GPL and LGPL tools above are each invoked as a subprocess and never imported, and none of them reaches the browser. Versions, roles, references and the licence notices for the vendored libraries are in <a href="THIRD_PARTY.md"><code>THIRD_PARTY.md</code></a>, which is generated from the same <code>web/data/software.json</code> the About sheet renders.</p>
 <hr>
 <p>Built by <a href="https://marcdeller.com">Marc C. Deller, D.Phil.</a> · <a href="mailto:marc@marcdeller.com">marc@marcdeller.com</a></p>
 <hr>

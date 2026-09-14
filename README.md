@@ -9,13 +9,14 @@
 ![biotite](https://img.shields.io/badge/biotite-1.7.1-4B8BBE)
 ![plip](https://img.shields.io/badge/plip-3.0.1-6A5ACD)
 ![opsin](https://img.shields.io/badge/opsin-1.2.0-C71585)
+![openmm](https://img.shields.io/badge/openmm-8.5.2-D2691E)
+![openff](https://img.shields.io/badge/openff--toolkit-0.18.0-2E8B57)
+![mdtraj](https://img.shields.io/badge/mdtraj-1.11.1-4B8BBE)
 ![molstar](https://img.shields.io/badge/mol*-5.11.0-1B6FA8)
 ![plotly](https://img.shields.io/badge/plotly-2.35.2-3F4F75?logo=plotly&logoColor=white)
 ![rdkit.js](https://img.shields.io/badge/rdkit.js-2025.3.4-8B0000)
-![browser checks](https://img.shields.io/badge/browser%20checks-73%20passing-00d084)
 ![bundles](https://img.shields.io/badge/bundles-4%20validating-00d084)
 ![data](https://img.shields.io/badge/data-RCSB%20PDB%20·%20KLIFS%20·%20PubChem-fcb900)
-![phase](https://img.shields.io/badge/phase-stage%204-ff6900)
 ![licence](https://img.shields.io/badge/licence-MIT-blue)
 ![author](https://img.shields.io/badge/author-Marc%20C.%20Deller-1C244B)
 
@@ -67,55 +68,25 @@ No compound structure in this repository was drawn by hand and trusted. Each one
 
 **A molecular formula check is not enough, and this is not a theoretical concern.** While curating the FGFR bundle, a hand-built scaffold reproduced the paper's published formula exactly while having the wrong connectivity: in a SMILES prefix fragment the bond to the next atom comes from the fragment's *last* atom, so every cyclic ether had attached through a ring carbon with its oxygen left dangling. Same atoms, wrong molecule, identical formula. Only comparing against the structure parsed from the published name caught it. Fragments are now joined with `molzip` at labelled attachment points, and the scheme is proved by rebuilding each verified anchor exactly.
 
-## 🏗️ How it is built
+The same principle governs what gets drawn in the pocket: every distance in the app comes from a PLIP measurement on real coordinates, and nothing is hand-placed. A contact whose atoms cannot be located is listed but never drawn, because a measure line without a measurement is the one thing this drawing grammar forbids.
 
-Two halves, and the boundary between them is the point:
+## 🧲 What the dynamics are for
 
-- **`pipeline/`** runs on the Mac and never ships. It fetches coordinates, runs DSSP, asks KLIFS for pocket numbering, runs PLIP for contacts, computes descriptors and core-aligned depictions with RDKit, and writes validated JSON and CSV.
-- **`web/`** is what gets deployed: vanilla ES modules, no build step, no framework, no server. Mol\*, Plotly and RDKit.js are vendored and served from the app's own origin.
+The crystal structure is one pose at one temperature. The short molecular dynamics run asks a narrower and more useful question: **does the contact the paper leans on actually hold?**
 
-```
-gc extract <slug> --pdf <file> --pages 1-10   # text and page images, for hand transcription
-gc chem    <slug>                             # descriptors, scaffold, core-aligned depictions
-gc struct  <slug>                             # mmCIF, DSSP, KLIFS, PLIP contacts
-gc bundle  <slug>                             # melt the published tables into web/data/
-gc validate [slug]                            # schema, provenance, chemistry, cross-references
-gc all     <slug>                             # the four above, in order
-```
+Each primary structure gets a run under amber14-all with TIP3P water, the ligand parameterised by the Open Force Field small-molecule force field (openff-2.1.0) with AM1-BCC charges, in a 1 nm box at 0.15 M NaCl, 300 K, 2 fs steps with hydrogen mass repartitioning at 4 amu, a Monte Carlo barostat, 200 ps of restrained equilibration released in five steps, then 5 ns of production sampled every 20 ps.
 
-```bash
-bash tools/copy_check.sh                                  # the company is never named, no em dashes
-python3 tools/browser_check.py --base http://127.0.0.1:8099   # 67 checks in a real browser
-```
+Each run carries the paper's own claims, written as testable statements before the run starts, and each is scored against thresholds fixed in advance:
 
-### The validation gate
-
-`gc validate` fails the build, not a warning, when: a measurement has no `source_table`; an InChIKey does not match its SMILES; two compounds are the same molecule; an R-group fragment is not actually present in its parent; a residue cited by an edit or a story beat does not exist in the structure it is cited against; or an assay, compound or edit id is referenced but not defined.
-
-## 🗂️ Repository layout
-
-| Path | What it is |
+| Claim shape | Passes when |
 |---|---|
-| `pipeline/raw/<slug>/` | Hand-curated source of truth: one file per published table, plus `ISSUES.md` |
-| `pipeline/schemas/` | JSON Schema for every published artefact |
-| `pipeline/gcrash/` | The `gc` command. Named `gcrash` because `gc` is a Python built-in module name and built-ins always win an import |
-| `web/data/papers/<slug>/` | The deployed bundles |
-| `tools/` | The browser check and the copy gate |
-| `deploy/` | nginx site and the rsync deployment |
+| A contact the paper says is present | Held in at least **50%** of frames |
+| A contact the paper says is absent | Present in at most **20%** of frames |
+| The ligand stays where it was crystallised | Median heavy-atom RMSD to the crystal pose at most **2 Å** |
 
-## 📐 Reading the drawing
+**A trajectory that fails its claims is not published.** The verdict is written either way, so the page can say what was run and what it showed, rather than offering a control that quietly does nothing. This runs in both directions in practice: the KRAS paper's assertion that the ligand does not contact Asp12 is reproduced at 0% occupancy, and a deliberately impossible claim, added as a control, correctly withheld its trajectory.
 
-The app is laid out as a technical drawing, and the colours carry meaning rather than decoration:
-
-| Colour | Means |
-|---|---|
-| Amber | A measured value or distance, always drawn from the PLIP measurement and never hand-placed |
-| Cyan | The protein you want to hit, and annotation leader lines |
-| Rose | The protein you must not hit |
-| Green | An edit that improved something |
-| Coral | A clash, a liability, or an edit that failed |
-
-Dark is the default and light is a first-class citizen, not an afterthought. Both are contrast-checked in the browser test.
+Where a run passes, the page gains a per-residue RMSF band on the pocket ruler and a decimated trajectory of the pocket and ligand that plays in the viewer.
 
 ## 🔍 What the papers disagree with themselves about
 
@@ -124,6 +95,7 @@ Each bundle carries an `ISSUES.md` recording every place a paper contradicts its
 - **KRAS**: the graphical abstract gives compound 10 at 451 nM and compound 23 at 2.2 nM where the tables give 410 nM and 22 nM. Both are shown, labelled by source.
 - **JAK1**: the PDB codes are printed two ways, and one spelling points at two real but unrelated entries (an RNA recognition motif and auto-inhibited c-Abl). Resolved against RCSB before anything was built.
 - **JAK1**: the abstract says the arthritis model was murine; the methods describe rats. The app says rats.
+- **JAK1**: the paper discusses both isoforms in JAK2 numbering, so its "Glu930" is an arginine in the app's own entry. Every cited residue is now checked against the coordinates it is cited against, and the hinge is labelled Glu957 and Leu959 in JAK1 numbering, as the structure has it.
 - **FGFR**: the RCSB entry title for 8E1X names compound 29, while the paper names compound 30. The deposited ligand's formula settles it: it is compound 30.
 - **CDK2**: Table 1 puts two isoform values in one cell, which reads like a value and a fold and is not.
 
@@ -133,24 +105,39 @@ No publisher figure, graphical abstract or full text is reproduced here. Every m
 
 Where a paper's only record of something is a figure we may not copy, the app says so plainly rather than inventing a substitute: the KRAS paper's model of its final compound is described and not shown, because no coordinates exist for it.
 
+## 🏗️ Running the pipeline
+
+`pipeline/` runs on the Mac and never ships; `web/` is what gets deployed, as vanilla ES modules with no build step and no server. Curated source tables live in `pipeline/raw/<slug>/`, published bundles in `web/data/papers/<slug>/`.
+
+```
+gc extract  <slug> --pdf <file> --pages 1-10   # text and page images, for hand transcription
+gc chem     <slug>                             # descriptors, scaffold, core-aligned depictions
+gc struct   <slug>                             # mmCIF, DSSP, KLIFS, PLIP contacts
+gc dynamics <slug> --stage all                 # OpenMM run, RMSF track, claim verdicts
+gc bundle   <slug>                             # melt the published tables into web/data/
+gc validate [slug]                             # schema, provenance, chemistry, cross-references
+gc all      <slug>                             # the pipeline, in order
+```
+
+### The validation gate
+
+`gc validate` fails the build, not a warning, when: a measurement has no `source_table`; an InChIKey does not match its SMILES; two compounds are the same molecule; an R-group fragment is not actually present in its parent; a residue cited by an edit, a story beat or a contact does not exist in the structure it is cited against; or an assay, compound or edit id is referenced but not defined.
+
 ## ✅ To Do
 
-- [x] **Harvest pass**: lift the PLIP runner, Mol\* setup, KLIFS layer, Plotly conventions and track rendering from the existing repositories, and record what came from where in `HARVEST.md`
-- [x] **Data contract**: long-format measurements, per-paper assay dictionaries, JSON Schema for every artefact, and a provenance gate that fails the build
-- [x] **CDK2 end to end**: 18 compounds, 251 measurements, 8UV0 with PLIP contacts and the KLIFS ruler
-- [x] **Blueprint shell**: tokens, sheets with live title blocks, the drawing grammar, `AppState` with URL-hash serialisation
-- [x] **Structure, SAR and Properties sheets**: Mol\*, the pocket ruler, motif chips, contact list with measure lines, R-group grid, selectivity matrix, activity cliffs, the three Plotly figures
-- [x] **Story and Edit Log**: five beats per paper in two registers, the graphical abstract re-creation drawn from SMILES, change-type filtering
-- [x] **All four papers**: FGFR, KRAS and JAK1 curated, including the non-KLIFS path and the twin-structure anti-target
-- [x] **Verification**: OPSIN name-to-structure checking, `molzip` fragment assembly, 67 browser checks, the copy gate
-- [x] **About sheet**: the pipeline in six stages, every tool with its version, licence and DOI, the data sources, and the statement of what is rendered rather than reproduced, all rendered from `data/software.json`
-- [x] **Deploy**: nginx and certbot on the droplet, HTTP/2 patched in the form nginx 1.24 wants, asset URLs stamped with their modification times so an immutable cache cannot hide a deploy, and the entry in the mdeller.com launcher
-- [x] **In-browser search**: BM25 over this project's own prose and data, indexed once on the Mac and scored in the page, with "not stated in this project" as a first-class answer. Embeddings were the plan, but a static site cannot embed the query without a server or a model shipped to the page
-- [ ] **Short molecular dynamics**: an RMSF track on the ruler and a decimated trajectory per primary structure, and no trajectory ships that does not support what the paper claims
-- [x] **PyMOL downloads**: a `.pml` script, a `.pse` session and a still image per structure, on the Structure sheet
-- [x] **Performance budget**: first paint 0.7 s cold and 149 kB initial transfer excluding Mol\*, with Mol\*, Plotly and RDKit.js fetched on first use; Lighthouse accessibility 100 everywhere and performance 94 on desktop. Mobile performance is 84 measured (52 simulated), almost all of it Mol\* evaluating for the landing pocket
-- [x] **Structure-first landing**: every paper opens on the pocket; the campaign, the five beats and the selectivity plot pull out as drawers over any sheet, and a beat drives the structure viewer
-- [x] **Licence**: MIT. The one dependency that would have forced AGPL-3.0, PyMuPDF, is replaced by pypdfium2; the GPL tools run as subprocesses only; the vendored libraries carry their notices. See `THIRD_PARTY.md`
+Roadmap, roughly in dependency order.
+
+- [x] **Data contract.** Long-format measurements, per-paper assay dictionaries, JSON Schema for every artefact, and a provenance gate that fails the build rather than warning
+- [x] **CDK2 end to end.** 18 compounds, 251 measurements, 8UV0 with PLIP contacts and the KLIFS pocket ruler, as the shape every later bundle had to fit
+- [x] **All four campaigns.** FGFR, KRAS and JAK1 curated, including the non-kinase path for KRAS where there is no KLIFS numbering, and the twin-structure anti-target for JAK1
+- [x] **Chemical verification.** OPSIN name-to-structure checking and `molzip` fragment assembly on verified cores, after a formula check passed a molecule with the wrong connectivity
+- [x] **Structural annotation.** DSSP secondary structure, KLIFS pocket numbering, PLIP contacts per structure, and a gate that every cited residue exists in the coordinates it is cited against, which caught a hinge labelled on an arginine
+- [x] **Selectivity analysis.** The anti-target twin view with the two structures superposed before drawing, the selectivity matrix, and activity cliffs ranked from the primary potency only
+- [x] **Papers checked against themselves.** An `ISSUES.md` per bundle recording every internal contradiction, both readings kept and neither averaged
+- [x] **In-browser search.** BM25 over this project's own prose and data, indexed once on the Mac and scored in the page, with "not stated in this project" as a first-class answer. Embeddings were the plan, but a static site cannot embed a query without a server or a model shipped to the page
+- [x] **Take the view away.** A PyMOL script, session and still image per structure, so the pocket leaves the browser
+- [ ] **Short molecular dynamics.** A 5 ns run per primary structure with an RMSF track on the pocket ruler and a playable trajectory, and no trajectory ships that does not support what the paper claims. The verdict logic is proved in both directions; the production runs are in progress
+- [ ] **Per-residue dynamics on the anti-target.** The twin view compares two crystal poses; comparing their flexibility is the obvious next question and is not answered yet
 
 ## 📚 Citations
 
@@ -168,10 +155,14 @@ Where a paper's only record of something is a figure we may not copy, the app sa
 | [RDKit](https://www.rdkit.org/) | Descriptors, MCS, core-aligned depictions, fragment assembly | BSD-3-Clause |
 | [OPSIN](https://github.com/dan2097/opsin) | Turning the papers' IUPAC names into structures, for verification | MIT |
 | [PLIP](https://github.com/pharmai/plip) | Protein-ligand interaction profiling | GPL-2.0, invoked as a subprocess and never imported |
-| [gemmi](https://gemmi.readthedocs.io/) | mmCIF handling | MPL-2.0 |
+| [gemmi](https://gemmi.readthedocs.io/) | mmCIF handling and structure superposition | MPL-2.0 |
 | [biotite](https://www.biotite-python.org/) | Structure handling | BSD-3-Clause |
 | [DSSP](https://github.com/PDB-REDO/dssp) | Secondary structure | BSD-2-Clause |
 | [Open Babel](https://openbabel.org/) | Chemical perception inside PLIP | GPL-2.0, reached only inside the PLIP subprocess |
+| [OpenMM](https://openmm.org/) | The molecular dynamics engine | LGPL-3.0-or-later, run as a subprocess under a separate interpreter |
+| [OpenFF Toolkit](https://github.com/openforcefield/openff-toolkit) | Ligand parameters with AM1-BCC charges | MIT |
+| [PDBFixer](https://github.com/openmm/pdbfixer) | Missing atoms and protonation before solvation | MIT |
+| [MDTraj](https://mdtraj.org/) | RMSF, ligand RMSD and contact occupancy from the trajectories | LGPL-2.1-or-later, run as a subprocess under a separate interpreter |
 | [PyMOL](https://github.com/schrodinger/pymol-open-source) | The downloadable script, session and still per structure | Open-Source PyMOL licence, invoked as a subprocess |
 | [pypdfium2](https://github.com/pypdfium2-team/pypdfium2) | Text and page images out of the PDFs, on the Mac only | BSD-3-Clause / Apache-2.0 |
 | [Mol\*](https://molstar.org/) | The structure viewer | MIT |
@@ -181,7 +172,7 @@ Where a paper's only record of something is a figure we may not copy, the app sa
 | [RCSB PDB](https://www.rcsb.org/) | All coordinates | Public domain |
 | [PubChem](https://pubchem.ncbi.nlm.nih.gov/) | Reference drug structures | Public domain |
 
-GATECRASHER is released under the [MIT licence](LICENSE). Versions, roles, references and the licence notices for the vendored libraries are in [`THIRD_PARTY.md`](THIRD_PARTY.md), which is generated from the same `data/software.json` the About sheet renders.
+GATECRASHER is released under the [MIT licence](LICENSE). Nothing copyleft is linked in: the GPL and LGPL tools above are each invoked as a subprocess and never imported, and none of them reaches the browser. Versions, roles, references and the licence notices for the vendored libraries are in [`THIRD_PARTY.md`](THIRD_PARTY.md), which is generated from the same `web/data/software.json` the About sheet renders.
 
 ---
 
