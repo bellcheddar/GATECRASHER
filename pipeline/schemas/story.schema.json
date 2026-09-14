@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gatecrasher/story.schema.json",
+  "title": "story.json",
+  "description": "The Feature panel: five beats per paper, in two registers, each driving at least three panels through its focus block.",
+  "type": "object",
+  "required": ["beats"],
+  "properties": {
+    "_comment": { "type": ["array", "string"] },
+    "beats": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "description": "Five beats per paper, no more, per BUILD_SPEC 7.5.",
+      "items": {
+        "type": "object",
+        "required": ["id", "kicker", "title", "body_specialist", "body_plain", "focus", "evidence"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+-\\d$" },
+          "kicker": { "type": "string", "maxLength": 60 },
+          "title": { "type": "string", "maxLength": 90 },
+          "body_specialist": { "type": "string", "minLength": 300, "maxLength": 900 },
+          "body_plain": { "type": "string", "minLength": 250, "maxLength": 700 },
+          "focus": {
+            "type": "object",
+            "minProperties": 3,
+            "additionalProperties": false,
+            "description": "Every beat must drive at least three panels, so at least three focus keys are required.",
+            "properties": {
+              "structure": { "type": "string" },
+              "residues": { "type": "array", "items": { "type": "string", "pattern": "^[A-Za-z0-9]+:-?\\d+[A-Z]?$" } },
+              "compound": { "type": "string" },
+              "edit": { "type": "string" },
+              "plot": { "enum": ["selectivity", "property", "efficiency", "pk"] },
+              "camera": { "type": "string" }
+            }
+          },
+          "evidence": { "type": "string", "minLength": 2 }
+        }
+      }
+    }
+  }
+}

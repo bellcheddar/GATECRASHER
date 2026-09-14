@@ -201,8 +201,15 @@
 .viewer-host .msp-default-bg,
 .viewer-host .msp-viewport { background: transparent !important; }
 
+/* Mol* draws its own chrome: viewport buttons, a hover info strip and a highlight toast
+ * naming whatever is under the pointer. The app supplies its own controls and its own
+ * residue labels, so all of it is hidden. The toast in particular sits over the lower half
+ * of the viewer and reports Mol*'s internal numbering, which fights the app's. */
 .viewer-host .msp-viewport-controls,
-.viewer-host .msp-hover-info { display: none !important; }
+.viewer-host .msp-hover-info,
+.viewer-host .msp-highlight-toast-wrapper,
+.viewer-host .msp-toast-container,
+.viewer-host .msp-selection-viewport-controls { display: none !important; }
 
 /* KLIFS ruler: scrolls horizontally in its own container, never widening the page. */
 .ruler {

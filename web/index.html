@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GATECRASHER</title>
+<meta name="description" content="Four structure-based drug discovery campaigns, opened up: the pocket, the structure-activity relationships, the chemical edits and the structural basis of selectivity.">
+<meta name="color-scheme" content="dark light">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/blueprint.css">
+<link rel="stylesheet" href="css/sheets.css">
+<link rel="stylesheet" href="css/panels.css">
+<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/molstar.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ------------------------------------------------------------- title bar -->
+  <header class="title-bar">
+    <span class="wordmark">GATE<span>CRASHER</span></span>
+
+    <nav class="paper-switcher" id="paper-switcher" aria-label="Campaign">
+      <!-- filled from data/index.json, keyboard 1-4 -->
+    </nav>
+
+    <span class="title-bar-spacer"></span>
+
+    <div class="register-toggle">
+      <span id="register-label" class="mono">Register</span>
+      <button id="register-button" type="button" aria-describedby="register-label"
+              aria-pressed="false" title="Switch every caption and body text between registers">
+        Specialist
+      </button>
+    </div>
+
+    <div class="theme-toggle">
+      <button id="theme-button" type="button" title="Switch between the dark and light drawing">
+        <span id="theme-label">Dark</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ----------------------------------------------------------- tab strip -->
+  <nav class="tab-strip" id="tab-strip" role="tablist" aria-label="Sheets">
+    <button type="button" role="tab" data-tab="story" aria-selected="true" aria-controls="tab-story">Story</button>
+    <button type="button" role="tab" data-tab="structure" aria-selected="false" aria-controls="tab-structure">Structure</button>
+    <button type="button" role="tab" data-tab="editlog" aria-selected="false" aria-controls="tab-editlog">Edit log</button>
+    <button type="button" role="tab" data-tab="sar" aria-selected="false" aria-controls="tab-sar">SAR</button>
+    <button type="button" role="tab" data-tab="properties" aria-selected="false" aria-controls="tab-properties">Properties</button>
+  </nav>
+
+  <!-- --------------------------------------------------- provenance rail -->
+  <div class="provenance-rail" id="provenance-rail" aria-live="polite">
+    <span class="rail-item"><span class="rail-label">Paper</span><span class="rail-value" id="rail-paper">·</span></span>
+    <span class="rail-item"><span class="rail-label">Compound</span><span class="rail-value" id="rail-compound">·</span></span>
+    <span class="rail-item"><span class="rail-label">Structure</span><span class="rail-value" id="rail-structure">·</span></span>
+    <span class="rail-item"><span class="rail-label">Source</span><span class="rail-source" id="rail-source">·</span></span>
+    <span class="rail-item" id="rail-links"></span>
+  </div>
+
+  <main>
+
+    <!-- ========================================================= 01 STORY -->
+    <section class="tab-body layout-story" id="tab-story" role="tabpanel" aria-labelledby="tab-story-button">
+      <div class="stack">
+        <section class="sheet" id="sheet-abstract" aria-labelledby="abstract-heading">
+          <div class="sheet-head">
+            <h2 id="abstract-heading">The campaign</h2>
+            <span class="sheet-number">SHEET 01</span>
+          </div>
+          <p class="prose" id="one-line"></p>
+          <div class="abstract-strip" id="abstract-strip" aria-label="Hit to lead, redrawn from SMILES"></div>
+          <details id="abstract-details">
+            <summary>The published abstract, quoted</summary>
+            <blockquote class="abstract" id="abstract-quote"></blockquote>
+          </details>
+          <div class="title-block" data-sheet="01" aria-hidden="true"></div>
+        </section>
+
+        <section class="sheet" id="sheet-story">
+          <div class="sheet-head">
+            <h2>What happened, in five moves</h2>
+            <span class="sheet-number">SHEET 01</span>
+          </div>
+          <div id="beats"></div>
+          <div class="title-block" data-sheet="01" aria-hidden="true"></div>
+        </section>
+      </div>
+
+      <div class="pinned">
+        <section class="sheet" id="sheet-story-structure">
+          <div class="sheet-head"><h2>Pocket</h2><span class="sheet-number">SHEET 02</span></div>
+          <div class="viewer-host" id="story-viewer"></div>
+          <p class="mono" id="story-caption"></p>
+          <div class="title-block" data-sheet="02" aria-hidden="true"></div>
+        </section>
+        <section class="sheet" id="sheet-story-plot">
+          <div class="sheet-head"><h2>Where this compound sits</h2><span class="sheet-number">SHEET 05</span></div>
+          <div class="plot-host" id="story-plot"></div>
+          <div class="title-block" data-sheet="05" aria-hidden="true"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================================================== 02 STRUCTURE -->
+    <section class="tab-body layout-structure" id="tab-structure" role="tabpanel" hidden>
+      <div class="stack">
+        <section class="sheet" id="sheet-structure">
+          <div class="sheet-head">
+            <h2>The pocket</h2>
+            <div class="sheet-tools">
+              <button type="button" id="anti-toggle" aria-pressed="false"
+                      title="Open a second, camera-locked viewer on the anti-target">Anti-target</button>
+              <select id="representation" aria-label="Representation">
+                <option value="cartoon">Cartoon and ligand</option>
+                <option value="surface">Surface</option>
+                <option value="pocket">Pocket only</option>
+                <option value="bfactor">B-factor</option>
+              </select>
+              <button type="button" id="reset-camera" title="Back to the opening view">Reset</button>
+            </div>
+            <span class="sheet-number">SHEET 02</span>
+          </div>
+
+          <div class="viewer-pair" id="viewer-pair">
+            <div class="viewer-host is-target" id="viewer-target">
+              <span class="viewer-label mono" id="viewer-target-label">·</span>
+            </div>
+            <div class="viewer-host is-anti" id="viewer-anti" hidden>
+              <span class="viewer-label mono" id="viewer-anti-label">·</span>
+            </div>
+          </div>
+
+          <div class="sheet-tools" id="motif-chips" aria-label="Motifs"></div>
+
+          <div class="ruler" id="klifs-ruler" tabindex="0"
+               aria-label="Pocket ruler: click a position to select that residue"></div>
+
+          <p class="mono" id="structure-caption"></p>
+          <div class="title-block" data-sheet="02" aria-hidden="true"></div>
+        </section>
+
+        <section class="sheet editlog-inline" id="sheet-editlog-inline">
+          <div class="sheet-head">
+            <h2>Edit log</h2>
+            <div class="sheet-tools" id="change-type-filter"></div>
+            <span class="sheet-number">SHEET 03</span>
+          </div>
+          <div id="edit-cards-inline" class="stack"></div>
+          <div class="title-block" data-sheet="03" aria-hidden="true"></div>
+        </section>
+      </div>
+
+      <div class="stack">
+        <section class="sheet" id="sheet-contacts">
+          <div class="sheet-head">
+            <h2>Contacts</h2>
+            <span class="sheet-number">SHEET 02</span>
+          </div>
+          <div class="contact-list" id="contact-list"></div>
+          <p class="mono" id="contacts-note"></p>
+          <div class="title-block" data-sheet="02" aria-hidden="true"></div>
+        </section>
+
+        <section class="sheet" id="sheet-selected-compound">
+          <div class="sheet-head"><h2>Selected compound</h2><span class="sheet-number">SHEET 04</span></div>
+          <div class="depiction" id="selected-depiction"></div>
+          <table class="sheet-table" id="selected-properties"></table>
+          <div class="title-block" data-sheet="04" aria-hidden="true"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ====================================================== 03 EDIT LOG -->
+    <section class="tab-body" id="tab-editlog" role="tabpanel" hidden>
+      <section class="sheet">
+        <div class="sheet-head">
+          <h2>Edit log</h2>
+          <div class="sheet-tools" id="change-type-filter-tab"></div>
+          <span class="sheet-number">SHEET 03</span>
+        </div>
+        <div id="edit-cards" class="stack"></div>
+        <div class="title-block" data-sheet="03" aria-hidden="true"></div>
+      </section>
+    </section>
+
+    <!-- =========================================================== 04 SAR -->
+    <section class="tab-body layout-sar" id="tab-sar" role="tabpanel" hidden>
+      <div class="stack">
+        <section class="sheet" id="sheet-rgroup">
+          <div class="sheet-head"><h2>R-group grid</h2><span class="sheet-number">SHEET 04</span></div>
+          <div class="rgroup-grid" id="rgroup-grid"></div>
+          <div class="title-block" data-sheet="04" aria-hidden="true"></div>
+        </section>
+        <section class="sheet" id="sheet-cliffs">
+          <div class="sheet-head"><h2>Activity cliffs</h2><span class="sheet-number">SHEET 04</span></div>
+          <div class="table-scroll"><table class="sheet-table" id="cliffs-table"></table></div>
+          <div class="title-block" data-sheet="04" aria-hidden="true"></div>
+        </section>
+      </div>
+
+      <div class="stack">
+        <section class="sheet" id="sheet-compound-table">
+          <div class="sheet-head">
+            <h2>Compounds</h2>
+            <div class="sheet-tools" id="column-filter"></div>
+            <span class="sheet-number">SHEET 04</span>
+          </div>
+          <div class="table-scroll"><table class="sheet-table" id="compound-table"></table></div>
+          <div class="title-block" data-sheet="04" aria-hidden="true"></div>
+        </section>
+        <section class="sheet" id="sheet-selectivity">
+          <div class="sheet-head"><h2>Isoform selectivity</h2><span class="sheet-number">SHEET 04</span></div>
+          <div class="table-scroll"><table class="sheet-table selectivity-matrix" id="selectivity-matrix"></table></div>
+          <div class="title-block" data-sheet="04" aria-hidden="true"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ==================================================== 05 PROPERTIES -->
+    <section class="tab-body" id="tab-properties" role="tabpanel" hidden>
+      <div class="stack">
+        <section class="sheet">
+          <div class="sheet-head">
+            <h2>Potency against property</h2>
+            <div class="sheet-tools">
+              <select id="property-axis" aria-label="Property axis"></select>
+            </div>
+            <span class="sheet-number">SHEET 05</span>
+          </div>
+          <div class="plot-host" id="plot-property"></div>
+          <div class="title-block" data-sheet="05" aria-hidden="true"></div>
+        </section>
+
+        <section class="sheet">
+          <div class="sheet-head"><h2>Ligand efficiency across the campaign</h2><span class="sheet-number">SHEET 05</span></div>
+          <div class="plot-host" id="plot-efficiency"></div>
+          <div class="title-block" data-sheet="05" aria-hidden="true"></div>
+        </section>
+
+        <section class="sheet" id="sheet-pk">
+          <div class="sheet-head"><h2>Pharmacokinetics by species</h2><span class="sheet-number">SHEET 05</span></div>
+          <div class="plot-host" id="plot-pk"></div>
+          <p class="mono" id="pk-note"></p>
+          <div class="title-block" data-sheet="05" aria-hidden="true"></div>
+        </section>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<noscript>
+  <p style="padding:16px">GATECRASHER draws every molecule and every structure in the browser,
+  so it needs JavaScript. The underlying data is plain CSV and JSON under
+  <code>data/papers/</code> if you would rather read it directly.</p>
+</noscript>
+
+<!-- Vendored, from our own origin: see js/vendor/README.md for versions and why. -->
+<script src="js/vendor/molstar.js"></script>
+<script src="js/vendor/plotly.min.js"></script>
+<script src="js/vendor/RDKit_minimal.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

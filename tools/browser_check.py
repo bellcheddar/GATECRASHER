@@ -1,0 +1,476 @@
+#!/usr/bin/env python3
+"""Drive GATECRASHER in a real browser and check what it actually renders.
+
+A screenshot proves the page lays out. It does not prove that Mol* loaded coordinates, that
+clicking a residue filters the SAR table, that a copied URL restores the view, or that both
+themes are legible. Those need a browser running the JavaScript, so this speaks the Chrome
+DevTools Protocol over a real-time session.
+
+Two deliberate choices, both learned the hard way elsewhere in this portfolio:
+
+  * no --virtual-time-budget, which pauses requestAnimationFrame and makes every animation
+    and every Mol* draw measure as frozen. The session is real time.
+  * no zero-delay synthetic clicks. A press and release in the same millisecond passes tests
+    that a real click fails, so every click holds for 120 ms and the target is resolved at
+    press time.
+
+    python3 tools/browser_check.py --base http://127.0.0.1:8099
+"""
+
+from __future__ import annotations
+
+import argparse
+import base64
+import json
+import shutil
+import socket
+import subprocess
+import sys
+import tempfile
+import time
+import urllib.request
+from pathlib import Path
+
+import websocket
+
+CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+
+
+class Tab:
+    """A minimal CDP client: evaluate, click, hover, screenshot."""
+
+    def __init__(self, ws_url: str):
+        self.ws = websocket.create_connection(ws_url, timeout=40)
+        self.n = 0
+        self.console: list[str] = []
+        self.send("Runtime.enable")
+        self.send("Page.enable")
+
+    def send(self, method: str, **params) -> dict:
+        self.n += 1
+        self.ws.send(json.dumps({"id": self.n, "method": method, "params": params}))
+        while True:
+            msg = json.loads(self.ws.recv())
+            if msg.get("method") == "Runtime.consoleAPICalled":
+                args = " ".join(str(a.get("value", a.get("description", "")))
+                                for a in msg["params"].get("args", []))
+                self.console.append(f"{msg['params']['type']}: {args}")
+                continue
+            if msg.get("method") == "Runtime.exceptionThrown":
+                d = msg["params"]["exceptionDetails"]
+                self.console.append(f"EXCEPTION: {d.get('text')} "
+                                    f"{d.get('exception', {}).get('description', '')[:300]}")
+                continue
+            if msg.get("id") == self.n:
+                if "error" in msg:
+                    raise RuntimeError(f"{method}: {msg['error']}")
+                return msg.get("result", {})
+
+    def goto(self, url: str) -> None:
+        self.send("Page.navigate", url=url)
+        for _ in range(300):
+            if self.js("document.readyState") == "complete":
+                time.sleep(0.4)
+                return
+            time.sleep(0.1)
+
+    def js(self, expr: str):
+        r = self.send("Runtime.evaluate", expression=expr, returnByValue=True,
+                      awaitPromise=True)
+        if "exceptionDetails" in r:
+            return None
+        return r.get("result", {}).get("value")
+
+    def wait_for(self, expr: str, seconds: float = 20, want=True):
+        deadline = time.time() + seconds
+        while time.time() < deadline:
+            if self.js(expr) == want:
+                return True
+            time.sleep(0.2)
+        return False
+
+    def _box(self, selector: str):
+        return self.js(f"""(() => {{
+            const el = document.querySelector({selector!r});
+            if (!el) return null;
+            el.scrollIntoView({{block:'center'}});
+            const r = el.getBoundingClientRect();
+            if (r.width === 0 || r.height === 0) return null;
+            return {{x: r.left + r.width/2, y: r.top + r.height/2}};
+        }})()""")
+
+    def click(self, selector: str, hold_ms: int = 120) -> bool:
+        box = self._box(selector)
+        if not box:
+            return False
+        for kind in ("mousePressed", "mouseReleased"):
+            self.send("Input.dispatchMouseEvent", type=kind, x=box["x"], y=box["y"],
+                      button="left", clickCount=1,
+                      buttons=1 if kind == "mousePressed" else 0)
+            if kind == "mousePressed":
+                time.sleep(hold_ms / 1000)
+        time.sleep(0.25)
+        return True
+
+    def hover(self, selector: str) -> bool:
+        box = self._box(selector)
+        if not box:
+            return False
+        self.send("Input.dispatchMouseEvent", type="mouseMoved", x=box["x"], y=box["y"])
+        time.sleep(0.3)
+        return True
+
+    def key(self, text: str) -> None:
+        for kind in ("keyDown", "keyUp"):
+            self.send("Input.dispatchKeyEvent", type=kind, text=text if kind == "keyDown" else "",
+                      key=text, windowsVirtualKeyCode=ord(text.upper()))
+        time.sleep(0.4)
+
+    def press(self, key: str, vk: int) -> None:
+        """A named key such as Tab, which has no text to type."""
+        for kind in ("rawKeyDown", "keyUp"):
+            self.send("Input.dispatchKeyEvent", type=kind, key=key,
+                      windowsVirtualKeyCode=vk, nativeVirtualKeyCode=vk)
+        time.sleep(0.3)
+
+    def shot(self, path: Path) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        r = self.send("Page.captureScreenshot", format="png")
+        path.write_bytes(base64.b64decode(r["data"]))
+
+    def close(self) -> None:
+        try:
+            self.ws.close()
+        except Exception:
+            pass
+
+
+def free_port() -> int:
+    with socket.socket() as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
+
+
+def launch(port: int, profile: str):
+    return subprocess.Popen(
+        [CHROME, "--headless=new", "--disable-gpu", "--hide-scrollbars",
+         f"--remote-debugging-port={port}", f"--user-data-dir={profile}",
+         # Chrome rejects a CDP WebSocket whose Origin it does not recognise, and
+         # websocket-client always sends one.
+         "--remote-allow-origins=*",
+         # Mol* needs WebGL, which headless Chrome will not provide without this.
+         "--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader",
+         "--window-size=1440,960", "--no-first-run", "--no-default-browser-check",
+         "about:blank"],
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
+def ws_url(port: int) -> str:
+    for _ in range(100):
+        try:
+            with urllib.request.urlopen(f"http://127.0.0.1:{port}/json/list", timeout=2) as r:
+                for t in json.load(r):
+                    if t.get("type") == "page" and t.get("webSocketDebuggerUrl"):
+                        return t["webSocketDebuggerUrl"]
+        except Exception:
+            pass
+        time.sleep(0.25)
+    raise RuntimeError("Chrome did not expose a debugging target")
+
+
+PASS: list[str] = []
+FAIL: list[str] = []
+
+
+def check(name: str, cond, detail: str = "") -> None:
+    (PASS if cond else FAIL).append(name)
+    print(f"  {'ok  ' if cond else 'FAIL'}  {name}"
+          + (f"\n          {detail}" if not cond and detail else ""))
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--base", default="http://127.0.0.1:8099")
+    ap.add_argument("--out", default="docs/screenshots")
+    args = ap.parse_args()
+
+    if not Path(CHROME).exists():
+        sys.exit(f"no Chrome at {CHROME}")
+
+    out = Path(args.out)
+    profile = tempfile.mkdtemp()
+    port = free_port()
+    proc = launch(port, profile)
+    tab = None
+    try:
+        tab = Tab(ws_url(port))
+
+        # ------------------------------------------------------------- boot
+        print("\nboot")
+        tab.goto(args.base + "/")
+        check("the app booted without the failure box",
+              not tab.js("!!document.querySelector('main > .sheet-empty')"))
+        check("the paper switcher is populated",
+              (tab.js("document.querySelectorAll('#paper-switcher button').length") or 0) >= 1)
+        check("the dark theme is the default",
+              tab.js("getComputedStyle(document.body).backgroundColor") == "rgb(11, 37, 66)",
+              tab.js("getComputedStyle(document.body).backgroundColor"))
+        check("the provenance rail names the paper",
+              "Hummel" in (tab.js("document.getElementById('rail-paper').textContent") or ""),
+              tab.js("document.getElementById('rail-paper').textContent"))
+        check("the title block is live, not a placeholder",
+              "CDK2" in (tab.js("document.querySelector('.title-block').textContent") or ""),
+              tab.js("document.querySelector('.title-block').textContent"))
+
+        # ------------------------------------------------------------ story
+        print("\nstory sheet")
+        check("the one-line summary rendered",
+              len(tab.js("document.getElementById('one-line').textContent") or "") > 40)
+        check("the graphical abstract strip drew its own depictions",
+              (tab.js("document.querySelectorAll('#abstract-strip .abstract-panel svg').length") or 0) >= 3,
+              f"panels with svg: {tab.js('document.querySelectorAll(\"#abstract-strip .abstract-panel svg\").length')}")
+        check("five story beats rendered",
+              tab.js("document.querySelectorAll('#beats .beat').length") == 5,
+              f"{tab.js('document.querySelectorAll(\"#beats .beat\").length')} beats")
+        check("the abstract is marked as a quotation with its DOI",
+              tab.js("!!document.querySelector('#abstract-quote cite a[href*=\"doi.org\"]')"))
+
+        # --------------------------------------------------------- register
+        print("\nregister toggle")
+        prose = "document.querySelector('#beats .beat .prose').textContent"
+        before = tab.js(prose)
+        tab.click("#register-button")
+        # Poll rather than sleeping a fixed interval: the panels re-render on the state
+        # dispatch, and a fixed wait reports a working toggle as broken if anything else
+        # (a depiction, a plot) is still settling on the same frame.
+        changed = tab.wait_for(f"{prose} !== {json.dumps(before)}", 10)
+        after = tab.js(prose)
+        label = tab.js("document.getElementById('register-button').textContent")
+        check("switching register rewrites the beat prose",
+              changed and bool(after) and before != after,
+              f"button reads {(label or '').strip()!r}, hash {tab.js('location.hash')!r}, "
+              f"before={(before or '')[:50]!r} after={(after or '')[:50]!r}")
+        check("the plain register really is plainer",
+              len(after or "") > 0 and "sp3" not in (after or ""),
+              (after or "")[:80])
+        tab.click("#register-button")
+        tab.wait_for(f"{prose} === {json.dumps(before)}", 10)
+
+        # -------------------------------------------------------- structure
+        print("\nstructure sheet")
+        tab.click("#tab-strip button[data-tab='structure']")
+        check("the structure tab is visible",
+              not tab.js("document.getElementById('tab-structure').hidden"))
+        check("Mol* loaded coordinates into a canvas",
+              tab.wait_for("!!document.querySelector('#viewer-target canvas')", 40),
+              "no canvas in the viewer host")
+        check("the pocket ruler drew its cells",
+              (tab.js("document.querySelectorAll('#klifs-ruler .ruler-cell').length") or 0) >= 80,
+              f"{tab.js('document.querySelectorAll(\"#klifs-ruler .ruler-cell\").length')} cells")
+        check("motif chips rendered",
+              (tab.js("document.querySelectorAll('#motif-chips .chip').length") or 0) >= 5)
+        check("the contact list came from PLIP",
+              (tab.js("document.querySelectorAll('#contact-list .contact-row').length") or 0) == 13,
+              f"{tab.js('document.querySelectorAll(\"#contact-list .contact-row\").length')} rows")
+        check("a water bridge is shown with both legs",
+              "/" in (tab.js("""(() => {const rows=[...document.querySelectorAll('#contact-list .contact-row')];
+                  const r = rows.find(x => x.textContent.includes('via water'));
+                  return r ? r.querySelector('.contact-distance').textContent : '';})()""") or ""),
+              tab.js("""(() => {const rows=[...document.querySelectorAll('#contact-list .contact-row')];
+                  const r = rows.find(x => x.textContent.includes('via water'));
+                  return r ? r.textContent : 'no water bridge row';})()"""))
+
+        # ----------------------------------------------------- cross-links
+        print("\ncross-links (BUILD_SPEC section 8)")
+        tab.click("#motif-chips .chip.motif-gatekeeper")
+        # A colon is percent-encoded in a URL, so the hash is decoded before asserting:
+        # the app writes res=A%3A80, which is correct and is not the string "A:80".
+        check("a motif chip selects its residues",
+              "A:80" in (tab.js("decodeURIComponent(window.location.hash)") or ""),
+              tab.js("window.location.hash"))
+
+        tab.click("#klifs-ruler .ruler-cell:nth-of-type(45)")
+        check("a ruler cell selects a residue into the URL",
+              "res=" in (tab.js("window.location.hash") or ""),
+              tab.js("window.location.hash"))
+
+        tab.click("#contact-list .contact-row")
+        check("a contact row selects its residue",
+              "res=" in (tab.js("window.location.hash") or ""))
+
+        tab.click("#tab-strip button[data-tab='sar']")
+        rows = tab.js("document.querySelectorAll('#compound-table tbody tr').length")
+        check("the SAR table rendered", (rows or 0) >= 1, f"{rows} rows")
+        check("the R-group grid marks combinations that were never made",
+              (tab.js("document.querySelectorAll('#rgroup-grid .rgroup-cell.is-empty').length") or 0) >= 1)
+        check("the selectivity matrix rendered folds",
+              (tab.js("document.querySelectorAll('#selectivity-matrix .fold').length") or 0) >= 5)
+        check("a bound value is marked as a bound, not a number",
+              (tab.js("document.querySelectorAll('#compound-table .value-bounded').length") or 0) >= 1)
+
+        tab.click("#compound-table tbody tr")
+        check("clicking a compound row selects it everywhere",
+              "cmpd=" in (tab.js("window.location.hash") or ""),
+              tab.js("window.location.hash"))
+
+        # -------------------------------------------------------- edit log
+        print("\nedit log")
+        tab.click("#tab-strip button[data-tab='structure']")
+        cards = tab.js("document.querySelectorAll('#edit-cards-inline .edit-card').length")
+        check("edit cards rendered", (cards or 0) >= 1, f"{cards} cards")
+        check("the default filter is isostere",
+              tab.js("""(() => {const c=[...document.querySelectorAll('#change-type-filter .chip')]
+                  .find(x => x.getAttribute('aria-pressed')==='true');
+                  return c ? c.textContent : '';})()""").startswith("isostere"),
+              tab.js("""(() => {const c=[...document.querySelectorAll('#change-type-filter .chip')]
+                  .find(x => x.getAttribute('aria-pressed')==='true'); return c?c.textContent:'none';})()"""))
+        check("each card shows a before and an after depiction",
+              (tab.js("document.querySelectorAll('#edit-cards-inline .edit-card .edit-swap svg').length") or 0) >= 2)
+        check("property deltas are coloured by gain or loss",
+              (tab.js("document.querySelectorAll('#edit-cards-inline .edit-delta.gain, #edit-cards-inline .edit-delta.loss').length") or 0) >= 1)
+
+        # ------------------------------------------------------ properties
+        print("\nproperties sheet")
+        tab.click("#tab-strip button[data-tab='properties']")
+        check("the property plot drew an SVG",
+              tab.wait_for("!!document.querySelector('#plot-property .main-svg')", 20))
+        check("the ligand efficiency plot drew",
+              tab.js("!!document.querySelector('#plot-efficiency .main-svg')"))
+        check("the PK ladder drew",
+              tab.js("!!document.querySelector('#plot-pk .main-svg')"))
+        check("the PK sheet states that doses differ per row",
+              "dose" in (tab.js("document.getElementById('pk-note').textContent") or "").lower(),
+              tab.js("document.getElementById('pk-note').textContent"))
+
+        # ---------------------------------------------------- linkability
+        print("\na copied URL restores the view")
+        deep = args.base + "/#cdk2/structure?cmpd=17&res=A:80,A:83"
+        tab.goto(deep)
+        check("the deep link selected the compound",
+              tab.js("document.getElementById('rail-compound').textContent") == "cmpd 17",
+              tab.js("document.getElementById('rail-compound').textContent"))
+        check("the deep link opened the structure tab",
+              not tab.js("document.getElementById('tab-structure').hidden"))
+        check("the deep link selected both residues",
+              (tab.js("document.querySelectorAll('#klifs-ruler .ruler-cell[aria-selected=\"true\"]').length") or 0) == 2,
+              f"{tab.js('document.querySelectorAll(\"#klifs-ruler .ruler-cell[aria-selected=true]\").length')} selected")
+        tab.shot(out / "structure-dark.png")
+
+        # ------------------------------------------------------- keyboard
+        print("\nkeyboard")
+        # Focus must be visible to a KEYBOARD user, and :focus-visible only matches after a
+        # real keyboard interaction: a programmatic .focus() does not match it in Chrome, so
+        # testing that way measures nothing and fails on working code.
+        tab.js("document.body.focus()")
+        for _ in range(6):
+            tab.press("Tab", 9)
+            if tab.js("document.activeElement && document.activeElement.tagName") == "BUTTON":
+                break
+        focus_ring = tab.js("""(() => {
+            const el = document.activeElement;
+            if (!el || el === document.body) return 'nothing focused';
+            const s = getComputedStyle(el);
+            const visible = (s.outlineStyle !== 'none' && s.outlineWidth !== '0px')
+              || s.boxShadow !== 'none';
+            return visible ? 'visible' : `${el.tagName}.${el.className}: no ring`;
+        })()""")
+        check("tabbing to a control shows a focus ring", focus_ring == "visible", str(focus_ring))
+        tab.key("r")
+        check("'r' switches register",
+              tab.js("document.getElementById('register-button').textContent").strip() == "Plain",
+              tab.js("document.getElementById('register-button').textContent"))
+        tab.key("r")
+
+        # --------------------------------------------------------- themes
+        print("\nthemes")
+        tab.click("#theme-button")
+        check("the toggle switches to light",
+              tab.js("document.documentElement.dataset.theme") == "light",
+              tab.js("document.documentElement.dataset.theme"))
+        check("the light theme repaints the page ground",
+              tab.js("getComputedStyle(document.body).backgroundColor") == "rgb(244, 247, 252)",
+              tab.js("getComputedStyle(document.body).backgroundColor"))
+        check("the choice persists in localStorage",
+              tab.js("localStorage.getItem('gatecrasher.theme')") == "light")
+        tab.shot(out / "structure-light.png")
+        tab.goto(args.base + "/")
+        check("the stored theme survives a reload",
+              tab.js("document.documentElement.dataset.theme") == "light")
+        tab.js("localStorage.removeItem('gatecrasher.theme')")
+
+        # ------------------------------------------------------- contrast
+        # Measured, not assumed, and measured on the grid ground as well as on a sheet,
+        # because the grid lines sit behind everything.
+        print("\ncontrast")
+        contrast = tab.js("""(() => {
+          const lum = (c) => {
+            const [r,g,b] = c.match(/\\d+/g).slice(0,3).map(Number).map(v => {
+              v /= 255; return v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4);
+            });
+            return 0.2126*r + 0.7152*g + 0.0722*b;
+          };
+          const ratio = (a,b) => {
+            const [x,y] = [lum(a), lum(b)].sort((m,n) => n-m);
+            return (x + 0.05) / (y + 0.05);
+          };
+          const body = getComputedStyle(document.body);
+          const beat = document.querySelector('#beats .beat .prose');
+          const sheet = beat ? getComputedStyle(beat.closest('.sheet')) : body;
+          const rail = document.getElementById('rail-paper');
+          return {
+            prose: ratio(getComputedStyle(beat).color, sheet.backgroundColor),
+            onGrid: ratio(body.color, body.backgroundColor),
+            rail: ratio(getComputedStyle(rail).color, getComputedStyle(rail.parentElement.parentElement).backgroundColor),
+          };
+        })()""") or {}
+        for name, minimum in (("prose", 4.5), ("onGrid", 4.5), ("rail", 4.5)):
+            value = contrast.get(name)
+            check(f"{name} contrast at least {minimum}:1 in the light theme",
+                  isinstance(value, (int, float)) and value >= minimum,
+                  f"{name} = {value}")
+
+        # --------------------------------------------------------- a phone
+        print("\nphone (390 x 844)")
+        tab.send("Emulation.setDeviceMetricsOverride", width=390, height=844,
+                 deviceScaleFactor=3, mobile=True)
+        tab.goto(args.base + "/")
+        time.sleep(1.5)
+        check("nothing overflows the page sideways",
+              tab.js("document.documentElement.scrollWidth <= window.innerWidth + 1"),
+              f"scrollWidth {tab.js('document.documentElement.scrollWidth')} "
+              f"vs {tab.js('window.innerWidth')}")
+        check("the edit log becomes its own tab below 900px",
+              tab.js("""getComputedStyle(document.querySelector("#tab-strip button[data-tab='editlog']")).display""")
+              != "none")
+        # Measured on the SHEET, not on the padded container: .tab-body's own left edge is 0
+        # by definition, because its gutter is padding on the inside.
+        gutter = tab.js("""(() => {
+            const s = document.querySelector('.tab-body:not([hidden]) .sheet');
+            return s ? s.getBoundingClientRect().left : -1;
+        })()""")
+        check("a side gutter survives at phone width",
+              isinstance(gutter, (int, float)) and gutter >= 10,
+              f"sheet left edge at {gutter}px")
+        tab.shot(out / "phone.png")
+        tab.send("Emulation.clearDeviceMetricsOverride")
+
+        # --------------------------------------------------------- console
+        print("\nconsole")
+        errors = [c for c in tab.console if c.startswith("error") or c.startswith("EXCEPTION")]
+        check("no console errors or exceptions", not errors,
+              "\n          ".join(errors[:6]))
+
+        print(f"\n{len(PASS)} passed, {len(FAIL)} failed")
+        for name in FAIL:
+            print(f"  FAILED: {name}")
+        return 1 if FAIL else 0
+    finally:
+        if tab:
+            tab.close()
+        proc.terminate()
+        shutil.rmtree(profile, ignore_errors=True)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

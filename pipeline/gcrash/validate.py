@@ -182,6 +182,11 @@ def run(slug: str) -> Report:
     story_path = bundle / "story.json"
     if story_path.exists():
         story = json.loads(story_path.read_text())
+        for error in sorted(_schema("story").iter_errors(story), key=lambda e: list(e.path)):
+            location = "/".join(str(p) for p in error.path)
+            report.fail(f"story.schema: {location or '(root)'}: {error.message}")
+        if len(story.get("beats", [])) != 5:
+            report.warn(f"{len(story.get('beats', []))} beats: BUILD_SPEC 7.5 asks for five")
         for beat in story.get("beats", []):
             focus = beat.get("focus") or {}
             for ref in focus.get("residues") or []:

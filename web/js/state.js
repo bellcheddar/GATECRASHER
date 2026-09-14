@@ -44,6 +44,15 @@ const HASH_KEYS = {
 };
 
 class AppState {
+  /* Seed a key without dispatching, for boot-time values that no panel can have
+   * subscribed to yet (the stored theme). Everything after boot goes through set(). */
+  seed(patch) {
+    for (const [key, value] of Object.entries(patch)) {
+      if (!KEYS.includes(key)) throw new Error(`unknown state key: ${key}`);
+      this._state[key] = key === 'residues' ? normaliseResidues(value) : value;
+    }
+  }
+
   constructor() {
     this._state = { ...DEFAULTS };
     this._subscribers = new Map();   // key -> Set<fn>
@@ -197,7 +206,12 @@ class ThemeStore {
       stored = null;
     }
     const theme = stored === 'light' || stored === 'dark' ? stored : null;
-    this.apply(theme);
+    /* BUILD_SPEC 6.1: this app defaults to DARK when nothing is stored, rather than
+     * following the system. So with no stored choice the root is stamped dark explicitly,
+     * which also stops a light-preferring system winning through the media query. The
+     * stamp is not saved: a viewer who has never touched the toggle has made no choice,
+     * and if the default ever changes theirs changes with it. */
+    this.apply(theme || 'dark');
     return theme;
   }
 
@@ -216,11 +230,13 @@ class ThemeStore {
     else root.removeAttribute('data-theme');
   }
 
-  /* Dark is this app's default when nothing is stored, per BUILD_SPEC 6.1. */
+  /* Dark is this app's default when nothing is stored, per BUILD_SPEC 6.1, so an unset
+   * theme reads as dark rather than as whatever the system prefers. Asking the system here
+   * would make the toggle disagree with the page it is sitting on: the root is stamped dark
+   * on load, so a light-preferring system would show a dark page under a button labelled
+   * "Light", and the first click would go the wrong way. */
   effective(theme) {
-    if (theme) return theme;
-    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-    return prefersLight ? 'light' : 'dark';
+    return theme === 'light' || theme === 'dark' ? theme : 'dark';
   }
 
   toggle(origin = 'theme-toggle') {

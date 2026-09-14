@@ -23,6 +23,7 @@ interactions = [
     "openbabel-wheel>=3.1.1.23",
     "pdb-tools>=2.7.0",
     "plip>=2.3.0",
+    "websocket-client>=1.9.2",
 ]
 
 [project.scripts]

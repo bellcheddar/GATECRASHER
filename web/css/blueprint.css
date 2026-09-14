@@ -177,7 +177,17 @@ button.is-active {
 
 /* Depictions are rendered once and shown on both themes: gc chem rewrites carbon and bond
  * black to currentColor, so the ink token colours them here. */
-.depiction svg { color: var(--ink); width: 100%; height: auto; }
+/* A depiction is drawn at 320x240 and scales to its container, but it must never grow
+ * taller than the panel holding it: the selected-compound sheet was overflowing. */
+.depiction { display: grid; place-items: center; }
+
+.depiction svg {
+  color: var(--ink);
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  max-height: 240px;
+}
 
 .visually-hidden {
   position: absolute;

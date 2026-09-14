@@ -284,6 +284,14 @@ def _parse_plip(xml_path: Path, pdb_id: str, ligand_code: str, resname_map: dict
                                               or node.findtext("water_angle")),
                     "protein_is_donor": _maybe_bool(node.findtext("protisdon")),
                 }
+                # Coordinates are what the amber measure line is drawn between, so a contact
+                # without them can be listed but never drawn. PLIP gives both endpoints.
+                lig_xyz = _coords(node.find("ligcoo"))
+                prot_xyz = _coords(node.find("protcoo"))
+                if lig_xyz:
+                    row["ligand_coords"] = lig_xyz
+                if prot_xyz:
+                    row["protein_coords"] = prot_xyz
                 if kind == "water_bridge":
                     # The measure line for a water bridge is drawn in two legs, so both
                     # distances and the bridging water travel with the record.
@@ -303,6 +311,16 @@ def _parse_plip(xml_path: Path, pdb_id: str, ligand_code: str, resname_map: dict
 def _maybe_float(value):
     try:
         return round(float(value), 1)
+    except (TypeError, ValueError):
+        return None
+
+
+def _coords(node):
+    """PLIP writes an endpoint as <ligcoo><x/><y/><z/></ligcoo>."""
+    if node is None:
+        return None
+    try:
+        return [round(float(node.findtext(axis)), 3) for axis in ("x", "y", "z")]
     except (TypeError, ValueError):
         return None
 
