@@ -14,7 +14,8 @@
     "PLIP contact with that residue, so the atoms measured are the atoms PLIP measured.",
     "`expect: absent` is a real answer: a claim that a contact is NOT made is testable."
   ],
-  "provisional": true,
+  "provisional": false,
+  "decided": "2026-09-14: 5 ns production per structure, KRAS ligand at +2 (both amines protonated), a contact counts as supported at 50 per cent occupancy, an absence at 20 per cent, ligand drift under 2 A median.",
   "timestep_fs": 2.0,
   "minimise_steps": 5000,
   "equilibration_ps": 200,

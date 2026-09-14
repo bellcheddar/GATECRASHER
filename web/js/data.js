@@ -30,7 +30,7 @@ export async function loadPaper(slug, base = 'data') {
       .catch(() => [entry.pdb_id, null]))));
 
   const [paper, assays, structures, compoundsCsv, measurementsCsv, edits,
-    residuesCsv, story, cliffs, interactionPairs] = await Promise.all([
+    residuesCsv, story, cliffs, superpositions, interactionPairs] = await Promise.all([
     getJson(`${dir}/paper.json`),
     getJson(`${dir}/assays.json`),
     structuresRequest,
@@ -42,6 +42,8 @@ export async function loadPaper(slug, base = 'data') {
     getText(`${dir}/residues.csv`).catch(() => ''),
     getJson(`${dir}/story.json`).catch(() => null),
     getJson(`${dir}/cliffs.json`).catch(() => []),
+    /* How each other structure sits on the primary one, for the camera-locked twin view. */
+    getJson(`${dir}/superpositions.json`).catch(() => ({})),
     interactionsRequest,
   ]);
 
@@ -56,7 +58,7 @@ export async function loadPaper(slug, base = 'data') {
 
   const bundle = {
     slug, dir, paper, assays, structures, compounds, measurements,
-    residues, edits, story, cliffs, interactions,
+    residues, edits, story, cliffs, interactions, superpositions,
     index: buildIndexes({ paper, assays, compounds, measurements, residues, edits, structures, interactions }),
   };
   CACHE.set(slug, bundle);

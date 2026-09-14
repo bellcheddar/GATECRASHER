@@ -18,7 +18,7 @@ import { loadLibrary } from '../loader.js';
  *
  * Only the _atom_site loop is touched. Everything else in the file is left alone, and if the
  * loop cannot be understood the original text is returned rather than a half-filtered one. */
-export function oneCopy(text, chain) {
+export function oneCopy(text, chain, transform = null) {
   const lines = text.split('\n');
   const headerStart = lines.findIndex((line) => line.startsWith('_atom_site.'));
   if (headerStart < 0) return text;
@@ -32,7 +32,13 @@ export function oneCopy(text, chain) {
   const authColumn = columns.indexOf('auth_asym_id');
   const entityColumn = columns.indexOf('label_entity_id');
   const groupColumn = columns.indexOf('group_PDB');
+  const xColumn = columns.indexOf('Cartn_x');
+  const yColumn = columns.indexOf('Cartn_y');
+  const zColumn = columns.indexOf('Cartn_z');
   if (authColumn < 0) return text;
+  if (transform && (transform.length < 12 || xColumn < 0 || yColumn < 0 || zColumn < 0)) {
+    return text;
+  }
 
   const rowStart = index;
   let rowEnd = rowStart;
@@ -66,9 +72,28 @@ export function oneCopy(text, chain) {
   }
 
   const kept = rows.filter((row) => keep.has(row.parts[authColumn]));
-  if (!kept.length || kept.length === rows.length) return text;
-  return [...lines.slice(0, rowStart), ...kept.map((row) => row.line), ...lines.slice(rowEnd)]
-    .join('\n');
+  if (!kept.length) return text;
+  if (kept.length === rows.length && !transform) return text;
+
+  /* A superposition, applied to the coordinates themselves. The twin view locks the two
+   * cameras together, and two entries sit in their own crystal frames: 10PI and 10PJ are
+   * 89 A apart, so a shared camera showed one structure and empty space. Moving the atoms
+   * rather than the camera keeps every later measurement, highlight and focus honest,
+   * because the viewer then measures exactly what it draws. */
+  const moved = transform ? kept.map((row) => {
+    const x = Number(row.parts[xColumn]);
+    const y = Number(row.parts[yColumn]);
+    const z = Number(row.parts[zColumn]);
+    if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) return row.line;
+    const [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11] = transform;
+    const parts = [...row.parts];
+    parts[xColumn] = (m0 * x + m1 * y + m2 * z + m3).toFixed(3);
+    parts[yColumn] = (m4 * x + m5 * y + m6 * z + m7).toFixed(3);
+    parts[zColumn] = (m8 * x + m9 * y + m10 * z + m11).toFixed(3);
+    return parts.join(' ');
+  }) : kept.map((row) => row.line);
+
+  return [...lines.slice(0, rowStart), ...moved, ...lines.slice(rowEnd)].join('\n');
 }
 
 const OPTIONS = {
@@ -162,12 +187,14 @@ export class StructureViewer {
    * assumed: an mmCIF served without an extension still has to load.
    *
    * `chain` keeps one copy of the protein: see oneCopy below. */
-  async load(name, url, { representation = 'cartoon', colour = null, chain = null } = {}) {
+  async load(name, url, { representation = 'cartoon', colour = null, chain = null,
+    transform = null } = {}) {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`${url}: ${response.status}`);
     const raw = await response.text();
     const format = /\.cif|\.bcif/i.test(url) || raw.startsWith('data_') ? 'mmcif' : 'pdb';
-    const text = format === 'mmcif' && chain ? oneCopy(raw, chain) : raw;
+    const text = format === 'mmcif' && (chain || transform)
+      ? oneCopy(raw, chain, transform) : raw;
 
     if (this.loaded.has(name)) await this.clear(name);
     const data = await this.plugin.builders.data.rawData({ data: text });

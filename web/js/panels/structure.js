@@ -161,9 +161,18 @@ export function initStructure(state) {
     await viewer.create({ background: colourToInt(cssToken('--surface-2')) });
     if (anti !== viewer) return;
     el.antiLabel.textContent = `${twin.pdb_id} ${twin.contains.protein}`;
+    /* Superposed onto the target before it is drawn, because the cameras are locked: two
+     * entries in their own crystal frames share a camera only if one is moved onto the
+     * other. The label says so, and by how much, rather than moving coordinates silently. */
+    const fit = bundle.superpositions?.[twin.pdb_id];
+    if (fit) {
+      el.antiLabel.textContent = `${twin.pdb_id} ${twin.contains.protein} `
+        + `· superposed ${fit.rmsd_a} Å over ${fit.pairs}`;
+    }
     await viewer.load('anti', structureUrl(twin.pdb_id), {
       representation: el.representation.value,
       chain: twin.chain,
+      transform: fit?.matrix || null,
     });
     if (anti !== viewer) return;
     viewer.focusLigand();

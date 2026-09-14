@@ -119,6 +119,20 @@ the provenance of the data.
    outright rather than hiding it, so a ligand selection cannot pick up its twin and `within`
    cannot measure to it.
 
+14. **The twin view superposes the anti-target onto the target, and says so.** BUILD_SPEC 7.2
+   asks for a second Mol\* instance with locked cameras, and calls it an explicit
+   requirement. It does not say what to do about the fact that two deposited entries sit in
+   their own crystal frames: 10PI and 10PJ are 89 A apart, so one camera cannot show both.
+   Once each viewer showed a single copy (divergence 13) the second viewer pointed at empty
+   space and drew nothing, silently. `gc struct` now superposes every non-primary structure
+   onto the paper's primary (gemmi, CA atoms) and ships the transform in
+   `superpositions.json`; the viewer applies it to the coordinates as it filters the chain,
+   so what is measured is what is drawn. The twin's label carries the RMSD and the number of
+   matched atoms, because moving a structure is something a reader is entitled to know
+   about: JAK1 10PJ onto 10PI is 1.13 A over 141 pairs, and the two ligands land 2.0 A apart.
+   This is the PANTS pattern (superposed structures, pre-superposed at write) rather than an
+   invention.
+
 ## Added here, not harvested
 
 - **OPSIN (`py2opsin`) for name-to-structure verification.** Nothing in the portfolio does

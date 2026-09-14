@@ -12,7 +12,8 @@
     "stripped. The claims include an ABSENCE, which the caption states plainly: the compound",
     "was designed to reach Asp12 and does not."
   ],
-  "provisional": true,
+  "provisional": false,
+  "decided": "2026-09-14: 5 ns production per structure, KRAS ligand at +2 (both amines protonated), a contact counts as supported at 50 per cent occupancy, an absence at 20 per cent, ligand drift under 2 A median.",
   "timestep_fs": 2.0,
   "minimise_steps": 5000,
   "equilibration_ps": 200,

@@ -624,6 +624,36 @@ def main() -> int:
         check("jak1: the second structure loaded its own coordinates",
               tab.wait_for("!!document.querySelector('#viewer-anti canvas')", 40),
               "no canvas in the anti-target host")
+        # A canvas can exist and be blank. It was: the twin's camera is locked to the
+        # target's, and with each entry in its own crystal frame the second viewer pointed 89
+        # angstroms away from its own structure and drew nothing, with no error anywhere.
+        # Reading the pixels is the only check that would have caught it.
+        drawn = """(id) => { const c = document.querySelector('#' + id + ' canvas');
+            if (!c) return 0;
+            const gl = c.getContext('webgl2') || c.getContext('webgl');
+            const px = new Uint8Array(4 * 64 * 64);
+            gl.readPixels(Math.floor(c.width / 2) - 32, Math.floor(c.height / 2) - 32, 64, 64,
+                          gl.RGBA, gl.UNSIGNED_BYTE, px);
+            const seen = new Set();
+            for (let i = 0; i < px.length; i += 4) seen.add(px[i] + ',' + px[i + 1] + ',' + px[i + 2]);
+            return seen.size; }"""
+        for host, label in (("viewer-target", "target"), ("viewer-anti", "anti-target")):
+            # Polled, not sampled once: a canvas exists long before it has drawn, and the
+            # twin has 766 kB of coordinates to fetch, parse, superpose and render first.
+            # Reading immediately measured the loading gap and reported a working viewer as
+            # blank.
+            colours = 0
+            for _ in range(60):
+                colours = tab.js(f"({drawn})({host!r})")
+                if isinstance(colours, int) and colours > 1:
+                    break
+                time.sleep(0.5)
+            check(f"jak1: the {label} viewer has actually drawn something",
+                  isinstance(colours, int) and colours > 1,
+                  f"{colours} distinct colours in the centre of the canvas")
+        check("jak1: the twin says it was superposed, and by how much",
+              "superposed" in (tab.js("document.getElementById('viewer-anti-label').textContent") or ""),
+              tab.js("document.getElementById('viewer-anti-label').textContent"))
         check("jak1: the twin is labelled as the anti-target",
               "JAK2" in (tab.js("document.getElementById('viewer-anti-label').textContent") or ""),
               tab.js("document.getElementById('viewer-anti-label').textContent"))

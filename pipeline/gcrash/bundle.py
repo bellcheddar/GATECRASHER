@@ -141,6 +141,8 @@ def build(slug: str) -> dict:
     # structure products
     if (build_d / "residues.csv").exists():
         shutil.copy2(build_d / "residues.csv", out / "residues.csv")
+    if (build_d / "superpositions.json").exists():
+        shutil.copy2(build_d / "superpositions.json", out / "superpositions.json")
     if (build_d / "interactions").is_dir():
         target = out / "interactions"
         target.mkdir(exist_ok=True)

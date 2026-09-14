@@ -1,7 +1,7 @@
 {
  "pdb_id": "9E5D",
  "ligand_code": "A1BEI",
- "ligand_chain": "",
+ "ligand_chain": "A",
  "interactions": [
   {
    "type": "hbond",

@@ -355,6 +355,48 @@ def _parse_plip(xml_path: Path, pdb_id: str, ligand_code: str, resname_map: dict
     }
 
 
+def _ca_deviations(fixed_chain, moving_chain, transform) -> tuple[list[float], int, int]:
+    """Per-residue CA deviations after superposition, and the numbering offset used.
+
+    Residues are paired through an offset DISCOVERED from the data: the one that makes the
+    most residue names agree. Pairing on the raw residue number would compare unrelated
+    residues and report nonsense with no error anywhere, because two isoforms are numbered
+    differently. Measured here: +9 for FGFR3 4K33 against FGFR2 8E1X (250 names agree), 0 for
+    the two KRAS entries (169), and +27 for JAK2 10PJ against JAK1 10PI (108), which is the
+    same +27 that separates Glu957 from Glu930 at the hinge.
+
+    gemmi's own alignment would serve, but align_string_sequences wants a sequence of single
+    characters rather than the string one_letter_code returns, and AlignmentResult has no
+    cigar() to walk, so this stays arithmetic and is checked against a known answer.
+    """
+    import math
+
+    def residues(chain):
+        return [r for r in chain if r.het_flag != "H" and not r.is_water()]
+
+    fixed_residues, moving_residues = residues(fixed_chain), residues(moving_chain)
+    fixed_names = {r.seqid.num: r.name for r in fixed_residues}
+    moving_names = {r.seqid.num: r.name for r in moving_residues}
+    offset, agreeing = 0, -1
+    for candidate in range(-60, 61):
+        score = sum(1 for num, name in fixed_names.items()
+                    if moving_names.get(num - candidate) == name)
+        if score > agreeing:
+            offset, agreeing = candidate, score
+
+    moving_ca = {r.seqid.num: r.find_atom("CA", "*") for r in moving_residues}
+    deviations: list[float] = []
+    for residue in fixed_residues:
+        atom = residue.find_atom("CA", "*")
+        partner = moving_ca.get(residue.seqid.num - offset)
+        if atom is None or partner is None:
+            continue
+        moved = transform.apply(partner.pos)
+        deviations.append(math.dist((atom.pos.x, atom.pos.y, atom.pos.z),
+                                    (moved.x, moved.y, moved.z)))
+    return deviations, offset, agreeing
+
+
 def _maybe_float(value):
     try:
         return round(float(value), 1)
@@ -428,6 +470,53 @@ def build(slug: str) -> dict:
             "interactions": n_inter,
         })
         report["interactions"] += n_inter
+
+    # Superpositions onto the paper's primary structure. The Structure sheet's twin view
+    # locks the two cameras together (BUILD_SPEC 7.2), and a shared camera is meaningless
+    # while each entry sits in its own crystal frame: 10PI and 10PJ are 89 A apart, so the
+    # second viewer was pointed at empty space and drew nothing at all. The transform is
+    # computed here, once, and travels with the bundle.
+    primary = next((e for e in entries if e.get("role") == "primary"), None)
+    superpositions = {}
+    if primary and len(entries) > 1:
+        fixed = gemmi.read_structure(str(fetch_cif(primary["pdb_id"])))
+        fixed.setup_entities()
+        for entry in entries:
+            if entry["pdb_id"] == primary["pdb_id"]:
+                continue
+            moving = gemmi.read_structure(str(fetch_cif(entry["pdb_id"])))
+            moving.setup_entities()
+            result = gemmi.calculate_superposition(
+                fixed[0][primary["chain"]].get_polymer(),
+                moving[0][entry["chain"]].get_polymer(),
+                gemmi.PolymerType.PeptideL, gemmi.SupSelect.CaP)
+            rows = [[result.transform.mat.row_copy(i)[j] for j in range(3)] for i in range(3)]
+            vec = result.transform.vec
+            # An RMSD is one number over the whole chain, and a handful of loose loops drag
+            # it a long way: FGFR3 4K33 onto FGFR2 8E1X is 3.82 A whole-chain while the
+            # MEDIAN CA deviation is 1.01 A, because 26 residues in five short stretches
+            # carry the error. Both numbers travel, so a good fit cannot read as a bad one.
+            deviations, offset, agreeing = _ca_deviations(
+                fixed[0][primary["chain"]], moving[0][entry["chain"]], result.transform)
+            median = (round(sorted(deviations)[len(deviations) // 2], 2) if deviations else None)
+            superpositions[entry["pdb_id"]] = {
+                "onto": primary["pdb_id"],
+                "chain": entry["chain"],
+                "onto_chain": primary["chain"],
+                "rmsd_a": round(result.rmsd, 2),
+                "median_ca_deviation_a": median,
+                "numbering_offset": offset,
+                "residue_names_agreeing": agreeing,
+                "pairs": int(result.count),
+                # Row-major 4x4, so the viewer can apply it without a matrix library.
+                "matrix": [round(v, 6) for row, t in zip(rows, (vec.x, vec.y, vec.z))
+                           for v in (*row, t)] + [0.0, 0.0, 0.0, 1.0],
+            }
+            report["structures"] = [
+                {**s, "superposed_onto": primary["pdb_id"],
+                 "superposition_rmsd_a": superpositions[entry["pdb_id"]]["rmsd_a"]}
+                if s["pdb_id"] == entry["pdb_id"] else s for s in report["structures"]]
+    (out_dir / "superpositions.json").write_text(json.dumps(superpositions, indent=1))
 
     with (out_dir / "residues.csv").open("w", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=["pdb_id", "chain", "resnum", "resname",
