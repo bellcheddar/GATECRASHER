@@ -1,0 +1,81 @@
+{
+  "_comment": [
+    "What `gc dynamics` runs for this paper, and what the trajectory has to show before it",
+    "ships. BUILD_SPEC Stage 4: if a trajectory does not support what the paper claims, do",
+    "not ship that trajectory, and say so in ISSUES.md.",
+    "",
+    "Residue numbers here are 10PI's OWN deposited numbering: the JAK1 hinge is Glu957 and",
+    "Leu959. The paper calls the same two contacts Glu930 and Leu932, which are the JAK2",
+    "numbers, and in this entry 930 is an arginine. See ISSUES.md item 4.",
+    "",
+    "Only the primary structure is simulated. The twin, 10PJ, is the anti-target: its",
+    "selectivity explanation is the authors' own hypothesis, which they call speculative, and",
+    "a 5 ns trajectory is not the instrument that would settle it."
+  ],
+  "provisional": false,
+  "decided": "2026-09-14: 5 ns production per structure, a contact counts as supported at 50 per cent occupancy, an absence at 20 per cent, ligand drift under 2 A median.",
+  "timestep_fs": 2.0,
+  "minimise_steps": 5000,
+  "equilibration_ps": 200,
+  "production_ps": 5000,
+  "frame_interval_ps": 20,
+  "ligand_forcefield": "openff-2.1.0",
+  "platform": "auto",
+  "seed": 20260914,
+  "thresholds": {
+    "present_min_occupancy": 0.5,
+    "absent_max_occupancy": 0.2,
+    "ligand_rmsd_median_max_a": 2.0
+  },
+  "structures": [
+    {
+      "pdb_id": "10PI",
+      "chain": "A",
+      "ligand_code": "A1C68",
+      "ligand_compound_id": "22",
+      "ligand_smiles_md": "Cc1n[nH]c(C)c1-c1cnn(C2(CC#N)CN(c3cc(F)c(C(=O)N[C@@H](C)C(F)(F)F)cc3F)C2)c1",
+      "protonation_note": "Neutral. The azetidine nitrogen is an aniline rather than a basic amine, the amide is not protonated at pH 7.4, and the 3,5-dimethylpyrazole keeps its NH: that NH is what donates to the hinge carbonyl, so the tautomer matters and is written explicitly here.",
+      "cofactors": [],
+      "ions": [],
+      "keep_crystal_waters": true,
+      "model_gaps_max": 6,
+      "gaps_note": "10PI chain A has one 5-residue internal gap, which is modelled, and unresolved termini, which are not.",
+      "claims": [
+        {
+          "id": "hinge-leu959",
+          "label": "A pyrazole nitrogen accepts from the Leu959 backbone amide",
+          "residue": "A:959",
+          "protein_atoms": ["N"],
+          "ligand_from_plip": { "resnum": 959, "types": ["hbond"] },
+          "cutoff_a": 3.5,
+          "expect": "present",
+          "source": "structures.json caption; PLIP hbond to LEU959 at 1.95 A. The paper calls this Leu932."
+        },
+        {
+          "id": "hinge-glu957",
+          "label": "The pyrazole NH donates to the Glu957 backbone carbonyl",
+          "residue": "A:957",
+          "protein_atoms": ["O"],
+          "ligand_smarts": "[nX3H]",
+          "cutoff_a": 3.5,
+          "expect": "present",
+          "source": "structures.json caption, measured at 2.81 A in the deposited coordinates. PLIP does not list this contact: see ISSUES.md item 4b, where the tautomer is discussed. The paper calls it Glu930."
+        },
+        {
+          "id": "ploop-groove-cf3",
+          "label": "The trifluoromethyl sits in the lipophilic groove the JAK1 P-loop opens",
+          "residue": "A:885",
+          "protein_atoms": ["CB", "CG", "ND1", "CD2", "CE1", "NE2"],
+          "ligand_smarts": "FC(F)F",
+          "cutoff_a": 5.0,
+          "expect": "present",
+          "source": "structures.json caption, His885. The authors call the selectivity explanation speculative, and this claim tests only that the group sits where they say it does, not why it is selective."
+        }
+      ],
+      "not_assessed": [
+        "The selectivity explanation itself, which the authors describe as a hypothesis under investigation, and which would need the JAK2 twin simulated alongside to say anything about.",
+        "The three water bridges: a bridge handed on between exchanging waters cannot be followed in a solute-only trajectory."
+      ]
+    }
+  ]
+}

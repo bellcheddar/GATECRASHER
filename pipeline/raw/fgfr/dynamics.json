@@ -1,0 +1,85 @@
+{
+  "_comment": [
+    "What `gc dynamics` runs for this paper, and what the trajectory has to show before it",
+    "ships. BUILD_SPEC Stage 4: if a trajectory does not support what the paper claims, do",
+    "not ship that trajectory, and say so in ISSUES.md.",
+    "",
+    "This is the hardest system in the set. 8E1X is 2.68 A, has 77 unobserved residues",
+    "including a 29-residue N-terminal tail, and carries TWO PHOSPHOTYROSINES in the",
+    "activation loop. Amber14 has no phosphotyrosine parameters, so they are reverted to",
+    "tyrosine and that is recorded: the claims tested here are hinge and gatekeeper contacts",
+    "at the other end of the kinase, which the activation loop's phosphorylation state does",
+    "not make or break. A run that needed the phosphorylated form would need parameters this",
+    "pipeline does not have, and would not ship.",
+    "",
+    "Compound 30 carries a d3-methyl amide. OpenFF has no deuterium and the mass does not",
+    "change the pose, so it is simulated as hydrogen and reported as such."
+  ],
+  "provisional": false,
+  "decided": "2026-09-14: 5 ns production per structure, a contact counts as supported at 50 per cent occupancy, an absence at 20 per cent, ligand drift under 2 A median. Phosphotyrosines reverted to tyrosine, recorded here and in ISSUES.md.",
+  "timestep_fs": 2.0,
+  "minimise_steps": 5000,
+  "equilibration_ps": 200,
+  "production_ps": 5000,
+  "frame_interval_ps": 20,
+  "ligand_forcefield": "openff-2.1.0",
+  "platform": "auto",
+  "seed": 20260914,
+  "thresholds": {
+    "present_min_occupancy": 0.5,
+    "absent_max_occupancy": 0.2,
+    "ligand_rmsd_median_max_a": 2.0
+  },
+  "structures": [
+    {
+      "pdb_id": "8E1X",
+      "chain": "A",
+      "ligand_code": "U9P",
+      "ligand_compound_id": "30",
+      "ligand_smiles_md": "[2H]C([2H])([2H])NC(=O)c1cncc(-c2cnn3cc(-c4ccn(C(C)C)n4)c(N[C@H]4CCOC4)nc23)c1",
+      "protonation_note": "Neutral. The aminopyrazolo-pyrimidine and the amide are not protonated at pH 7.4, and the tetrahydrofuran is an ether.",
+      "cofactors": [],
+      "ions": [],
+      "keep_crystal_waters": true,
+      "model_gaps_max": 6,
+      "gaps_note": "8E1X chain A has a 5-residue internal gap, which is modelled, and a 29-residue N-terminal and 6-residue C-terminal gap, which are not: an unresolved tail is disordered, and inventing one adds a flapping arm that dominates the RMSF of everything near it.",
+      "nonstandard_note": "PTR 466 and PTR 586 are phosphotyrosines. Amber14 carries no parameters for them, so PDBFixer reverts both to tyrosine. The claims tested here are at the hinge and the gatekeeper, not the activation loop.",
+      "claims": [
+        {
+          "id": "hinge-ala567",
+          "label": "The hinge contact to Ala567",
+          "residue": "A:567",
+          "protein_atoms": ["N", "O"],
+          "ligand_from_plip": { "resnum": 567, "types": ["hbond"] },
+          "cutoff_a": 3.5,
+          "expect": "present",
+          "source": "PLIP hbond to ALA567 at 2.10 A"
+        },
+        {
+          "id": "asn571-designed",
+          "label": "The tetrahydrofuran oxygen makes the designed hydrogen bond to Asn571",
+          "residue": "A:571",
+          "protein_atoms": ["ND2", "OD1"],
+          "ligand_smarts": "[OX2r5]",
+          "cutoff_a": 3.5,
+          "expect": "present",
+          "source": "structures.json caption: the designed contact, Asn562 in FGFR3 numbering; PLIP hbond to ASN571 at 2.19 A"
+        },
+        {
+          "id": "gatekeeper-val564",
+          "label": "The pyridine nitrogen points at the gatekeeper Val564, flipped from the docking model",
+          "residue": "A:564",
+          "protein_atoms": ["CB", "CG1", "CG2"],
+          "ligand_smarts": "[nX2]1cccc(c1)C(=O)N",
+          "ligand_smarts_note": "The pyridine nitrogen of the carboxamide-bearing ring, not any aromatic nitrogen: a bare [nX2] matches four of them in this ligand and would measure whichever happened to be nearest.",
+          "cutoff_a": 4.5,
+          "expect": "present",
+          "source": "structures.json caption: the flip that explains the potency lost on the V555L and V555M mutants"
+        }
+      ],
+      "not_assessed": [
+        "Anything about the activation loop, whose two phosphotyrosines are reverted to tyrosine for want of parameters, and whose conformation is therefore not the deposited one."
+      ]
+    }
+  ]
+}
