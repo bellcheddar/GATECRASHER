@@ -13,10 +13,11 @@ import { initEditLog } from './panels/editlog.js';
 import { initSar } from './panels/sar.js';
 import { initProperties } from './panels/properties.js';
 import { initStory } from './panels/story.js';
+import { initAbout } from './panels/about.js';
 import { initRdkit } from './viewers/rdkit.js';
 import { redrawAll } from './viewers/plotly.js';
 
-const TABS = ['story', 'structure', 'editlog', 'sar', 'properties'];
+const TABS = ['story', 'structure', 'editlog', 'sar', 'properties', 'about'];
 
 const panels = {};
 let papers = [];
@@ -40,6 +41,9 @@ async function boot() {
   panels.sar = initSar(state);
   panels.properties = initProperties(state);
   panels.story = initStory(state);
+  /* The About sheet is the same for every paper, so it takes no bundle and renders once,
+   * the first time it is opened. */
+  panels.about = initAbout(state);
 
   const index = await loadIndex();
   papers = index.papers;

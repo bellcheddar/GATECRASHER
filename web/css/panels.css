@@ -449,3 +449,62 @@ blockquote.abstract cite {
 /* ------------------------------------------------------------------------- plots */
 
 .plot-host { width: 100%; min-height: 300px; }
+
+/* ------------------------------------------------------------------------- about
+ * The pipeline schematic is a row of stage cards joined by arrows: it wraps to a column
+ * at narrow widths rather than scrolling, because a reader on a phone should be able to
+ * follow the sequence without dragging it sideways. */
+
+.about-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: calc(var(--unit) * 0.5);
+}
+
+.about-stage {
+  flex: 1 1 190px;
+  min-width: 170px;
+  padding: var(--unit);
+  background: var(--surface-2);
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+}
+
+.about-stage-n {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--measure);
+}
+
+.about-stage h3 {
+  margin: 2px 0 6px;
+  font-size: 0.95rem;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.about-stage p { margin: 0; font-size: 12px; color: var(--ink-dim); line-height: 1.5; }
+
+.about-arrow {
+  align-self: center;
+  font-family: var(--mono);
+  font-size: 18px;
+  color: var(--line-strong);
+}
+
+.about-source {
+  padding: var(--unit) 0;
+  border-bottom: var(--rule) dashed var(--line);
+}
+
+.about-source:last-child { border-bottom: 0; }
+.about-source h3 { margin: 0 0 4px; font-size: 0.95rem; color: var(--ink); }
+.about-source p { margin: 0; color: var(--ink-dim); font-size: 13px; }
+
+@media (max-width: 700px) {
+  /* Stacked, so the arrows point down the page rather than across it. */
+  .about-flow { flex-direction: column; }
+  .about-arrow { transform: rotate(90deg); }
+}

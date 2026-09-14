@@ -369,6 +369,26 @@ def main() -> int:
               f"{tab.js('document.querySelectorAll(\"#klifs-ruler .ruler-cell[aria-selected=true]\").length')} selected")
         tab.shot(out / "structure-dark.png")
 
+        # ---------------------------------------------------------- about
+        print("\nabout sheet")
+        tab.click("#tab-strip button[data-tab='about']")
+        check("the about sheet renders its pipeline",
+              tab.wait_for("document.querySelectorAll('#about-flow .about-stage').length === 6", 15),
+              f"{tab.js('document.querySelectorAll(\"#about-flow .about-stage\").length')} stages")
+        check("the software table lists what this stands on",
+              (tab.js("document.querySelectorAll('#about-software tbody tr').length") or 0) >= 10,
+              f"{tab.js('document.querySelectorAll(\"#about-software tbody tr\").length')} rows")
+        check("software rows carry a DOI where one exists",
+              (tab.js("document.querySelectorAll('#about-software a[href*=\"doi.org\"]').length") or 0) >= 5)
+        check("the data sources are named with their DOIs",
+              (tab.js("document.querySelectorAll('#about-sources .about-source').length") or 0) >= 3)
+        check("the page states what is rendered rather than reproduced",
+              "drawn from its SMILES" in (tab.js("document.getElementById('about-statement').textContent") or ""),
+              (tab.js("document.getElementById('about-statement').textContent") or "")[:90])
+        check("every outgoing link opens safely",
+              tab.js("[...document.querySelectorAll('#tab-about a[target]')]"
+                     ".every(a => a.rel.includes('noopener'))"))
+
         # ------------------------------------------------------- keyboard
         print("\nkeyboard")
         # Focus must be visible to a KEYBOARD user, and :focus-visible only matches after a

@@ -1,0 +1,35 @@
+{
+  "_comment": [
+    "The software and reference table for the About sheet, kept as data rather than markup",
+    "so the page and the repository's own THIRD_PARTY record cannot drift apart.",
+    "stage is where the tool sits in the pipeline: precompute runs on the Mac and never",
+    "ships; browser is vendored and served from this app's own origin."
+  ],
+  "statement": "Every molecule on this site is drawn from its SMILES with RDKit. Every structure is rendered from coordinates fetched from the RCSB PDB. Every piece of narrative is written fresh. No publisher figure, graphical abstract or full text is reproduced here: abstracts are quoted verbatim in a marked quotation block with their citation and DOI, which is ordinary scholarly quotation. The graphical abstract strip on the Story sheet is an original interactive re-creation drawn from SMILES, not a copy of the published image.",
+  "pipeline": [
+    { "stage": "extract", "label": "Extract", "detail": "Text and page images out of the PDF. The SAR tables in all four papers are images with no text layer, so their numbers are read by eye and typed into the raw files by hand." },
+    { "stage": "curate", "label": "Curate", "detail": "One hand-checked file per published table, each carrying the table it came from. This is the source of truth and nothing downstream may contradict it." },
+    { "stage": "chem", "label": "Chemistry", "detail": "Descriptors, the campaign scaffold, core-aligned depictions, and the verification ladder: deposited ligand, published name through OPSIN, or fragment assembly on a verified core." },
+    { "stage": "struct", "label": "Structure", "detail": "Coordinates from RCSB, secondary structure from DSSP, pocket numbering from KLIFS where the target is a kinase, and protein-ligand contacts from PLIP." },
+    { "stage": "bundle", "label": "Bundle", "detail": "The wide published tables melted into long-format measurements, one row per compound per assay, so four papers with different assay panels share one shell." },
+    { "stage": "validate", "label": "Validate", "detail": "Schema, provenance, chemistry and cross-reference gates. A measurement with no source table fails the build, as does a residue cited by an edit that does not exist in the structure it is cited against." }
+  ],
+  "software": [
+    { "name": "RDKit", "version": "2026.3.6", "stage": "precompute", "role": "Descriptors, maximum common substructure, core-aligned depictions, fragment assembly with molzip", "licence": "BSD-3-Clause", "url": "https://www.rdkit.org/" },
+    { "name": "OPSIN", "version": "1.2.0", "stage": "precompute", "role": "Parsing the papers' own IUPAC names into structures, to verify every hand-built SMILES by connectivity rather than by formula", "licence": "MIT", "url": "https://github.com/dan2097/opsin", "doi": "10.1186/1758-2946-3-41" },
+    { "name": "PLIP", "version": "3.0.1", "stage": "precompute", "role": "Protein-ligand interaction profiling: every distance drawn in the app comes from here", "licence": "GPL-2.0, invoked as a subprocess and never imported", "url": "https://github.com/pharmai/plip", "doi": "10.1093/nar/gkab294" },
+    { "name": "gemmi", "version": "0.7.5", "stage": "precompute", "role": "mmCIF parsing and structure handling", "licence": "MPL-2.0", "url": "https://gemmi.readthedocs.io/", "doi": "10.21105/joss.04200" },
+    { "name": "biotite", "version": "1.7.1", "stage": "precompute", "role": "Sequence and structure handling", "licence": "BSD-3-Clause", "url": "https://www.biotite-python.org/", "doi": "10.1186/s12859-018-2367-z" },
+    { "name": "DSSP", "version": "4", "stage": "precompute", "role": "Secondary structure assignment, collapsed to helix, strand and loop", "licence": "BSD-2-Clause", "url": "https://github.com/PDB-REDO/dssp", "doi": "10.1002/bip.360221211" },
+    { "name": "PDB-Tools", "version": "2.7.0", "stage": "precompute", "role": "Tidying coordinates before interaction profiling", "licence": "Apache-2.0", "url": "http://www.bonvinlab.org/pdb-tools/", "doi": "10.12688/f1000research.17456.1" },
+    { "name": "Open Babel", "version": "3.1.1", "stage": "precompute", "role": "Chemical perception inside PLIP", "licence": "GPL-2.0", "url": "https://openbabel.org/", "doi": "10.1186/1758-2946-3-33" },
+    { "name": "Mol*", "version": "5.11.0", "stage": "browser", "role": "The structure viewer, including the camera-locked twin view", "licence": "MIT", "url": "https://molstar.org/", "doi": "10.1093/nar/gkab314" },
+    { "name": "Plotly.js", "version": "2.35.2", "stage": "browser", "role": "Every figure, on one shared template", "licence": "MIT", "url": "https://plotly.com/javascript/" },
+    { "name": "RDKit.js", "version": "2025.3.4", "stage": "browser", "role": "Depiction and changed-atom highlighting in the page", "licence": "BSD-3-Clause", "url": "https://github.com/rdkit/rdkit-js" }
+  ],
+  "data_sources": [
+    { "name": "RCSB PDB", "role": "Every coordinate file in this app is fetched from RCSB at view time. None is redistributed here.", "url": "https://www.rcsb.org/", "doi": "10.1093/nar/28.1.235" },
+    { "name": "KLIFS", "role": "Kinase pocket numbering: the 1 to 85 positions and their region labels, per structure", "url": "https://klifs.net/", "doi": "10.1093/nar/gkaa895" },
+    { "name": "PubChem", "role": "Structures for the approved comparator drugs, checked against each paper's published formula", "url": "https://pubchem.ncbi.nlm.nih.gov/", "doi": "10.1093/nar/gkac956" }
+  ]
+}

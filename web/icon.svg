@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GATECRASHER">
+  <title>GATECRASHER</title>
+  <!-- Blueprint ground, the same navy as the app's dark theme. -->
+  <rect width="64" height="64" rx="6" fill="#0B2542"/>
+  <!-- The drawing grid, at the app's own 8px rhythm. -->
+  <g stroke="#7FB3D5" stroke-opacity="0.18" stroke-width="1">
+    <path d="M16 0V64M32 0V64M48 0V64M0 16H64M0 32H64M0 48H64"/>
+  </g>
+  <!-- A gate: two posts and a lintel, in target cyan. -->
+  <g stroke="#6FD3FF" stroke-width="3.5" stroke-linecap="round" fill="none">
+    <path d="M16 52V20h32v32"/>
+  </g>
+  <!-- The ligand getting through it, in measure amber. -->
+  <g fill="#FFD166">
+    <circle cx="32" cy="30" r="4.5"/>
+    <circle cx="23" cy="42" r="3.2"/>
+    <circle cx="41" cy="42" r="3.2"/>
+  </g>
+  <g stroke="#FFD166" stroke-width="2" stroke-linecap="round">
+    <path d="M32 30L23 42M32 30L41 42"/>
+  </g>
+</svg>

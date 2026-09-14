@@ -6,6 +6,9 @@
 <title>GATECRASHER</title>
 <meta name="description" content="Four structure-based drug discovery campaigns, opened up: the pocket, the structure-activity relationships, the chemical edits and the structural basis of selectivity.">
 <meta name="color-scheme" content="dark light">
+<!-- Also the hit beacon for the mdeller.com launcher: every rendering browser fetches it,
+     and nginx gives it a short cache so returning visitors are counted too. -->
+<link rel="icon" type="image/svg+xml" href="icon.svg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,6 +57,7 @@
     <button type="button" role="tab" data-tab="editlog" aria-selected="false" aria-controls="tab-editlog">Edit log</button>
     <button type="button" role="tab" data-tab="sar" aria-selected="false" aria-controls="tab-sar">SAR</button>
     <button type="button" role="tab" data-tab="properties" aria-selected="false" aria-controls="tab-properties">Properties</button>
+    <button type="button" role="tab" data-tab="about" aria-selected="false" aria-controls="tab-about">About</button>
   </nav>
 
   <!-- --------------------------------------------------- provenance rail -->
@@ -255,6 +259,54 @@
           <div class="plot-host" id="plot-pk"></div>
           <p class="mono" id="pk-note"></p>
           <div class="title-block" data-sheet="05" aria-hidden="true"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ========================================================= ABOUT -->
+    <section class="tab-body" id="tab-about" role="tabpanel" hidden>
+      <div class="stack">
+        <section class="sheet">
+          <div class="sheet-head">
+            <h2>What you are looking at</h2>
+            <span class="sheet-number">SHEET 06</span>
+          </div>
+          <p class="prose" id="about-statement"></p>
+          <p class="mono" style="color: var(--ink-dim)">
+            The four papers are peer-reviewed work with Marc C. Deller as a co-author,
+            contributing the protein crystallography. Every citation names all authors and
+            links its DOI.
+          </p>
+          <div class="title-block" data-sheet="06" aria-hidden="true"></div>
+        </section>
+
+        <section class="sheet">
+          <div class="sheet-head">
+            <h2>How a number gets onto this page</h2>
+            <span class="sheet-number">SHEET 06</span>
+          </div>
+          <div class="about-flow" id="about-flow"></div>
+          <div class="title-block" data-sheet="06" aria-hidden="true"></div>
+        </section>
+
+        <section class="sheet">
+          <div class="sheet-head">
+            <h2>Software</h2>
+            <span class="sheet-number">SHEET 06</span>
+          </div>
+          <div class="table-scroll">
+            <table class="sheet-table" id="about-software"></table>
+          </div>
+          <div class="title-block" data-sheet="06" aria-hidden="true"></div>
+        </section>
+
+        <section class="sheet">
+          <div class="sheet-head">
+            <h2>Where the data comes from</h2>
+            <span class="sheet-number">SHEET 06</span>
+          </div>
+          <div id="about-sources"></div>
+          <div class="title-block" data-sheet="06" aria-hidden="true"></div>
         </section>
       </div>
     </section>
