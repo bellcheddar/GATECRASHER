@@ -148,7 +148,7 @@ Where a paper's only record of something is a figure we may not copy, the app sa
 - [x] **In-browser search**: BM25 over this project's own prose and data, indexed once on the Mac and scored in the page, with "not stated in this project" as a first-class answer. Embeddings were the plan, but a static site cannot embed the query without a server or a model shipped to the page
 - [ ] **Short molecular dynamics**: an RMSF track on the ruler and a decimated trajectory per primary structure, and no trajectory ships that does not support what the paper claims
 - [x] **PyMOL downloads**: a `.pml` script, a `.pse` session and a still image per structure, on the Structure sheet
-- [ ] **Performance budget**: first meaningful paint under two seconds cold, under 1.5 MB initial transfer excluding Mol\*, lazy-loaded structures
+- [x] **Performance budget**: first paint 0.7 s cold and 149 kB initial transfer excluding Mol\*, with Mol\*, Plotly and RDKit.js fetched on first use; Lighthouse accessibility 100 everywhere and performance 94 on desktop. Mobile performance is 84 measured (52 simulated), almost all of it Mol\* evaluating for the landing pocket
 - [x] **Structure-first landing**: every paper opens on the pocket; the campaign, the five beats and the selectivity plot pull out as drawers over any sheet, and a beat drives the structure viewer
 - [x] **Licence**: MIT. The one dependency that would have forced AGPL-3.0, PyMuPDF, is replaced by pypdfium2; the GPL tools run as subprocesses only; the vendored libraries carry their notices. See `THIRD_PARTY.md`
 
