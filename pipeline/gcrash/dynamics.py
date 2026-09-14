@@ -91,6 +91,14 @@ def build(slug: str, pdb_id: str | None = None, stage: str = "all",
             _run(["equilibrate", "--out", str(work)], lines)
 
         if stage in ("produce", "all"):
+            # A stage that needs an earlier one says so, rather than crashing on a missing
+            # file. The work directory is cache/md/<PDB_ID> and nowhere else: a run prepared
+            # somewhere else is a run this command cannot see.
+            if not (work / "progress.json").exists():
+                raise SystemExit(
+                    f"{pdb}: nothing to produce from. {work} has no progress.json, so this "
+                    f"structure has not been equilibrated here. Run `gc dynamics {slug} "
+                    f"--pdb {pdb} --stage equilibrate` first.")
             while True:
                 progress = json.loads((work / "progress.json").read_text())
                 if progress["done_ps"] >= progress["production_ps"]:

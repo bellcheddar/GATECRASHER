@@ -228,10 +228,29 @@ def molecule_from_crystal(smiles: str, atoms: list[dict], residue_name: str):
     crystal.UpdatePropertyCache(strict=False)
     Chem.FastFindRings(crystal)
 
+    # The query is the SKELETON of our molecule: elements and connectivity, with bond orders,
+    # aromaticity and formal charges stripped out. The crystal has none of those to match
+    # against, and leaving them on fails a molecule whose every element count is identical:
+    # GDP (C10 N5 O11 P2 on both sides) matched nothing because the query carried -3 on its
+    # phosphate oxygens and aromatic flags on its guanine. The real charges are restored
+    # below, because GDP genuinely is -3 at pH 7.4 and the force field needs to know.
+    skeleton = Chem.RWMol(heavy)
+    for atom in skeleton.GetAtoms():
+        atom.SetFormalCharge(0)
+        atom.SetIsAromatic(False)
+        atom.SetNoImplicit(True)
+        atom.SetNumExplicitHs(0)
+    for bond in skeleton.GetBonds():
+        bond.SetBondType(Chem.BondType.SINGLE)
+        bond.SetIsAromatic(False)
+    skeleton = skeleton.GetMol()
+    skeleton.UpdatePropertyCache(strict=False)
+    Chem.FastFindRings(skeleton)
+
     params = Chem.AdjustQueryParameters()
     params.makeBondsGeneric = True      # the crystal carries no bond orders to match against
     params.aromatizeIfPossible = False
-    match = crystal.GetSubstructMatch(Chem.AdjustQueryProperties(heavy, params))
+    match = crystal.GetSubstructMatch(Chem.AdjustQueryProperties(skeleton, params))
     if not match:
         raise SystemExit(
             f"{residue_name}: the SMILES ({heavy.GetNumAtoms()} heavy atoms) does not match "
