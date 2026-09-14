@@ -41,7 +41,7 @@
       "ions": [],
       "keep_crystal_waters": true,
       "model_gaps_max": 6,
-      "gaps_note": "8UV0 chain A has internal gaps of 6, 2 and 10 residues. The 10-residue gap is in the activation loop and is left open at this setting: a modelled ten-residue loop is a prediction, not a structure.",
+      "gaps_note": "8UV0 chain A has internal gaps of 6, 2 and 10 residues. The 6 and the 2 are modelled (113 heavy atoms added in all). The 10-residue gap, residues 154 to 163 in the activation loop, is left open at this setting: a modelled ten-residue loop is a prediction, not a structure. The simulated protein therefore carries one real discontinuity, a 14.9 A break between residues 153 and 164, and nothing is claimed about the activation loop on the strength of this run.",
       "claims": [
         {
           "id": "hinge-leu83",
