@@ -146,6 +146,19 @@ class Tab:
                       windowsVirtualKeyCode=vk, nativeVirtualKeyCode=vk)
         time.sleep(0.3)
 
+    def dom_key(self, key: str) -> None:
+        """Dispatch a keydown from the focused element, inside the page.
+
+        Escape sent through Input.dispatchKeyEvent flipped document.visibilityState to
+        "hidden" (2026-09-14, on SwiftShader and on Metal alike). A hidden page renders no
+        frames, so requestAnimationFrame and IntersectionObserver stop, nothing lazy ever
+        loads, and every later check fails for a reason that has nothing to do with the app.
+        A DOM event reaches the app's own key handler, which is what is being tested.
+        """
+        self.js("(document.activeElement || document.body).dispatchEvent("
+                f"new KeyboardEvent('keydown', {{key: {key!r}, bubbles: true}}))")
+        time.sleep(0.3)
+
     def shot(self, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         r = self.send("Page.captureScreenshot", format="png")
@@ -236,18 +249,64 @@ def main() -> int:
               "CDK2" in (tab.js("document.querySelector('.title-block').textContent") or ""),
               tab.js("document.querySelector('.title-block').textContent"))
 
-        # ------------------------------------------------------------ story
-        print("\nstory sheet")
+        # ------------------------------------------------- landing and drawers
+        # The Structure sheet is the landing sheet for every paper. What the Story sheet held
+        # lives in pull-out drawers over whichever sheet is open.
+        print("\nlanding sheet and story drawers")
+        check("the structure sheet is the landing sheet",
+              not tab.js("document.getElementById('tab-structure').hidden")
+              and (tab.js("location.hash") or "").startswith("#cdk2/structure"),
+              tab.js("location.hash"))
+        check("there is no story tab any more",
+              not tab.js("!!document.querySelector(\"#tab-strip button[data-tab='story']\")"))
+        check("every drawer starts closed and out of reach",
+              tab.js("[...document.querySelectorAll('.drawer')]"
+                     ".every(d => getComputedStyle(d).visibility === 'hidden')"))
+
+        tab.click("#drawer-tabs button[data-drawer='campaign']")
+        check("the campaign drawer pulls out",
+              tab.wait_for("getComputedStyle(document.getElementById('drawer-campaign')).visibility === 'visible'", 5))
+        check("the open drawer is in the URL",
+              "drawer=campaign" in (tab.js("location.hash") or ""), tab.js("location.hash"))
         check("the one-line summary rendered",
               len(tab.js("document.getElementById('one-line').textContent") or "") > 40)
         check("the graphical abstract strip drew its own depictions",
-              (tab.js("document.querySelectorAll('#abstract-strip .abstract-panel svg').length") or 0) >= 3,
+              tab.wait_for("document.querySelectorAll('#abstract-strip .abstract-panel svg').length >= 3", 10),
               f"panels with svg: {tab.js('document.querySelectorAll(\"#abstract-strip .abstract-panel svg\").length')}")
+        check("the abstract is marked as a quotation with its DOI",
+              tab.js("!!document.querySelector('#abstract-quote cite a[href*=\"doi.org\"]')"))
+
+        tab.click("#drawer-tabs button[data-drawer='story']")
+        check("switching drawers leaves exactly one out",
+              tab.wait_for("document.querySelectorAll('.drawer.is-open').length === 1"
+                           " && document.getElementById('drawer-story').classList.contains('is-open')", 5))
         check("five story beats rendered",
               tab.js("document.querySelectorAll('#beats .beat').length") == 5,
               f"{tab.js('document.querySelectorAll(\"#beats .beat\").length')} beats")
-        check("the abstract is marked as a quotation with its DOI",
-              tab.js("!!document.querySelector('#abstract-quote cite a[href*=\"doi.org\"]')"))
+
+        # Checked against the beat's own focus block, so this measures the cross-link rather
+        # than a guess about what CDK2's second beat happens to point at.
+        expected = tab.js("fetch('data/papers/cdk2/story.json').then(r => r.json())"
+                          ".then(s => s.beats[1].focus || {})") or {}
+        tab.click("#beats .beat:nth-child(2) .beat-show")
+        tab.wait_for("location.hash.includes('beat=')", 5)
+        landed = tab.js("decodeURIComponent(location.hash)") or ""
+        want_res = ",".join(expected.get("residues") or [])
+        check("a beat's focus reaches the structure sheet in one step",
+              "beat=" in landed
+              and (not want_res or f"res={want_res}" in landed)
+              and (not expected.get("compound") or f"cmpd={expected['compound']}" in landed),
+              f"hash {landed!r}, beat focus {expected}")
+        tab.dom_key("Escape")
+        check("Escape closes the drawer",
+              tab.wait_for("document.querySelectorAll('.drawer.is-open').length === 0", 5))
+
+        tab.click("#drawer-tabs button[data-drawer='plot']")
+        check("the selectivity drawer draws its plot when it is opened",
+              tab.wait_for("!!document.querySelector('#story-plot .main-svg')", 25),
+              "no plot in the selectivity drawer")
+        tab.dom_key("Escape")
+        tab.wait_for("document.querySelectorAll('.drawer.is-open').length === 0", 5)
 
         # --------------------------------------------------------- register
         print("\nregister toggle")
@@ -392,6 +451,14 @@ def main() -> int:
               (tab.js("document.querySelectorAll('#klifs-ruler .ruler-cell[aria-selected=\"true\"]').length") or 0) == 2,
               f"{tab.js('document.querySelectorAll(\"#klifs-ruler .ruler-cell[aria-selected=true]\").length')} selected")
         tab.shot(out / "structure-dark.png")
+
+        tab.goto(args.base + "/#cdk2/story")
+        check("an old link to the story tab lands on the structure with the story drawer out",
+              tab.wait_for("document.getElementById('drawer-story').classList.contains('is-open')", 10)
+              and not tab.js("document.getElementById('tab-structure').hidden"),
+              tab.js("location.hash"))
+        tab.dom_key("Escape")
+        tab.wait_for("document.querySelectorAll('.drawer.is-open').length === 0", 5)
 
         # --------------------------------------------------------- search
         print("\nsearch")
@@ -597,6 +664,10 @@ def main() -> int:
         check("a side gutter survives at phone width",
               isinstance(gutter, (int, float)) and gutter >= 10,
               f"sheet left edge at {gutter}px")
+        check("the drawer tabs become a bar along the bottom",
+              tab.js("(() => { const r = document.getElementById('drawer-tabs').getBoundingClientRect();"
+                     " return r.bottom >= window.innerHeight - 1 && r.width >= window.innerWidth - 1; })()"),
+              str(tab.js("JSON.stringify(document.getElementById('drawer-tabs').getBoundingClientRect())")))
         tab.shot(out / "phone.png")
         tab.send("Emulation.clearDeviceMetricsOverride")
 

@@ -5,7 +5,7 @@
     "stage is where the tool sits in the pipeline: precompute runs on the Mac and never",
     "ships; browser is vendored and served from this app's own origin."
   ],
-  "statement": "Every molecule on this site is drawn from its SMILES with RDKit. Every structure is rendered from coordinates fetched from the RCSB PDB. Every piece of narrative is written fresh. No publisher figure, graphical abstract or full text is reproduced here: abstracts are quoted verbatim in a marked quotation block with their citation and DOI, which is ordinary scholarly quotation. The graphical abstract strip on the Story sheet is an original interactive re-creation drawn from SMILES, not a copy of the published image.",
+  "statement": "Every molecule on this site is drawn from its SMILES with RDKit. Every structure is rendered from coordinates fetched from the RCSB PDB. Every piece of narrative is written fresh. No publisher figure, graphical abstract or full text is reproduced here: abstracts are quoted verbatim in a marked quotation block with their citation and DOI, which is ordinary scholarly quotation. The graphical abstract strip in the Campaign drawer is an original interactive re-creation drawn from SMILES, not a copy of the published image.",
   "pipeline": [
     { "stage": "extract", "label": "Extract", "detail": "Text and page images out of the PDF. The SAR tables in all four papers are images with no text layer, so their numbers are read by eye and typed into the raw files by hand." },
     { "stage": "curate", "label": "Curate", "detail": "One hand-checked file per published table, each carrying the table it came from. This is the source of truth and nothing downstream may contradict it." },
@@ -26,7 +26,7 @@
     { "name": "PyMOL", "version": "3.1.0", "stage": "precompute", "role": "The downloadable script, session and still image for each structure", "licence": "Open-Source PyMOL licence (BSD-style), invoked as a subprocess", "url": "https://github.com/schrodinger/pymol-open-source" },
     { "name": "pypdfium2", "version": "5.13.0", "stage": "precompute", "role": "Text and page images out of the paper PDFs, on the Mac only; nothing it produces enters the repository", "licence": "BSD-3-Clause / Apache-2.0", "url": "https://github.com/pypdfium2-team/pypdfium2" },
     { "name": "Mol*", "version": "5.11.0", "stage": "browser", "role": "The structure viewer, including the camera-locked twin view", "licence": "MIT", "url": "https://molstar.org/", "doi": "10.1093/nar/gkab314" },
-    { "name": "Plotly.js", "version": "2.35.2", "stage": "browser", "role": "Every figure, on one shared template", "licence": "MIT", "url": "https://plotly.com/javascript/" },
+    { "name": "Plotly.js", "version": "2.35.2", "stage": "browser", "role": "Every figure, on one shared template; the basic partial bundle, fetched on first use", "licence": "MIT", "url": "https://plotly.com/javascript/" },
     { "name": "RDKit.js", "version": "2025.3.4", "stage": "browser", "role": "Depiction and changed-atom highlighting in the page", "licence": "BSD-3-Clause", "url": "https://github.com/rdkit/rdkit-js" }
   ],
   "data_sources": [

@@ -75,15 +75,19 @@ def units_for(slug: str) -> list[dict]:
         })
 
     paper = json.loads((raw / "paper.json").read_text())
-    add("paper", paper["title"], paper["one_line"], {"tab": "story"}, paper["doi"])
+    # The Story is no longer a tab: its text lives in drawers over the Structure sheet, so a
+    # hit on it lands on the structure with the right drawer pulled out.
+    campaign = {"tab": "structure", "drawer": "campaign"}
+    add("paper", paper["title"], paper["one_line"], campaign, paper["doi"])
     for key, label in (("disease", "The disease"), ("selectivity", "The selectivity problem"),
                        ("property", "The property problem")):
-        add("problem", label, paper["problem"][key], {"tab": "story"}, paper["doi"])
+        add("problem", label, paper["problem"][key], campaign, paper["doi"])
 
     story = raw / "story.json"
     if story.exists():
         for beat in json.loads(story.read_text())["beats"]:
-            focus = {"tab": "story", "beat": beat["id"], **(beat.get("focus") or {})}
+            focus = {"tab": "structure", "drawer": "story", "beat": beat["id"],
+                     **(beat.get("focus") or {})}
             add("beat", beat["title"], beat["body_specialist"], focus, beat["evidence"])
             add("beat_plain", beat["title"], beat["body_plain"], focus, beat["evidence"])
 

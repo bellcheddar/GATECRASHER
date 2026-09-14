@@ -37,7 +37,7 @@ not this one.
 | Library | Version | Role | Licence | Notice in `web/js/vendor/` | Reference |
 |---|---|---|---|---|---|
 | [Mol*](https://molstar.org/) | 5.11.0 | The structure viewer, including the camera-locked twin view | MIT | `molstar.LICENSE.txt` | [10.1093/nar/gkab314](https://doi.org/10.1093/nar/gkab314) |
-| [Plotly.js](https://plotly.com/javascript/) | 2.35.2 | Every figure, on one shared template | MIT | `plotly.LICENSE.txt`, and `plotly.min.js.LICENSE.txt` for the libraries it bundles |  |
+| [Plotly.js](https://plotly.com/javascript/) | 2.35.2 | Every figure, on one shared template; the basic partial bundle, fetched on first use | MIT | `plotly.LICENSE.txt`, and `plotly-basic.min.js.LICENSE.txt` for the libraries it bundles |  |
 | [RDKit.js](https://github.com/rdkit/rdkit-js) | 2025.3.4 | Depiction and changed-atom highlighting in the page | BSD-3-Clause | `RDKit_minimal.LICENSE.txt` (RDKit.js and RDKit) |  |
 
 ## Data sources

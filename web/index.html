@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="en-GB" data-booting>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,14 +12,41 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<!-- Fonts load without blocking the first paint: the system fallbacks in tokens.css draw
+     the page until they arrive, and display=swap hands over when they do. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap"></noscript>
 
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/blueprint.css">
 <link rel="stylesheet" href="css/sheets.css">
 <link rel="stylesheet" href="css/panels.css">
 <link rel="stylesheet" href="css/responsive.css">
-<link rel="stylesheet" href="css/molstar.css">
+<!-- css/molstar.css is loaded with Mol* itself, by js/loader.js. -->
+
+<!-- Fetch the whole module graph and the paper index alongside the stylesheets, instead of
+     discovering them one import level at a time: on a throttled phone connection each
+     level is another round trip before anything can render.
+     The "./" prefix is deliberate. deploy.sh stamps href="js/..." with ?v=<mtime>, but the
+     modules import each other WITHOUT a stamp, so a stamped preload would be a different URL
+     and every module would download twice. "./js/x.js" escapes the stamp and resolves to
+     exactly the URL the import asks for. Keep this list in step with the imports. -->
+<link rel="modulepreload" href="./js/state.js">
+<link rel="modulepreload" href="./js/data.js">
+<link rel="modulepreload" href="./js/draw.js">
+<link rel="modulepreload" href="./js/loader.js">
+<link rel="modulepreload" href="./js/search.js">
+<link rel="modulepreload" href="./js/panels/rail.js">
+<link rel="modulepreload" href="./js/panels/story.js">
+<link rel="modulepreload" href="./js/panels/structure.js">
+<link rel="modulepreload" href="./js/panels/editlog.js">
+<link rel="modulepreload" href="./js/panels/sar.js">
+<link rel="modulepreload" href="./js/panels/properties.js">
+<link rel="modulepreload" href="./js/panels/about.js">
+<link rel="modulepreload" href="./js/viewers/molstar.js">
+<link rel="modulepreload" href="./js/viewers/plotly.js">
+<link rel="modulepreload" href="./js/viewers/rdkit.js">
+<link rel="preload" href="./data/index.json" as="fetch" crossorigin>
 </head>
 <body>
 
@@ -59,8 +86,7 @@
 
   <!-- ----------------------------------------------------------- tab strip -->
   <nav class="tab-strip" id="tab-strip" role="tablist" aria-label="Sheets">
-    <button type="button" role="tab" data-tab="story" aria-selected="true" aria-controls="tab-story">Story</button>
-    <button type="button" role="tab" data-tab="structure" aria-selected="false" aria-controls="tab-structure">Structure</button>
+    <button type="button" role="tab" data-tab="structure" aria-selected="true" aria-controls="tab-structure">Structure</button>
     <button type="button" role="tab" data-tab="editlog" aria-selected="false" aria-controls="tab-editlog">Edit log</button>
     <button type="button" role="tab" data-tab="sar" aria-selected="false" aria-controls="tab-sar">SAR</button>
     <button type="button" role="tab" data-tab="properties" aria-selected="false" aria-controls="tab-properties">Properties</button>
@@ -78,50 +104,9 @@
 
   <main>
 
-    <!-- ========================================================= 01 STORY -->
-    <section class="tab-body layout-story" id="tab-story" role="tabpanel" aria-labelledby="tab-story-button">
-      <div class="stack">
-        <section class="sheet" id="sheet-abstract" aria-labelledby="abstract-heading">
-          <div class="sheet-head">
-            <h2 id="abstract-heading">The campaign</h2>
-            <span class="sheet-number">SHEET 01</span>
-          </div>
-          <p class="prose" id="one-line"></p>
-          <div class="abstract-strip" id="abstract-strip" aria-label="Hit to lead, redrawn from SMILES"></div>
-          <details id="abstract-details">
-            <summary>The published abstract, quoted</summary>
-            <blockquote class="abstract" id="abstract-quote"></blockquote>
-          </details>
-          <div class="title-block" data-sheet="01" aria-hidden="true"></div>
-        </section>
-
-        <section class="sheet" id="sheet-story">
-          <div class="sheet-head">
-            <h2>What happened, in five moves</h2>
-            <span class="sheet-number">SHEET 01</span>
-          </div>
-          <div id="beats"></div>
-          <div class="title-block" data-sheet="01" aria-hidden="true"></div>
-        </section>
-      </div>
-
-      <div class="pinned">
-        <section class="sheet" id="sheet-story-structure">
-          <div class="sheet-head"><h2>Pocket</h2><span class="sheet-number">SHEET 02</span></div>
-          <div class="viewer-host" id="story-viewer"></div>
-          <p class="mono" id="story-caption"></p>
-          <div class="title-block" data-sheet="02" aria-hidden="true"></div>
-        </section>
-        <section class="sheet" id="sheet-story-plot">
-          <div class="sheet-head"><h2>Where this compound sits</h2><span class="sheet-number">SHEET 05</span></div>
-          <div class="plot-host" id="story-plot"></div>
-          <div class="title-block" data-sheet="05" aria-hidden="true"></div>
-        </section>
-      </div>
-    </section>
-
-    <!-- ===================================================== 02 STRUCTURE -->
-    <section class="tab-body layout-structure" id="tab-structure" role="tabpanel" hidden>
+    <!-- ===================================================== 02 STRUCTURE
+         The landing sheet for every paper. The story lives in the drawers below <main>. -->
+    <section class="tab-body layout-structure" id="tab-structure" role="tabpanel">
       <div class="stack">
         <section class="sheet" id="sheet-structure">
           <div class="sheet-head">
@@ -324,16 +309,71 @@
   </main>
 </div>
 
+<!-- ============================================================ STORY DRAWERS
+     The Story used to be the landing sheet. The pocket is now, for every paper, and what the
+     Story sheet held lives here instead: drawers that pull out over whichever sheet is open.
+     They are hidden with visibility, not [hidden], so they can slide. -->
+<nav class="drawer-tabs" id="drawer-tabs" aria-label="Story drawers">
+  <button type="button" data-drawer="campaign" aria-expanded="false" aria-controls="drawer-campaign">Campaign</button>
+  <button type="button" data-drawer="story" aria-expanded="false" aria-controls="drawer-story">Story</button>
+  <button type="button" data-drawer="plot" aria-expanded="false" aria-controls="drawer-plot">Selectivity</button>
+</nav>
+
+<aside class="drawer" id="drawer-campaign" aria-labelledby="abstract-heading">
+  <div class="drawer-body">
+    <section class="sheet" id="sheet-abstract">
+      <div class="sheet-head">
+        <h2 id="abstract-heading">The campaign</h2>
+        <span class="sheet-number">SHEET 01</span>
+        <button type="button" class="drawer-close" data-close-drawer aria-label="Close the campaign drawer">Close</button>
+      </div>
+      <p class="prose" id="one-line"></p>
+      <div class="abstract-strip" id="abstract-strip" aria-label="Hit to lead, redrawn from SMILES"></div>
+      <details id="abstract-details">
+        <summary>The published abstract, quoted</summary>
+        <blockquote class="abstract" id="abstract-quote"></blockquote>
+      </details>
+      <div class="title-block" data-sheet="01" aria-hidden="true"></div>
+    </section>
+  </div>
+</aside>
+
+<aside class="drawer" id="drawer-story" aria-labelledby="story-heading">
+  <div class="drawer-body">
+    <section class="sheet" id="sheet-story">
+      <div class="sheet-head">
+        <h2 id="story-heading">What happened, in five moves</h2>
+        <span class="sheet-number">SHEET 01</span>
+        <button type="button" class="drawer-close" data-close-drawer aria-label="Close the story drawer">Close</button>
+      </div>
+      <div id="beats"></div>
+      <div class="title-block" data-sheet="01" aria-hidden="true"></div>
+    </section>
+  </div>
+</aside>
+
+<aside class="drawer" id="drawer-plot" aria-labelledby="plot-heading">
+  <div class="drawer-body">
+    <section class="sheet" id="sheet-story-plot">
+      <div class="sheet-head">
+        <h2 id="plot-heading">Where this compound sits</h2>
+        <span class="sheet-number">SHEET 05</span>
+        <button type="button" class="drawer-close" data-close-drawer aria-label="Close the selectivity drawer">Close</button>
+      </div>
+      <div class="plot-host" id="story-plot"></div>
+      <div class="title-block" data-sheet="05" aria-hidden="true"></div>
+    </section>
+  </div>
+</aside>
+
 <noscript>
   <p style="padding:16px">GATECRASHER draws every molecule and every structure in the browser,
   so it needs JavaScript. The underlying data is plain CSV and JSON under
   <code>data/papers/</code> if you would rather read it directly.</p>
 </noscript>
 
-<!-- Vendored, from our own origin: see js/vendor/README.md for versions and why. -->
-<script src="js/vendor/molstar.js"></script>
-<script src="js/vendor/plotly.min.js"></script>
-<script src="js/vendor/RDKit_minimal.js"></script>
+<!-- Mol*, Plotly and RDKit.js are vendored (js/vendor/README.md) and fetched on first use
+     by js/loader.js, so none of them blocks the first paint. -->
 <script type="module" src="js/app.js"></script>
 </body>
 </html>

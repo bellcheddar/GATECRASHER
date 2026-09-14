@@ -8,19 +8,22 @@
  * If the WASM does not load, every function here falls back to the precomputed SVG, so the
  * app degrades to static depictions rather than to blank panels. */
 
+import { loadLibrary } from '../loader.js';
+
 let rdkitPromise = null;
 let rdkit = null;
 
+/* Called when a sheet that can use highlighting is first opened, never at boot: the wasm is
+ * 6.9 MB and the landing sheet shows only precomputed drawings. */
 export function initRdkit() {
   if (rdkitPromise) return rdkitPromise;
-  if (typeof window.initRDKitModule !== 'function') {
-    rdkitPromise = Promise.resolve(null);
-    return rdkitPromise;
-  }
-  rdkitPromise = window.initRDKitModule({
-    /* RDKit_minimal.js resolves the wasm relative to the document, so point it at the
-     * vendor directory explicitly rather than hoping the page sits at the root. */
-    locateFile: (file) => `js/vendor/${file}`,
+  rdkitPromise = loadLibrary('rdkit').then(() => {
+    if (typeof window.initRDKitModule !== 'function') return null;
+    return window.initRDKitModule({
+      /* RDKit_minimal.js resolves the wasm relative to the document, so point it at the
+       * vendor directory explicitly rather than hoping the page sits at the root. */
+      locateFile: (file) => `js/vendor/${file}?v=2025.3.4-1.0.0`,
+    });
   }).then((module) => {
     rdkit = module;
     return module;

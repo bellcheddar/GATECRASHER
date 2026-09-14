@@ -101,6 +101,14 @@ the provenance of the data.
     wanted, it needs either a small runtime model (against the spec) or a server (against
     ground rule 2), and that is a decision rather than an oversight.
 
+12. **The Structure sheet is the landing sheet, and the Story is in drawers.** BUILD_SPEC 7.5
+   makes the Story the opening Feature. Marc changed that on 2026-09-14: every paper now
+   lands on the pocket, and the Story sheet's contents (the one line, the hit-to-lead strip,
+   the quoted abstract, the five beats and the selectivity plot) live in three pull-out
+   drawers over whichever sheet is open. A beat drives the Structure sheet's own viewer
+   instead of a second one, and old `#paper/story` links still land, with the story drawer
+   out.
+
 ## Added here, not harvested
 
 - **OPSIN (`py2opsin`) for name-to-structure verification.** Nothing in the portfolio does

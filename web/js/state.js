@@ -10,12 +10,15 @@
 
 const KEYS = [
   'paper', 'tab', 'register', 'compound', 'antiTargetOn', 'structure',
-  'residues', 'motif', 'edit', 'assayX', 'assayY', 'beat', 'theme',
+  'residues', 'motif', 'edit', 'assayX', 'assayY', 'beat', 'drawer', 'theme',
 ];
 
 const DEFAULTS = {
   paper: 'cdk2',
-  tab: 'story',
+  /* The pocket is where every reader lands. The story that used to be the landing sheet
+   * lives in pull-out drawers over it. */
+  tab: 'structure',
+  drawer: null,         // the drawer pulled out, if any: campaign | story | plot
   register: 'specialist',
   compound: null,
   antiTargetOn: false,
@@ -38,6 +41,7 @@ const HASH_KEYS = {
   x: 'assayX',
   y: 'assayY',
   beat: 'beat',
+  drawer: 'drawer',
   anti: 'antiTargetOn',
   reg: 'register',
   pdb: 'structure',
@@ -162,7 +166,14 @@ class AppState {
     const [paper, tab] = path.split('/');
     const patch = {};
     if (paper && papers.includes(paper)) patch.paper = paper;
-    if (tab && tabs.includes(tab)) patch.tab = tab;
+    if (tab && tabs.includes(tab)) {
+      patch.tab = tab;
+    } else if (tab === 'story') {
+      /* The Story was a tab until it moved into drawers. Links to it still work: they land
+       * on the Structure sheet with the story drawer pulled out. */
+      patch.tab = 'structure';
+      patch.drawer = 'story';
+    }
 
     const params = new URLSearchParams(query);
     for (const [short, key] of Object.entries(HASH_KEYS)) {

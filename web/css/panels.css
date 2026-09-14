@@ -212,14 +212,11 @@
   align-items: start;
 }
 
-.layout-story {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: var(--sheet-pad);
-  align-items: start;
-}
-
 .stack { display: grid; gap: var(--sheet-pad); }
+
+/* Until the first paper has drawn, <main> is laid out but not shown, so its sheets filling
+ * in cannot register as layout shift. app.js removes the attribute, including on failure. */
+html[data-booting] main { visibility: hidden; }
 
 /* --------------------------------------------------------------------- structure */
 
@@ -436,11 +433,82 @@
   color: var(--ink-dim);
 }
 
-.pinned {
-  position: sticky;
-  top: calc(var(--unit) * 14);
+.beat-show { margin-top: 6px; }
+
+/* ------------------------------------------------------------------- drawers */
+/* The story pulls out over whichever sheet is open, so the structure never leaves the
+ * screen. Closed drawers are moved off-canvas and hidden with visibility, which removes them
+ * from the tab order and the accessibility tree while still letting them slide. */
+
+.drawer-tabs {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 60;
   display: grid;
-  gap: var(--unit);
+  gap: 6px;
+  transition: right 0.24s ease;
+}
+
+.drawer-tabs button {
+  writing-mode: vertical-rl;
+  padding: 14px 7px;
+  border: var(--rule) solid var(--line-strong);
+  border-right: 0;
+  border-radius: var(--radius) 0 0 var(--radius);
+  background: var(--surface);
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.drawer-tabs button:hover,
+.drawer-tabs button[aria-expanded="true"] {
+  color: var(--ink);
+  border-color: var(--target);
+}
+
+.drawer-tabs.is-shifted { right: min(540px, 100vw); }
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  width: min(540px, 100vw);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border-left: var(--rule) solid var(--line-strong);
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.35);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 0.24s ease, visibility 0s linear 0.24s;
+}
+
+.drawer.is-open {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.24s ease;
+}
+
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sheet-pad);
+}
+
+.drawer .sheet-head { align-items: center; }
+.drawer-close { margin-left: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer,
+  .drawer.is-open,
+  .drawer-tabs { transition: none; }
 }
 
 /* graphical abstract strip: our own drawing, from SMILES, never the publisher's image */
@@ -466,6 +534,8 @@
 }
 
 .abstract-panel:hover { border-color: var(--target); }
+/* The drawing arrives after its panel, so the box holds the depiction's 4:3 shape while empty. */
+.abstract-panel .depiction { aspect-ratio: 4 / 3; }
 .abstract-panel .abstract-caption { font-size: 11px; color: var(--ink-dim); }
 .abstract-panel .abstract-value { font-family: var(--mono); font-size: 12px; color: var(--measure); }
 

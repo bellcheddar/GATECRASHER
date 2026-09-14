@@ -7,7 +7,9 @@
 const CACHE = new Map();
 
 export async function loadIndex(base = 'data') {
-  const response = await fetch(`${base}/index.json`, { cache: 'no-cache' });
+  /* A plain fetch, so it can reuse the <link rel="preload"> in index.html; a cache mode of
+   * its own would not match the preload. nginx already caches /data/ for five minutes. */
+  const response = await fetch(`${base}/index.json`);
   if (!response.ok) throw new Error(`index.json: ${response.status}`);
   return response.json();
 }
@@ -16,21 +18,31 @@ export async function loadPaper(slug, base = 'data') {
   if (CACHE.has(slug)) return CACHE.get(slug);
   const dir = `${base}/papers/${slug}`;
 
-  const [paper, assays, structures, compoundsCsv, measurementsCsv, edits] = await Promise.all([
+  /* Every file in one wave. This used to be three: the required files, then the optional
+   * ones, then the interactions, each waiting for the last to finish. On a throttled phone
+   * connection every wave is another half second of latency before the Story prose can
+   * paint. The interactions still need the structure list, so they start the moment
+   * structures.json lands rather than after everything else. */
+  const structuresRequest = getJson(`${dir}/structures.json`);
+  const interactionsRequest = structuresRequest.then((list) => Promise.all(list.map((entry) =>
+    getJson(`${dir}/interactions/${entry.pdb_id}.json`)
+      .then((data) => [entry.pdb_id, data])
+      .catch(() => [entry.pdb_id, null]))));
+
+  const [paper, assays, structures, compoundsCsv, measurementsCsv, edits,
+    residuesCsv, story, cliffs, interactionPairs] = await Promise.all([
     getJson(`${dir}/paper.json`),
     getJson(`${dir}/assays.json`),
-    getJson(`${dir}/structures.json`),
+    structuresRequest,
     getText(`${dir}/compounds.csv`),
     getText(`${dir}/measurements.csv`),
     getJson(`${dir}/edits.json`),
-  ]);
-
-  /* These four are optional at this stage of the build: a paper still loads and renders
-   * without them, with the panels that need them showing an explicit empty state. */
-  const [residuesCsv, story, cliffs] = await Promise.all([
+    /* These are optional at this stage of the build: a paper still loads and renders
+     * without them, with the panels that need them showing an explicit empty state. */
     getText(`${dir}/residues.csv`).catch(() => ''),
     getJson(`${dir}/story.json`).catch(() => null),
     getJson(`${dir}/cliffs.json`).catch(() => []),
+    interactionsRequest,
   ]);
 
   const compounds = parseCsv(compoundsCsv).map(typeCompound);
@@ -38,10 +50,9 @@ export async function loadPaper(slug, base = 'data') {
   const residues = residuesCsv ? parseCsv(residuesCsv).map(typeResidue) : [];
 
   const interactions = {};
-  await Promise.all(structures.map(async (entry) => {
-    const data = await getJson(`${dir}/interactions/${entry.pdb_id}.json`).catch(() => null);
-    if (data) interactions[entry.pdb_id] = data;
-  }));
+  for (const [pdbId, data] of interactionPairs) {
+    if (data) interactions[pdbId] = data;
+  }
 
   const bundle = {
     slug, dir, paper, assays, structures, compounds, measurements,

@@ -75,7 +75,7 @@ export function initStructure(state) {
 
   async function ensureTarget() {
     if (target) return target;
-    if (!StructureViewer.available()) {
+    if (!(await StructureViewer.ensure())) {
       el.pair.replaceChildren(emptyState('The 3D viewer did not load',
         'Everything else on this page still works, and the contacts below are the same data the viewer would draw.'));
       return null;
@@ -102,7 +102,16 @@ export function initStructure(state) {
     await viewer.load('target', structureUrl(entry.pdb_id), {
       representation: el.representation.value,
     });
-    viewer.focusLigand();
+    /* A beat, a search hit or a copied link can arrive carrying residues along with the
+     * structure. Zooming to the ligand regardless threw that focus away as soon as the
+     * coordinates landed. */
+    const residues = state.get('residues');
+    if (residues.length) {
+      viewer.select(residues);
+      viewer.focusResidues(residues);
+    } else {
+      viewer.focusLigand();
+    }
   }
 
   /* Creating a WebGL viewer in a hidden tab gives it a 0x0 canvas, and Mol* then throws
@@ -546,6 +555,21 @@ export function initStructure(state) {
       else target?.resize();
     });
   });
+  /* A beat or a search hit can point at this paper's other structure (KRAS has two, JAK1 a
+   * target and an anti-target). This panel used to read the structure only when a paper
+   * loaded, so the rail changed and the viewer did not. A structure from another paper is
+   * ignored here: a paper switch applies state before handing over the new bundle, and
+   * setBundle does that load itself. */
+  state.on(['structure'], () => {
+    if (!bundle) return;
+    if (!bundle.structures.some((s) => s.pdb_id === state.get('structure'))) return;
+    renderChips();
+    renderRuler();
+    renderContacts();
+    renderCaption();
+    renderDownloads();
+    loadTargetWhenVisible().catch((err) => console.warn('[structure] viewer load failed', err));
+  });
   state.on(['motif'], () => { if (bundle) renderChips(); });
   state.on(['compound'], renderSelected);
   state.on(['register'], () => { if (bundle) renderCaption(); });
@@ -561,7 +585,9 @@ export function initStructure(state) {
       el.antiFrame.hidden = true;
       el.antiToggle.setAttribute('aria-pressed', 'false');
       figures = null;
-      await loadTargetWhenVisible();
+      /* Not awaited: this is the landing sheet, and its chips, ruler, contacts and caption
+       * must not wait for 5 MB of Mol* and a coordinate file before the page can show. */
+      loadTargetWhenVisible().catch((err) => console.warn('[structure] viewer load failed', err));
       renderChips();
       renderRuler();
       renderContacts();

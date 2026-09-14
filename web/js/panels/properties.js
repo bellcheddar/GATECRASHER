@@ -195,6 +195,10 @@ export function initProperties(state) {
    * the spine of all four campaigns. */
   function renderStoryPlot() {
     if (!el.storyPlot) return;
+    /* Drawn only while its drawer is out. A closed drawer sits just off the edge of the
+     * screen, close enough to count as visible within the loader's margin, so gating on
+     * visibility alone would pull Plotly in at boot for a plot nobody has opened. */
+    if (state.get('drawer') !== 'plot') return;
     const primary = bundle.index.primaryAssay;
     const anti = bundle.index.antiTargets.find((a) => bundle.index.byAssay.has(a.id));
     if (!primary || !anti) {
@@ -236,6 +240,11 @@ export function initProperties(state) {
     if (!bundle) return;
     renderPropertyPlot();
     renderStoryPlot();
+  });
+
+  /* A frame's wait lets the drawer take its width before Plotly measures the host. */
+  state.on(['drawer'], () => {
+    if (bundle && state.get('drawer') === 'plot') requestAnimationFrame(renderStoryPlot);
   });
 
   return {

@@ -1,19 +1,21 @@
-/* The Story sheet: the Feature. BUILD_SPEC 7.5 and 7.6.
+/* The story drawers. BUILD_SPEC 7.5 and 7.6, reshaped.
  *
- * A scroll-driven column of beats, set in Newsreader, with the structure and plot pinned
- * beside it following each beat's focus block. The register toggle switches every body and
- * caption in the app at once: it is one control, not a per-panel setting.
+ * The Story used to be the landing sheet. The pocket is now what every reader lands on, and
+ * the story lives in pull-out drawers over it: the campaign (the one line, the hit-to-lead
+ * strip and the quoted abstract) and the five beats. A beat drives the Structure sheet's own
+ * viewer, rather than a second viewer of its own.
  *
- * The graphical abstract strip at the top is our own interactive re-creation, drawn from
- * SMILES. It is never the publisher's image. */
+ * The register toggle switches every body and caption in the app at once: it is one
+ * control, not a per-panel setting.
+ *
+ * The graphical abstract strip is our own interactive re-creation, drawn from SMILES. It is
+ * never the publisher's image. */
 
 import { emptyState } from '../draw.js';
 import { depictionFor } from '../viewers/rdkit.js';
-import { StructureViewer } from '../viewers/molstar.js';
 
 export function initStory(state) {
   let bundle = null;
-  let viewer = null;
   let observer = null;
 
   const el = {
@@ -21,20 +23,22 @@ export function initStory(state) {
     strip: document.getElementById('abstract-strip'),
     quote: document.getElementById('abstract-quote'),
     beats: document.getElementById('beats'),
-    viewerHost: document.getElementById('story-viewer'),
-    caption: document.getElementById('story-caption'),
+    storyBody: document.querySelector('#drawer-story .drawer-body'),
   };
 
   /* ------------------------------------------------------- graphical abstract */
 
-  async function renderStrip() {
+  function renderStrip() {
     const panels = bundle.paper.graphical_abstract?.panels || [];
     el.strip.replaceChildren();
     if (!panels.length) {
       el.strip.append(emptyState('No hit-to-lead strip for this paper', ''));
-      return;
+      return Promise.resolve();
     }
 
+    /* Every panel goes into the strip before any drawing arrives, and each drawing box keeps
+     * a fixed shape while empty, so the drawings fill in without moving anything. */
+    const fills = [];
     for (const panel of panels) {
       if (panel.kind === 'arrow') {
         const arrow = document.createElement('div');
@@ -47,11 +51,16 @@ export function initStory(state) {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'abstract-panel';
-      button.setAttribute('aria-label', `Select compound ${panel.compound_id}`);
+      /* No aria-label: "Select compound N" did not contain the visible text, which fails
+       * WCAG 2.5.3 for anyone using speech control. The visible text is the name, and the
+       * drawing's atom labels are kept out of it. */
 
       const depiction = document.createElement('div');
       depiction.className = 'depiction';
-      if (compound) depiction.innerHTML = await depictionFor(bundle, compound);
+      depiction.setAttribute('aria-hidden', 'true');
+      if (compound) {
+        fills.push(depictionFor(bundle, compound).then((svgText) => { depiction.innerHTML = svgText; }));
+      }
       button.append(depiction);
 
       const id = document.createElement('div');
@@ -77,6 +86,7 @@ export function initStory(state) {
       });
       el.strip.append(button);
     }
+    return Promise.all(fills);
   }
 
   function renderQuote() {
@@ -97,6 +107,10 @@ export function initStory(state) {
     link.rel = 'noopener';
     cite.append(link);
     el.quote.append(text, cite);
+  }
+
+  function renderOneLine() {
+    el.oneLine.textContent = bundle.paper.one_line;
   }
 
   /* -------------------------------------------------------------------- beats */
@@ -135,136 +149,72 @@ export function initStory(state) {
 
       article.append(kicker, title, body, evidence);
 
-      /* The last beat hands off to the Structure tab with an explicit control, rather
-       * than leaving the reader at the end of a column with nowhere to go. */
-      if (beat === beats[beats.length - 1]) {
-        const handoff = document.createElement('button');
-        handoff.type = 'button';
-        handoff.textContent = 'Open this in the structure';
-        handoff.addEventListener('click', (event) => {
-          event.stopPropagation();
-          state.set({
-            tab: 'structure',
-            structure: beat.focus?.structure || state.get('structure'),
-            residues: beat.focus?.residues || [],
-            compound: beat.focus?.compound || state.get('compound'),
-          }, 'story:handoff');
-        });
-        article.append(handoff);
+      /* Every beat can hand its focus to the Structure sheet explicitly, not only the last
+       * one: the drawer sits over the sheet, so the reader is never far from it. */
+      if (beat.focus) {
+        const show = document.createElement('button');
+        show.type = 'button';
+        show.className = 'beat-show';
+        show.textContent = 'Show this in the structure';
+        show.addEventListener('click', () => focusBeat(beat, { openStructure: true }));
+        article.append(show);
       }
 
       el.beats.append(article);
     }
+    markCurrent();
     watchBeats();
   }
 
-  /* A beat scrolling into view sets `beat` and everything in its focus block. */
+  /* A beat's whole focus block goes out in ONE set() with the beat itself. The old Story
+   * sheet set the beat, then set its focus from inside the beat subscriber, and the state bus
+   * drops any set() made during a dispatch, so the compound and residues never followed. */
+  function focusBeat(beat, { openStructure = false } = {}) {
+    const focus = beat.focus || {};
+    const patch = { beat: beat.id, edit: focus.edit || null };
+    if (focus.compound && bundle.index.compoundById.has(focus.compound)) patch.compound = focus.compound;
+    if (focus.structure && bundle.structures.some((s) => s.pdb_id === focus.structure)) {
+      patch.structure = focus.structure;
+    }
+    if (focus.residues) patch.residues = focus.residues;
+    if (openStructure) patch.tab = 'structure';
+    state.set(patch, openStructure ? 'story:show-beat' : 'story:scroll');
+  }
+
+  /* While the story drawer is out, the beat reading in the middle of it sets the focus. */
   function watchBeats() {
     observer?.disconnect();
     observer = new IntersectionObserver((entries) => {
+      if (state.get('drawer') !== 'story') return;
       const visible = entries
         .filter((entry) => entry.isIntersecting)
         .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
       if (!visible) return;
-      const id = visible.target.dataset.beat;
-      if (id && id !== state.get('beat')) {
-        state.set({ beat: id }, 'story:scroll');
-      }
-    }, { rootMargin: '-35% 0px -45% 0px', threshold: [0.1, 0.5, 0.9] });
+      const beat = (bundle.story?.beats || []).find((b) => b.id === visible.target.dataset.beat);
+      if (beat && beat.id !== state.get('beat')) focusBeat(beat);
+    }, { root: el.storyBody, rootMargin: '-30% 0px -45% 0px', threshold: [0.1, 0.5, 0.9] });
 
     for (const article of el.beats.querySelectorAll('.beat')) observer.observe(article);
   }
 
-  async function applyFocus(beatId) {
-    if (!bundle) return;
-    const beat = (bundle.story?.beats || []).find((b) => b.id === beatId);
+  function markCurrent() {
+    const current = state.get('beat');
     for (const article of el.beats.querySelectorAll('.beat')) {
-      article.classList.toggle('is-current', article.dataset.beat === beatId);
+      article.classList.toggle('is-current', article.dataset.beat === current);
     }
-    if (!beat?.focus) return;
-    const focus = beat.focus;
-
-    /* Set the whole focus block in one dispatch: a beat is one user action, not five. */
-    state.set({
-      compound: focus.compound || state.get('compound'),
-      structure: focus.structure || state.get('structure'),
-      residues: focus.residues || [],
-      edit: focus.edit || null,
-    }, 'story:focus');
-
-    if (focus.structure) await showStructure(focus.structure, focus.residues || []);
   }
 
-  async function showStructure(pdbId, residues) {
-    if (!bundle) return;
-    if (!StructureViewer.available()) {
-      el.viewerHost.replaceChildren(emptyState('The 3D viewer did not load', ''));
-      return;
-    }
-    /* Same rule as the Structure sheet: a 0x0 host means a zero-sized WebGL texture, which
-     * Mol* refuses. The Story tab is the opening tab, so this normally passes at once. */
-    if (el.viewerHost.clientWidth === 0 || el.viewerHost.clientHeight === 0) return;
-    if (!viewer) {
-      viewer = new StructureViewer(el.viewerHost);
-      await viewer.create({ background: colourInt('--surface-2') });
-      viewer.onResidueClick((residue) => {
-        state.set({ residues: [residue.id] }, 'story:3d-click');
-      });
-    }
-    const entry = bundle.structures.find((s) => s.pdb_id === pdbId);
-    if (!entry) return;
-    if (!viewer.loaded.has(`story-${pdbId}`)) {
-      for (const name of [...viewer.loaded.keys()]) await viewer.clear(name);
-      await viewer.load(`story-${pdbId}`, `https://files.rcsb.org/download/${pdbId}.cif`);
-    }
-    if (residues.length) viewer.focusResidues(residues);
-    else viewer.focusLigand();
-
-    el.caption.textContent = state.get('register') === 'plain'
-      ? entry.caption_plain : entry.caption_specialist;
-  }
-
-  function renderOneLine() {
-    el.oneLine.textContent = bundle.paper.one_line;
-  }
-
-  state.on(['beat'], () => applyFocus(state.get('beat')));
-  state.on(['register'], () => {
-    if (!bundle) return;
-    renderBeats();
-    const structureId = state.get('structure');
-    const entry = bundle.structures.find((s) => s.pdb_id === structureId);
-    if (entry) {
-      el.caption.textContent = state.get('register') === 'plain'
-        ? entry.caption_plain : entry.caption_specialist;
-    }
-  });
+  state.on(['beat'], markCurrent);
+  state.on(['register'], () => { if (bundle) renderBeats(); });
 
   return {
     async setBundle(next) {
       bundle = next;
       renderOneLine();
       renderQuote();
-      await renderStrip();
+      renderStrip();
       renderBeats();
-      const first = bundle.story?.beats?.[0];
-      const entry = bundle.structures.find((s) => s.role === 'primary') || bundle.structures[0];
-      if (first?.focus?.structure) await showStructure(first.focus.structure, first.focus.residues || []);
-      else if (entry) await showStructure(entry.pdb_id, []);
     },
     render: renderBeats,
   };
-}
-
-function colourInt(token) {
-  const value = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
-  const probe = document.createElement('span');
-  probe.style.color = value;
-  document.body.appendChild(probe);
-  const computed = getComputedStyle(probe).color;
-  probe.remove();
-  const match = computed.match(/rgba?\((\d+)[,\s]+(\d+)[,\s]+(\d+)/);
-  if (!match) return 0x143458;
-  const [, r, g, b] = match.map(Number);
-  return (r << 16) | (g << 8) | b;
 }

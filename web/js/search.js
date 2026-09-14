@@ -95,6 +95,8 @@ export function initSearch(state) {
     if (focus.residues && focus.residues.length) patch.residues = focus.residues;
     if (focus.edit) patch.edit = focus.edit;
     if (focus.beat) patch.beat = focus.beat;
+    /* Story and campaign text lives in drawers now, so a hit there pulls its drawer out. */
+    if (focus.drawer) patch.drawer = focus.drawer;
 
     /* A hit in another paper switches papers first: the app serialises that, so the
      * selection lands on the bundle the reader asked for rather than the previous one. */

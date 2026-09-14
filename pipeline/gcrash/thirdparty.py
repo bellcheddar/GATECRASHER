@@ -32,7 +32,7 @@ not this one.
 
 VENDORED = {
     "Mol*": "`molstar.LICENSE.txt`",
-    "Plotly.js": "`plotly.LICENSE.txt`, and `plotly.min.js.LICENSE.txt` for the libraries it bundles",
+    "Plotly.js": "`plotly.LICENSE.txt`, and `plotly-basic.min.js.LICENSE.txt` for the libraries it bundles",
     "RDKit.js": "`RDKit_minimal.LICENSE.txt` (RDKit.js and RDKit)",
 }
 

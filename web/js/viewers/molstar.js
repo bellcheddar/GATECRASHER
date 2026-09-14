@@ -8,6 +8,8 @@
  *   - the canvas sizes itself once, so handleResize must be called from a ResizeObserver
  *   - transparentBackground clears to white, so the panel colour is painted explicitly */
 
+import { loadLibrary } from '../loader.js';
+
 const OPTIONS = {
   extensions: [],
   layoutIsExpanded: false,
@@ -37,6 +39,18 @@ export class StructureViewer {
 
   static available() {
     return typeof window !== 'undefined' && typeof window.molstar !== 'undefined';
+  }
+
+  /* Mol* is 5 MB of JavaScript, fetched the first time a viewer is actually wanted rather
+   * than blocking the first paint. Resolves false if it cannot be loaded. */
+  static async ensure() {
+    if (StructureViewer.available()) return true;
+    try {
+      await loadLibrary('molstar');
+    } catch (err) {
+      console.warn('[molstar] did not load', err);
+    }
+    return StructureViewer.available();
   }
 
   async create({ background } = {}) {

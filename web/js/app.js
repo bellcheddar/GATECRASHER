@@ -18,7 +18,8 @@ import { initSearch } from './search.js';
 import { initRdkit } from './viewers/rdkit.js';
 import { redrawAll } from './viewers/plotly.js';
 
-const TABS = ['story', 'structure', 'editlog', 'sar', 'properties', 'about'];
+const TABS = ['structure', 'editlog', 'sar', 'properties', 'about'];
+const DRAWERS = ['campaign', 'story', 'plot'];
 
 const panels = {};
 let papers = [];
@@ -33,9 +34,8 @@ async function boot() {
   state.seed({ theme: stored });
   updateThemeButton();
 
-  /* RDKit is optional: the app shows precomputed depictions without it, so booting does
-   * not wait for the WASM before drawing the first paper. */
-  initRdkit();
+  /* RDKit is not loaded here. The app shows precomputed depictions without it, and its
+   * 6.9 MB wasm is fetched only when a sheet that highlights atoms is first opened. */
 
   panels.rail = initRail(state);
   panels.structure = initStructure(state);
@@ -60,7 +60,10 @@ async function boot() {
 
   const fromHash = state.readHash(papers.map((p) => p.slug), TABS);
   const slug = fromHash.paper || papers[0]?.slug;
-  if (!slug) return;
+  if (!slug) {
+    delete document.documentElement.dataset.booting;
+    return;
+  }
 
   /* Wire the shell BEFORE the first bundle loads. Doing it afterwards means the keyboard
    * shortcuts and the toggles do not exist until the heaviest panel has finished drawing,
@@ -122,6 +125,8 @@ async function selectPaperNow(slug, patch = {}) {
     edit,
     motif: null,
     beat: null,
+    /* A drawer stays out across a paper change: it is layout, not a selection. */
+    drawer: DRAWERS.includes(patch.drawer) ? patch.drawer : state.get('drawer'),
   }, 'app:select-paper');
 
   /* The address bar follows the reader's action immediately. Waiting until every panel has
@@ -131,8 +136,20 @@ async function selectPaperNow(slug, patch = {}) {
   state.writeHash();
 
   panels.rail.setBundle(bundle);
-  await panels.story.setBundle(bundle);
+  /* The Structure sheet is the landing sheet. Its setBundle draws the chips, ruler, contacts
+   * and caption and starts the viewer without waiting for Mol* to arrive. */
   await panels.structure.setBundle(bundle);
+
+  /* The landing sheet's text is in place, so show the page. Until now <main> was laid out
+   * but invisible (html[data-booting] in panels.css). Sheets filling in on screen registered
+   * as layout shift, 0.26 on desktop, which alone cost Lighthouse most of its performance
+   * score; content that was never visible cannot shift. The title bar paints at once. The
+   * yield lets the browser paint it before the remaining panels are built. */
+  if ('booting' in document.documentElement.dataset) {
+    delete document.documentElement.dataset.booting;
+    await new Promise((resolve) => { setTimeout(resolve, 0); });
+  }
+  await panels.story.setBundle(bundle);
   await panels.editlog.setBundle(bundle);
   panels.sar.setBundle(bundle);
   panels.properties.setBundle(bundle);
@@ -176,7 +193,23 @@ function showTab(tab) {
   /* Plotly sizes to its container, and a container inside a hidden section measures zero,
    * so every figure is redrawn once its tab is actually visible. */
   redrawAll();
+
+  /* The first visit to a sheet that highlights changed atoms fetches RDKit, then redraws
+   * the two sheets that use it; until then they show the precomputed drawings. */
+  if (tab === 'editlog' || tab === 'sar') {
+    const first = !rdkitRequested;
+    rdkitRequested = true;
+    if (first) {
+      initRdkit().then((module) => {
+        if (!module || !bundle) return;
+        panels.editlog.render();
+        panels.sar.render();
+      });
+    }
+  }
 }
+
+let rdkitRequested = false;
 
 function wireShell() {
   const state = appState;
@@ -194,6 +227,18 @@ function wireShell() {
   });
   state.on(['register'], updateRegisterButton);
   updateRegisterButton();
+
+  for (const button of document.querySelectorAll('#drawer-tabs button')) {
+    button.addEventListener('click', () => {
+      const name = button.dataset.drawer;
+      state.set({ drawer: state.get('drawer') === name ? null : name }, 'shell:drawer-tab');
+    });
+  }
+  for (const button of document.querySelectorAll('[data-close-drawer]')) {
+    button.addEventListener('click', () => state.set({ drawer: null }, 'shell:drawer-close'));
+  }
+  state.on(['drawer'], () => showDrawer(state.get('drawer'), true));
+  showDrawer(state.get('drawer'), false);
 
   document.getElementById('theme-button').addEventListener('click', () => {
     state.theme.toggle('shell:theme');
@@ -232,9 +277,39 @@ function wireShell() {
         'shell:key-r');
     }
     if (event.key === 'Escape') {
+      /* Escape closes an open drawer first, and only clears the selection when none is. */
+      if (state.get('drawer')) {
+        state.set({ drawer: null }, 'shell:escape');
+        return;
+      }
       state.set({ residues: [], motif: null, edit: null }, 'shell:escape');
     }
   });
+}
+
+/* One drawer out at a time. Drawers slide over whichever sheet is open rather than replacing
+ * it, so the structure stays exactly where the reader left it. Opening one moves focus to
+ * its close button, and closing returns focus to whatever opened it. */
+let drawerOpener = null;
+
+function showDrawer(name, fromUser) {
+  for (const drawer of document.querySelectorAll('.drawer')) {
+    drawer.classList.toggle('is-open', drawer.id === `drawer-${name}`);
+  }
+  for (const button of document.querySelectorAll('#drawer-tabs button')) {
+    button.setAttribute('aria-expanded', String(button.dataset.drawer === name));
+  }
+  document.getElementById('drawer-tabs')?.classList.toggle('is-shifted', Boolean(name));
+  if (!fromUser) return;
+  if (name) {
+    if (!drawerOpener) drawerOpener = document.activeElement;
+    document.querySelector(`#drawer-${name} [data-close-drawer]`)?.focus({ preventScroll: true });
+  } else {
+    if (drawerOpener instanceof HTMLElement && drawerOpener.isConnected) {
+      drawerOpener.focus({ preventScroll: true });
+    }
+    drawerOpener = null;
+  }
 }
 
 function updateRegisterButton() {
@@ -265,6 +340,7 @@ function onHashChange() {
 
 boot().catch((err) => {
   console.error('[app] boot failed', err);
+  delete document.documentElement.dataset.booting;
   const main = document.querySelector('main');
   if (main) {
     const box = document.createElement('div');

@@ -149,6 +149,7 @@ Where a paper's only record of something is a figure we may not copy, the app sa
 - [ ] **Short molecular dynamics**: an RMSF track on the ruler and a decimated trajectory per primary structure, and no trajectory ships that does not support what the paper claims
 - [x] **PyMOL downloads**: a `.pml` script, a `.pse` session and a still image per structure, on the Structure sheet
 - [ ] **Performance budget**: first meaningful paint under two seconds cold, under 1.5 MB initial transfer excluding Mol\*, lazy-loaded structures
+- [x] **Structure-first landing**: every paper opens on the pocket; the campaign, the five beats and the selectivity plot pull out as drawers over any sheet, and a beat drives the structure viewer
 - [x] **Licence**: MIT. The one dependency that would have forced AGPL-3.0, PyMuPDF, is replaced by pypdfium2; the GPL tools run as subprocesses only; the vendored libraries carry their notices. See `THIRD_PARTY.md`
 
 ## 📚 Citations

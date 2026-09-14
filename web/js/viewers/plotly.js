@@ -9,6 +9,8 @@
  *     an open marker at the bound with an arrow, never as a number.
  *   - potency axes are log, because the campaigns span four orders of magnitude. */
 
+import { loadLibrary, whenVisible } from '../loader.js';
+
 const RESIZE_DEBOUNCE = 150;
 
 function token(name, fallback) {
@@ -70,10 +72,43 @@ export const CONFIG = {
 
 const hosts = new Map();
 
+/* Plotly is fetched on first use, not as a blocking <script>, and only once some figure that
+ * wants it is actually on screen: a figure in a hidden tab or below a phone's fold does not
+ * pull 1 MB of JavaScript in. A figure asked for before Plotly arrives is remembered (the
+ * latest request per host wins) and drawn when it lands. */
+const waiting = new Map();
+const watched = new WeakSet();
+let loading = null;
+
+function startLoading() {
+  if (loading) return;
+  loading = loadLibrary('plotly')
+    .then(() => {
+      const queued = [...waiting.entries()];
+      waiting.clear();
+      for (const [queuedHost, queuedArgs] of queued) draw(queuedHost, ...queuedArgs);
+    })
+    .catch((err) => {
+      console.warn('[plotly] did not load', err);
+      loading = null;
+    });
+}
+
+function whenPlotly(host, args) {
+  waiting.set(host, args);
+  if (!watched.has(host)) {
+    watched.add(host);
+    whenVisible(host).then(startLoading);
+  }
+  return null;
+}
+
 /* Render or update a figure. Width comes from the container, because the panel can be in a
  * grid track that Plotly's autosize measures wrongly. */
 export function draw(host, data, layout = {}, { onPointClick = null } = {}) {
-  if (typeof window.Plotly === 'undefined') return null;
+  if (typeof window.Plotly === 'undefined') {
+    return whenPlotly(host, [data, layout, { onPointClick }]);
+  }
   const width = host.clientWidth || host.parentElement?.clientWidth || 600;
   const narrow = width < 620;
 
@@ -130,7 +165,9 @@ export function compoundScatter(points, { selected = null, xTitle = '', yTitle =
   const target = colour || token('--target', '#6FD3FF');
 
   const traces = [{
-    type: 'scattergl',
+    /* SVG scatter, not scattergl: a campaign is tens of compounds, where WebGL buys nothing,
+     * and it keeps the app on Plotly's basic bundle (a third of the full one's size). */
+    type: 'scatter',
     mode: 'markers',
     name: 'compounds',
     x: exact.map((p) => p.x),

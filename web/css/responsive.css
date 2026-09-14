@@ -6,13 +6,9 @@
 
 @media (max-width: 1180px) {
   .layout-structure,
-  .layout-sar,
-  .layout-story {
+  .layout-sar {
     grid-template-columns: minmax(0, 1fr);
   }
-
-  /* With one column the pinned column would pin against nothing. */
-  .pinned { position: static; }
 }
 
 @media (max-width: 900px) {
@@ -43,6 +39,46 @@
 
   .beat { padding: calc(var(--unit) * 2) 0; }
   body { font-size: 14px; }
+
+  /* On a phone the drawers rise from the bottom, under a tab bar that is always there,
+   * rather than sliding out of a screen edge a thumb cannot find. */
+  body { padding-bottom: 44px; }
+
+  .drawer-tabs,
+  .drawer-tabs.is-shifted {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 0;
+    background: var(--bg);
+    border-top: var(--rule) solid var(--line-strong);
+  }
+
+  .drawer-tabs button {
+    writing-mode: horizontal-tb;
+    min-height: 44px;
+    padding: 0 6px;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .drawer-tabs button[aria-expanded="true"] { box-shadow: inset 0 2px 0 var(--target); }
+
+  .drawer {
+    top: auto;
+    bottom: 44px;
+    width: 100vw;
+    height: min(82vh, calc(100vh - 44px));
+    border-left: 0;
+    border-top: var(--rule) solid var(--line-strong);
+    transform: translateY(calc(100% + 44px));
+  }
+
+  .drawer.is-open { transform: none; }
 }
 
 @media (min-width: 901px) {
