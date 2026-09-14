@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gatecrasher/structures.schema.json",
+  "title": "structures.json",
+  "description": "One entry per deposited, referenced or modelled structure. A modelled entry must be rendered visually distinct in the app.",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": ["pdb_id", "role", "contains", "chain", "klifs", "caption_specialist", "caption_plain", "source"],
+    "additionalProperties": false,
+    "properties": {
+      "pdb_id": { "type": "string", "pattern": "^[0-9A-Z]{4}$|^pdb_[0-9a-z]{8}$" },
+      "role": { "enum": ["primary", "anti_target", "apo", "reference", "model"] },
+      "contains": {
+        "type": "object",
+        "required": ["protein"],
+        "additionalProperties": false,
+        "properties": {
+          "protein": { "type": "string" },
+          "ligand_compound_id": { "type": ["string", "null"] },
+          "ligand_code": { "type": ["string", "null"] }
+        }
+      },
+      "resolution_a": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+      "chain": { "type": "string" },
+      "klifs": { "type": "boolean", "description": "false for KRAS: the ruler must degrade to a plain sequence ruler with no missing-data holes." },
+      "uniprot": { "type": "string" },
+      "caption_specialist": { "type": "string", "minLength": 40 },
+      "caption_plain": { "type": "string", "minLength": 40 },
+      "source": { "enum": ["deposited", "referenced", "modelled"] },
+      "numbering_note": { "type": "string", "description": "Used where a paper carries two numbering schemes, as FGFR2 and FGFR3 do." },
+      "evidence": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gatecrasher/assays.schema.json",
+  "title": "assays.json",
+  "description": "The dictionary that gives each assay its label, units, direction and category. anti_target_of is what drives the selectivity plot automatically.",
+  "type": "object",
+  "minProperties": 1,
+  "additionalProperties": {
+    "type": "object",
+    "required": ["label", "short", "units", "category", "direction"],
+    "additionalProperties": false,
+    "properties": {
+      "label": { "type": "string" },
+      "short": { "type": "string", "maxLength": 14, "description": "Column header text: must fit a narrow table column." },
+      "units": { "type": "string" },
+      "category": { "enum": ["potency", "selectivity", "cell", "property", "adme", "pk", "in_vivo"] },
+      "direction": {
+        "enum": ["lower_better", "higher_better", "neutral"],
+        "description": "Per assay, never inferred from the category: a cellular counter-screen is a potency-shaped assay where higher is better."
+      },
+      "log": { "type": "boolean" },
+      "conditions": { "type": "string" },
+      "is_primary": { "type": "boolean", "description": "Marks the potency axis for this paper. Exactly one assay per paper may set it." },
+      "anti_target_of": { "type": "string", "description": "The target assay this one counter-screens." },
+      "of_assay": { "type": "string", "description": "For a published fold column, the absolute assay it was computed from." },
+      "species": { "type": "string" },
+      "note": { "type": "string" }
+    }
+  }
+}

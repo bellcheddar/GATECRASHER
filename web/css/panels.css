@@ -1,0 +1,439 @@
+/* Panel layout: the shell, the tab strip, the provenance rail, and the inside of each sheet.
+ * BUILD_SPEC section 7. Desktop first; responsive.css stacks it. */
+
+/* ------------------------------------------------------------------------- shell */
+
+.app {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  min-height: 100vh;
+}
+
+.title-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--unit);
+  padding: calc(var(--unit) * 1.25) var(--sheet-pad);
+  background: color-mix(in srgb, var(--bg) 88%, var(--surface));
+  backdrop-filter: blur(6px);
+  border-bottom: var(--rule) solid var(--line-strong);
+}
+
+.wordmark {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.wordmark span { color: var(--target); }
+
+.paper-switcher {
+  display: flex;
+  gap: 0;
+  margin-left: var(--unit);
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.paper-switcher button {
+  border: 0;
+  border-right: var(--rule) solid var(--line);
+  border-radius: 0;
+  padding: 4px 10px;
+  background: var(--surface);
+  font-size: 12px;
+}
+
+.paper-switcher button:last-child { border-right: 0; }
+
+.paper-switcher button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--target) 18%, var(--surface));
+  color: var(--ink);
+}
+
+.paper-switcher kbd {
+  margin-left: 6px;
+  font-size: 10px;
+  color: var(--ink-dim);
+}
+
+.title-bar-spacer { flex: 1 1 auto; }
+
+.tab-strip {
+  display: flex;
+  gap: 0;
+  padding: 0 var(--sheet-pad);
+  background: var(--bg);
+  border-bottom: var(--rule) solid var(--line);
+}
+
+.tab-strip button {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: none;
+  padding: 10px 14px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-dim);
+}
+
+.tab-strip button[aria-selected="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--target);
+}
+
+.register-toggle,
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+/* ----------------------------------------------------------------- provenance rail
+ * Always visible. This is what makes the app defensible to a specialist. */
+
+.provenance-rail {
+  display: flex;
+  align-items: center;
+  gap: var(--unit);
+  flex-wrap: wrap;
+  padding: 6px var(--sheet-pad);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  background: var(--surface-2);
+  border-bottom: var(--rule) solid var(--line);
+}
+
+.provenance-rail .rail-item { display: flex; align-items: center; gap: 5px; }
+.provenance-rail .rail-label { text-transform: uppercase; letter-spacing: 0.08em; }
+.provenance-rail .rail-value { color: var(--ink); }
+.provenance-rail .rail-source { color: var(--measure); }
+
+/* A claim the authors themselves call speculative is marked as such, everywhere it appears. */
+.speculative {
+  border-bottom: 1px dotted var(--measure);
+  cursor: help;
+}
+
+.speculative::after {
+  content: " (authors' hypothesis)";
+  color: var(--measure);
+  font-size: 0.9em;
+}
+
+/* ------------------------------------------------------------------------ tab body */
+
+.tab-body { padding: var(--sheet-pad); }
+.tab-body[hidden] { display: none !important; }
+
+.layout-structure {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(320px, 1fr);
+  gap: var(--sheet-pad);
+  align-items: start;
+}
+
+.layout-sar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--sheet-pad);
+  align-items: start;
+}
+
+.layout-story {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: var(--sheet-pad);
+  align-items: start;
+}
+
+.stack { display: grid; gap: var(--sheet-pad); }
+
+/* --------------------------------------------------------------------- structure */
+
+.viewer-host {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-width: 100%;
+  background: var(--surface-2);
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.viewer-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--unit) * 0.5);
+}
+
+.viewer-pair .viewer-label {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  z-index: 2;
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 1px 6px;
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+}
+
+.viewer-pair .is-target .viewer-label { color: var(--target); border-color: var(--target); }
+.viewer-pair .is-anti .viewer-label { color: var(--anti); border-color: var(--anti); }
+
+/* Mol* paints its own ground, so the panel colour is set on the canvas host and the
+ * plugin chrome is hidden: the app supplies its own controls. */
+.viewer-host .msp-plugin-content,
+.viewer-host .msp-default-bg,
+.viewer-host .msp-viewport { background: transparent !important; }
+
+.viewer-host .msp-viewport-controls,
+.viewer-host .msp-hover-info { display: none !important; }
+
+/* KLIFS ruler: scrolls horizontally in its own container, never widening the page. */
+.ruler {
+  overflow-x: auto;
+  padding-bottom: 4px;
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.ruler svg { display: block; min-width: 100%; }
+.ruler-cell { cursor: pointer; }
+.ruler-cell:hover { stroke: var(--ink); stroke-width: 1; }
+.ruler-cell[aria-selected="true"] { stroke: var(--focus); stroke-width: 1.5; }
+.ruler-tick { fill: var(--ink-dim); font-family: var(--mono); font-size: 9px; }
+.ruler-band { opacity: 0.75; }
+
+/* contact list */
+.contact-list { display: grid; gap: 2px; max-height: 320px; overflow-y: auto; }
+
+.contact-row {
+  display: grid;
+  grid-template-columns: 78px 1fr auto;
+  gap: var(--unit);
+  align-items: center;
+  padding: 3px 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  background: none;
+  border: var(--rule) solid transparent;
+  border-radius: var(--radius);
+  text-align: left;
+  width: 100%;
+}
+
+.contact-row:hover { border-color: var(--line-strong); background: var(--surface-2); }
+.contact-row .contact-type { color: var(--ink-dim); font-size: 10px; text-transform: uppercase; }
+.contact-row .contact-distance { color: var(--measure); }
+
+.contact-group-head {
+  margin-top: var(--unit);
+  font-family: var(--ui);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-dim);
+}
+
+/* ---------------------------------------------------------------------- edit log */
+
+.edit-card {
+  display: grid;
+  gap: var(--unit);
+  padding: var(--unit);
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.edit-card.is-active { border-color: var(--target); }
+
+.edit-swap {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: var(--unit);
+  align-items: center;
+}
+
+.edit-arrow {
+  font-family: var(--mono);
+  font-size: 18px;
+  color: var(--ink-dim);
+  text-align: center;
+}
+
+.edit-deltas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--unit) * 0.75);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.edit-delta {
+  padding: 1px 6px;
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+}
+
+.edit-delta.gain { border-color: var(--gain); color: var(--gain); }
+.edit-delta.loss { border-color: var(--loss); color: var(--loss); }
+
+.change-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--measure);
+  border: var(--rule) solid var(--measure);
+  border-radius: var(--radius);
+  padding: 1px 6px;
+}
+
+/* --------------------------------------------------------------------------- SAR */
+
+.rgroup-grid { overflow: auto; }
+
+.rgroup-grid table { border-collapse: collapse; }
+
+.rgroup-grid th,
+.rgroup-grid td {
+  border: var(--rule) solid var(--line);
+  padding: 2px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.rgroup-grid th .depiction { width: 88px; }
+
+.rgroup-cell {
+  width: 76px;
+  height: 46px;
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* An empty cell is drawn as deliberately empty: the combination was never made. */
+.rgroup-cell.is-empty {
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 4px, var(--line) 4px, var(--line) 5px);
+  cursor: default;
+}
+
+.selectivity-matrix td.fold { font-family: var(--mono); text-align: right; }
+
+/* ------------------------------------------------------------------- story sheet */
+
+.beat {
+  padding: calc(var(--unit) * 3) 0;
+  border-bottom: var(--rule) dashed var(--line);
+}
+
+.beat-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--measure);
+}
+
+.beat h3 { font-family: var(--prose); font-size: 1.3rem; color: var(--ink); margin: 6px 0; }
+.beat.is-current { border-left: 2px solid var(--target); padding-left: var(--unit); }
+
+.beat-evidence {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+.pinned {
+  position: sticky;
+  top: calc(var(--unit) * 14);
+  display: grid;
+  gap: var(--unit);
+}
+
+/* graphical abstract strip: our own drawing, from SMILES, never the publisher's image */
+.abstract-strip {
+  display: flex;
+  gap: var(--unit);
+  align-items: stretch;
+  overflow-x: auto;
+  padding-bottom: var(--unit);
+}
+
+.abstract-panel {
+  flex: 0 0 auto;
+  width: 190px;
+  display: grid;
+  gap: 4px;
+  padding: var(--unit);
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  cursor: pointer;
+  text-align: left;
+}
+
+.abstract-panel:hover { border-color: var(--target); }
+.abstract-panel .abstract-caption { font-size: 11px; color: var(--ink-dim); }
+.abstract-panel .abstract-value { font-family: var(--mono); font-size: 12px; color: var(--measure); }
+
+.abstract-arrow {
+  flex: 0 0 auto;
+  align-self: center;
+  width: 150px;
+  font-size: 11px;
+  color: var(--ink-dim);
+  text-align: center;
+}
+
+.abstract-arrow::before {
+  content: "⟶";
+  display: block;
+  font-family: var(--mono);
+  font-size: 20px;
+  color: var(--line-strong);
+}
+
+/* ---------------------------------------------------------------------- abstract quote
+ * The published abstract is quoted verbatim, so it is marked unmistakably as a quotation
+ * with its citation, and the surrounding narrative is ours. */
+
+blockquote.abstract {
+  margin: 0;
+  padding: var(--unit) var(--sheet-pad);
+  border-left: 3px solid var(--measure);
+  background: var(--surface-2);
+  font-family: var(--prose);
+}
+
+blockquote.abstract cite {
+  display: block;
+  margin-top: var(--unit);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-style: normal;
+  color: var(--ink-dim);
+}
+
+/* ------------------------------------------------------------------------- plots */
+
+.plot-host { width: 100%; min-height: 300px; }

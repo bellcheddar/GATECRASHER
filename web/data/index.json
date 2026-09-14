@@ -1,0 +1,13 @@
+{
+ "papers": [
+  {
+   "slug": "cdk2",
+   "title": "Discovery of (4-Pyrazolyl)-2-aminopyrimidines as Potent and Selective Inhibitors of Cyclin-Dependent Kinase 2",
+   "authors_short": "Hummel et al.",
+   "year": 2024,
+   "target": "CDK2",
+   "one_line": "A screening hit that was really a JAK2 inhibitor, turned into a CDK2 inhibitor selective over five other CDKs.",
+   "bundle_version": "1.0.0"
+  }
+ ]
+}

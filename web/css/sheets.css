@@ -1,0 +1,195 @@
+/* Sheets. BUILD_SPEC section 6.3.
+ *
+ * Every panel is a sheet: a 1px border, a 3px inset dashed inner rule, and a title block in
+ * the bottom-right corner carrying the sheet number, the paper slug and the current compound
+ * or structure id. The title block updates with app state, which is what makes the
+ * cross-linking visible rather than merely functional.
+ *
+ * Sheet numbering is content, not decoration: 01 Story, 02 Structure, 03 Edit log,
+ * 04 SAR, 05 Properties. */
+
+.sheet {
+  position: relative;
+  background: var(--surface);
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--sheet-pad) var(--sheet-pad) calc(var(--sheet-pad) + 18px);
+  box-shadow: 0 1px 0 var(--shadow);
+  min-width: 0;               /* so a sheet in a grid track can actually shrink */
+}
+
+/* the inset dashed inner rule, drawn 3px in from the border */
+.sheet::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: var(--rule) dashed var(--line);
+  border-radius: var(--radius);
+  pointer-events: none;
+}
+
+.sheet > * { position: relative; }
+
+.sheet-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--unit);
+  justify-content: space-between;
+  margin-bottom: var(--unit);
+  padding-bottom: calc(var(--unit) * 0.75);
+  border-bottom: var(--rule) solid var(--line);
+}
+
+.sheet-head h2 { margin: 0; }
+
+.sheet-number {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+  letter-spacing: 0.1em;
+}
+
+.sheet-tools {
+  display: flex;
+  gap: calc(var(--unit) * 0.5);
+  flex-wrap: wrap;
+}
+
+/* The title block. Mono, 10px, bottom right, live. */
+.title-block {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  display: flex;
+  gap: 0;
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+  background: var(--surface-2);
+  border: var(--rule) solid var(--line);
+  border-right: 0;
+  border-bottom: 0;
+  border-top-left-radius: var(--radius);
+  pointer-events: auto;
+}
+
+.title-block span {
+  padding: 1px 7px;
+  border-right: var(--rule) solid var(--line);
+  white-space: nowrap;
+}
+
+.title-block span:last-child { border-right: 0; }
+.title-block .tb-value { color: var(--ink); }
+.title-block a { color: var(--target); text-decoration: none; }
+.title-block a:hover { text-decoration: underline; }
+
+/* A sheet can be empty for an honest reason: no structure exists for this compound, or the
+ * paper does not state a value. That is a first-class state, styled as information, never
+ * as an error. */
+.sheet-empty {
+  display: grid;
+  place-items: center;
+  min-height: 140px;
+  padding: calc(var(--unit) * 3);
+  color: var(--ink-dim);
+  text-align: center;
+  border: var(--rule) dashed var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.sheet-empty strong { color: var(--ink); font-weight: 600; }
+
+/* ------------------------------------------------------------------------ chips
+ * Motif chips, residue chips and change-type tags. Each carries --motif from
+ * blueprint.css so a residue's role reads the same everywhere it appears. */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink);
+  background: var(--surface-2);
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.chip::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--motif, var(--ink-dim));
+  border-radius: 1px;
+}
+
+.chip:hover { border-color: var(--line-strong); }
+
+.chip[aria-pressed="true"],
+.chip.is-active {
+  border-color: var(--motif, var(--target));
+  color: var(--ink);
+  background: color-mix(in srgb, var(--motif, var(--target)) 16%, var(--surface-2));
+}
+
+.chip.no-dot::before { display: none; }
+
+/* ------------------------------------------------------------------------ tables
+ * Numbers are mono and tabular. A qualifier travels with its value, so a bound reads as a
+ * bound and can never be mistaken for a measurement. */
+
+table.sheet-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.sheet-table th,
+.sheet-table td {
+  padding: 4px 8px;
+  text-align: left;
+  border-bottom: var(--rule) solid var(--line);
+  white-space: nowrap;
+}
+
+.sheet-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--surface-2);
+  font-family: var(--ui);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  cursor: pointer;
+}
+
+.sheet-table td.num,
+.sheet-table th.num { text-align: right; }
+
+.sheet-table tbody tr:hover { background: var(--surface-2); }
+
+.sheet-table tbody tr[aria-selected="true"] {
+  background: color-mix(in srgb, var(--target) 14%, var(--surface));
+  box-shadow: inset 2px 0 0 var(--target);
+}
+
+.qualifier { color: var(--ink-dim); }
+.value-bounded { color: var(--ink-dim); font-style: italic; }
+.cell-empty { color: var(--ink-dim); }
+.cell-empty::after { content: "·"; }
+
+/* A table wider than its sheet scrolls in its own container: the page body never scrolls
+ * sideways. */
+.table-scroll {
+  overflow-x: auto;
+  max-height: 60vh;
+  overflow-y: auto;
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+}

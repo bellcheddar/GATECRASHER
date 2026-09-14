@@ -45,6 +45,37 @@ where the paper disagrees with itself, both readings are recorded and neither is
 7. **Compound 6 whole blood potency: text says `about 5 uM`, Table 1 says `5111 nM`.**
    These agree; the table value is used. Noted only because the text rounds.
 
+## What PLIP reproduces of the published structure description, and what it does not
+
+The paper describes four things about compound 17 in 8UV0. PLIP, run through the vendored
+`cif2plip` preparation, reproduces three of them outright:
+
+| Paper's claim | PLIP result |
+|---|---|
+| The 2-aminopyrimidine makes the hinge binding interaction | Two hydrogen bonds to Leu83, 1.85 A and 2.35 A |
+| Sulfonamide oxygens accept from the backbone N-H of Asp86 | Hydrogen bond to Asp86, 2.17 A, protein as donor |
+| The tertiary hydroxyl interacts with Asp145 | Hydrogen bond to Asp145, 2.71 A |
+| A water-mediated interaction with Lys89 **and** Gln85 | Partly: a water bridge to **Gln85** (2.98 A and 3.06 A legs), plus a **direct** hydrogen bond to Lys89 at 2.93 A |
+
+12. **The Lys89 contact is direct in PLIP's reading, water-mediated in the paper's.**
+    Checked against the coordinates independently: water A491 sits within hydrogen-bonding
+    distance of both Gln85 NE2 and Lys89 NZ, so the structural claim is sound and the
+    difference is one of assignment, not of fact. Both readings are shown in the app: the
+    contact list reports what PLIP measured, and the caption states what the authors
+    described. Neither is presented as the other.
+
+13. **PLIP calls a salt bridge to Asp86 at 4.96 A.** Compound 17 carries no formal charge at
+    that end of the molecule (the piperidine nitrogen is sulfonylated, so it is not basic),
+    which makes this assignment doubtful. It is kept because the pipeline does not edit
+    PLIP's output, but it is worth knowing before the contact is built into any narrative.
+
+14. **The trifluoromethyl to Phe80 contact does not appear at all.** This is the single most
+    important interaction in the campaign's story and PLIP classifies nothing for it: the
+    contact is a fluorine pointing at an aromatic face, which falls outside PLIP's
+    hydrophobic and pi-stacking criteria. The Structure sheet must therefore draw the Phe80
+    relationship from the motif annotation and the paper's own description, not from the
+    contact list, and must not imply a measured interaction where there is none.
+
 ## Open decisions for review
 
 8. **`change_type` enum extension.** BUILD_SPEC 5.7 fixes the `change_type` vocabulary, but it

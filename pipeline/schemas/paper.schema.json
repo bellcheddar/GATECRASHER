@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gatecrasher/paper.schema.json",
+  "title": "paper.json",
+  "description": "Identity, framing and graphical abstract re-creation for one campaign.",
+  "type": "object",
+  "required": ["slug", "title", "authors_short", "journal", "year", "doi", "target", "anti_targets", "one_line", "abstract", "graphical_abstract", "problem", "bundle_version"],
+  "additionalProperties": false,
+  "properties": {
+    "slug": { "enum": ["cdk2", "fgfr", "kras", "jak1"] },
+    "title": { "type": "string", "minLength": 10 },
+    "authors_short": { "type": "string" },
+    "authors_full": { "type": "string" },
+    "journal": { "type": "string" },
+    "year": { "type": "integer", "minimum": 2000, "maximum": 2030 },
+    "volume": { "type": ["integer", "null"] },
+    "pages": { "type": ["string", "null"] },
+    "doi": { "type": "string", "pattern": "^10\\." },
+    "target": {
+      "type": "object",
+      "required": ["name", "family"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "partner": { "type": ["string", "null"] },
+        "family": { "type": "string" },
+        "uniprot": { "type": "string", "pattern": "^[A-Z0-9]{6,10}$" }
+      }
+    },
+    "anti_targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "partner": { "type": ["string", "null"] },
+          "uniprot": { "type": "string" }
+        }
+      }
+    },
+    "one_line": { "type": "string", "maxLength": 140 },
+    "abstract": { "type": "string", "minLength": 100 },
+    "graphical_abstract": {
+      "type": "object",
+      "required": ["panels"],
+      "additionalProperties": false,
+      "properties": {
+        "panels": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": ["kind"],
+            "additionalProperties": false,
+            "properties": {
+              "kind": { "enum": ["compound", "arrow"] },
+              "compound_id": { "type": "string" },
+              "caption": { "type": "string" },
+              "reason": { "type": "string" },
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["assay_id", "display"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "assay_id": { "type": "string" },
+                    "display": { "type": "string" }
+                  }
+                }
+              }
+            },
+            "allOf": [
+              {
+                "if": { "properties": { "kind": { "const": "compound" } } },
+                "then": { "required": ["compound_id", "caption", "values"] }
+              },
+              {
+                "if": { "properties": { "kind": { "const": "arrow" } } },
+                "then": { "required": ["reason"] }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "problem": {
+      "type": "object",
+      "required": ["disease", "selectivity", "property"],
+      "additionalProperties": false,
+      "properties": {
+        "disease": { "type": "string" },
+        "selectivity": { "type": "string" },
+        "property": { "type": "string" }
+      }
+    },
+    "bundle_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" }
+  }
+}

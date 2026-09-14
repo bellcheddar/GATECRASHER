@@ -1,0 +1,191 @@
+/* The Blueprint look: a technical drawing of a drug discovery campaign.
+ * BUILD_SPEC sections 6.2 to 6.4. Sheets themselves are in sheets.css. */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  /* The grid lives on the app ground only. Prose and tables sit on --surface so text
+   * never fights the grid. Two sizes: a fine 8px grid and a heavier 80px rule. */
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px),
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Every numeral, residue id, PDB code and assay value is mono with tabular figures,
+ * so columns of numbers line up and a changing value does not shift its neighbours. */
+.mono,
+code,
+kbd,
+th.num,
+td.num,
+.value,
+.residue,
+.pdb-id,
+.title-block {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.prose {
+  font-family: var(--prose);
+  font-size: 1.12rem;
+  line-height: 1.62;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--ui);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin: 0 0 calc(var(--unit) * 1.5);
+}
+
+h1 { font-size: 1.35rem; }
+h2 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em; }
+h3 { font-size: 0.95rem; color: var(--ink-dim); }
+
+a { color: var(--target); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+
+/* Focus is always visible: this app is meant to be driven from the keyboard. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+button,
+select,
+input {
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface-2);
+  border: var(--rule) solid var(--line);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+button:hover,
+select:hover { border-color: var(--line-strong); }
+
+button[aria-pressed="true"],
+button.is-active {
+  border-color: var(--target);
+  color: var(--target);
+}
+
+/* ---------------------------------------------------------------- drawing grammar
+ * Implemented once, used by every panel. Colour carries meaning, so the eye reads a
+ * target/anti-target pair without a legend. */
+
+.measure-line {
+  stroke: var(--measure);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.measure-label {
+  fill: var(--measure);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.annotation-line {
+  stroke: var(--target);
+  stroke-width: 1.25;
+  stroke-dasharray: 3 2;      /* 3-2 dash, per the drawing grammar */
+  fill: none;
+}
+
+.annotation-label {
+  fill: var(--ink);
+  font-family: var(--ui);
+  font-size: 12px;
+}
+
+.anti .annotation-line,
+.anti-overlay .annotation-line { stroke: var(--anti); }
+.anti .annotation-label,
+.anti-overlay .annotation-label { fill: var(--anti); }
+
+.clash-line {
+  stroke: var(--loss);
+  stroke-width: 2;
+  fill: none;
+}
+
+.gain { color: var(--gain); }
+.loss { color: var(--loss); }
+.delta-gain::before { content: "▲ "; color: var(--gain); }
+.delta-loss::before { content: "▼ "; color: var(--loss); }
+
+/* Motif colours: the same residue role reads the same in 3D, on the ruler and in a chip. */
+.motif-gatekeeper { --motif: var(--measure); }
+.motif-hinge { --motif: var(--target); }
+.motif-DFG { --motif: #C792EA; }
+.motif-catalytic_lys { --motif: #7FDBCA; }
+.motif-glycine_rich_loop { --motif: #9BB8D3; }
+.motif-P_loop { --motif: #9BB8D3; }
+.motif-switch_I { --motif: #7FDBCA; }
+.motif-switch_II { --motif: #C792EA; }
+.motif-solvent_front { --motif: #8FB4CF; }
+.motif-front_pocket { --motif: #6FD3FF; }
+.motif-back_pocket { --motif: #FFB4A2; }
+.motif-mutation_site { --motif: var(--anti); }
+.motif-other { --motif: var(--ink-dim); }
+
+/* ------------------------------------------------------------------------- motion
+ * Measure lines draw themselves in 240 ms on selection. Everything else is instant. */
+
+@keyframes draw-measure {
+  from { stroke-dashoffset: var(--dash-length, 100); }
+  to { stroke-dashoffset: 0; }
+}
+
+.measure-line.is-drawing {
+  stroke-dasharray: var(--dash-length, 100);
+  animation: draw-measure 240ms ease-out forwards;
+}
+
+.morph { transition: opacity 240ms ease-out, transform 240ms ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .measure-line.is-drawing,
+  .morph,
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Depictions are rendered once and shown on both themes: gc chem rewrites carbon and bond
+ * black to currentColor, so the ink token colours them here. */
+.depiction svg { color: var(--ink); width: 100%; height: auto; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

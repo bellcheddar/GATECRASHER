@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gatecrasher/edits.schema.json",
+  "title": "edits.csv rows",
+  "description": "The SAR move graph behind the Edit Log sheet. One row per designed change.",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": ["edit_id", "from_compound", "to_compound", "vector", "change_type", "headline", "rationale_specialist", "rationale_plain", "consequences", "structural_basis", "evidence"],
+    "additionalProperties": false,
+    "properties": {
+      "edit_id": { "type": "string", "pattern": "^[a-z0-9]+-e\\d{2}$" },
+      "from_compound": { "type": "string" },
+      "to_compound": { "type": "string" },
+      "vector": { "type": "string", "description": "The position in the scaffold, using the paper's own label." },
+      "change_type": {
+        "enum": ["isostere", "bioisostere", "ring_change", "scaffold_hop", "rigidification", "conformational_lock", "halogenation", "alkylation", "deuteration", "homologation", "polarity_reduction", "polar_addition", "sp3_enrichment", "stereochemistry", "hinge_swap"],
+        "description": "BUILD_SPEC 5.7 vocabulary, plus polar_addition for adding a polar group to lower lipophilicity, which the spec list cannot express. See raw/cdk2/ISSUES.md item 8."
+      },
+      "headline": { "type": "string", "maxLength": 80 },
+      "rationale_specialist": { "type": "string", "minLength": 40 },
+      "rationale_plain": { "type": "string", "minLength": 40 },
+      "consequences": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["assay_id", "from", "to", "direction"],
+          "additionalProperties": false,
+          "properties": {
+            "assay_id": { "type": "string" },
+            "from": { "type": ["number", "string", "null"] },
+            "to": { "type": ["number", "string", "null"] },
+            "fold": { "type": ["number", "null"] },
+            "direction": { "enum": ["gain", "loss", "neutral"] }
+          }
+        }
+      },
+      "structural_basis": {
+        "type": "array",
+        "items": { "type": "string", "pattern": "^[A-Za-z0-9]+:-?\\d+[A-Z]?$" },
+        "description": "chain:resnum ids. Every one must exist in residues.csv for this paper's structures: gc validate enforces it."
+      },
+      "evidence": { "type": "string", "minLength": 2 }
+    }
+  }
+}

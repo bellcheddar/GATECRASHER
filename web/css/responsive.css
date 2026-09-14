@@ -1,0 +1,86 @@
+/* Responsive rules. BUILD_SPEC section 10, Stage 4: sheets stack, the twin view becomes a
+ * swipe, and the KLIFS ruler scrolls horizontally in its own container.
+ *
+ * The page body must never scroll sideways at any width. Only tables, the ruler, the
+ * abstract strip and plots may be wider than the screen, each inside its own scroller. */
+
+@media (max-width: 1180px) {
+  .layout-structure,
+  .layout-sar,
+  .layout-story {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* With one column the pinned column would pin against nothing. */
+  .pinned { position: static; }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --sheet-pad: 12px;
+  }
+
+  .title-bar {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  .paper-switcher { margin-left: 0; }
+  .paper-switcher kbd { display: none; }
+
+  /* The Edit Log leaves the Structure tab and becomes its own tab below 900px. */
+  .tab-strip button[data-tab="editlog"] { display: inline-flex; }
+  .layout-structure .editlog-inline { display: none; }
+
+  /* The twin viewer becomes a swipe: one viewer wide, scroll-snapped. */
+  .viewer-pair {
+    grid-template-columns: 100% 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  .viewer-pair > * { scroll-snap-align: start; }
+
+  .beat { padding: calc(var(--unit) * 2) 0; }
+  body { font-size: 14px; }
+}
+
+@media (min-width: 901px) {
+  /* Above 900px the Edit Log lives inside Structure and its tab is redundant. */
+  .tab-strip button[data-tab="editlog"] { display: none; }
+}
+
+@media (max-width: 560px) {
+  .title-block { font-size: 9px; }
+  .title-block span { padding: 1px 5px; }
+
+  /* Keep the side gutter at every width, and give vertical padding without a shorthand
+   * that would zero the sides. */
+  .tab-body {
+    padding-inline: 12px;
+    padding-block: 12px;
+  }
+
+  .contact-row { grid-template-columns: 64px 1fr auto; font-size: 11px; }
+  .abstract-panel { width: 160px; }
+  .abstract-arrow { width: 110px; }
+  h1 { font-size: 1.15rem; }
+}
+
+/* Coarse pointers need targets they can actually hit. */
+@media (pointer: coarse) {
+  .chip,
+  .contact-row,
+  .tab-strip button,
+  .paper-switcher button {
+    min-height: 36px;
+  }
+}
+
+@media print {
+  body { background: #fff; color: #000; }
+  .title-bar,
+  .tab-strip,
+  .sheet-tools { display: none; }
+  .sheet { break-inside: avoid; border-color: #999; }
+}

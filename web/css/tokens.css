@@ -1,0 +1,100 @@
+/* Blueprint tokens. BUILD_SPEC section 6.1.
+ *
+ * Dark is the default, so the bare :root block is the dark palette. Light is redefined twice:
+ * once under prefers-color-scheme guarded against an explicit dark choice, and once under
+ * [data-theme="light"] so the toggle wins in both directions. No colour is ever defined only
+ * inside a media or [data-theme] block. */
+
+:root {
+  /* dark, the default */
+  --bg: #0B2542;              /* blueprint navy */
+  --surface: #0F2E50;         /* prose and table grounds, above the grid */
+  --surface-2: #143458;
+  --grid: rgba(127, 179, 213, 0.11);
+  --ink: #DCEAF6;
+  --ink-dim: #8FB4CF;
+  --line: rgba(127, 179, 213, 0.35);
+  --line-strong: rgba(127, 179, 213, 0.55);
+
+  /* semantic drawing colours: one meaning each, never decorative */
+  --target: #6FD3FF;          /* the protein you want to hit */
+  --anti: #FF6FA5;            /* the protein you must not hit */
+  --measure: #FFD166;         /* every measured value and distance */
+  --gain: #5FD39B;            /* an edit that improved something */
+  --loss: #FF5C5C;            /* a clash, a liability, a failed edit */
+
+  --focus: #FFD166;
+  --shadow: rgba(0, 0, 0, 0.35);
+
+  /* type */
+  --ui: "Archivo Narrow", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --prose: Newsreader, Georgia, "Times New Roman", serif;
+
+  /* geometry: a technical drawing has one grid unit */
+  --unit: 8px;
+  --sheet-pad: 16px;
+  --radius: 2px;              /* drawings have corners, not pills */
+  --rule: 1px;
+
+  color-scheme: dark light;
+}
+
+/* light, for viewers whose system asks for it and who have not chosen dark */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F7FC;
+    --surface: #FFFFFF;
+    --surface-2: #EBF1FA;
+    --grid: rgba(28, 36, 75, 0.07);
+    --ink: #1C244B;
+    --ink-dim: #5C6785;
+    --line: rgba(28, 36, 75, 0.18);
+    --line-strong: rgba(28, 36, 75, 0.32);
+    --target: #1B6FA8;
+    --anti: #C2185B;
+    --measure: #B26B00;
+    --gain: #10756A;
+    --loss: #C33A2E;
+    --focus: #1B6FA8;
+    --shadow: rgba(28, 36, 75, 0.14);
+  }
+}
+
+/* light, chosen explicitly: must beat the dark default and the media query above */
+:root[data-theme="light"] {
+  --bg: #F4F7FC;
+  --surface: #FFFFFF;
+  --surface-2: #EBF1FA;
+  --grid: rgba(28, 36, 75, 0.07);
+  --ink: #1C244B;
+  --ink-dim: #5C6785;
+  --line: rgba(28, 36, 75, 0.18);
+  --line-strong: rgba(28, 36, 75, 0.32);
+  --target: #1B6FA8;
+  --anti: #C2185B;
+  --measure: #B26B00;
+  --gain: #10756A;
+  --loss: #C33A2E;
+  --focus: #1B6FA8;
+  --shadow: rgba(28, 36, 75, 0.14);
+}
+
+/* dark, chosen explicitly */
+:root[data-theme="dark"] {
+  --bg: #0B2542;
+  --surface: #0F2E50;
+  --surface-2: #143458;
+  --grid: rgba(127, 179, 213, 0.11);
+  --ink: #DCEAF6;
+  --ink-dim: #8FB4CF;
+  --line: rgba(127, 179, 213, 0.35);
+  --line-strong: rgba(127, 179, 213, 0.55);
+  --target: #6FD3FF;
+  --anti: #FF6FA5;
+  --measure: #FFD166;
+  --gain: #5FD39B;
+  --loss: #FF5C5C;
+  --focus: #FFD166;
+  --shadow: rgba(0, 0, 0, 0.35);
+}

@@ -1,0 +1,27 @@
+# Hand-curated motif overrides for 8UV0, chain A (CDK2 numbering).
+# KLIFS supplies a region label for all 85 pocket positions, but it labels by region, not by
+# the role the paper actually discusses. Every residue Hummel et al. name in the structure
+# description is pinned here so a reader clicking a motif chip lands on the residue the text
+# talks about. Rows here win over the KLIFS-derived motif.
+#
+# Source: Hummel et al. 2024, Figure 4 and the accompanying structure description on page 5.
+chain	resnum	motif	role_note
+A	10	glycine_rich_loop	Start of the glycine-rich loop (Ile10-Val18) that the coplanar pyrazole sits beneath
+A	11	glycine_rich_loop	Glycine-rich loop
+A	12	glycine_rich_loop	Glycine-rich loop
+A	13	glycine_rich_loop	Glycine-rich loop
+A	14	glycine_rich_loop	Glycine-rich loop
+A	15	glycine_rich_loop	Glycine-rich loop
+A	16	glycine_rich_loop	Glycine-rich loop
+A	17	glycine_rich_loop	Glycine-rich loop
+A	18	glycine_rich_loop	End of the glycine-rich loop (Val18)
+A	33	catalytic_lys	Lys33 of the catalytic triad Lys33 / Glu51 / Asp145
+A	51	catalytic_lys	Glu51 of the catalytic triad
+A	80	gatekeeper	Phe80 gatekeeper. The C5 trifluoromethyl points at this residue: the single most important residue in this campaign
+A	81	hinge	Glu81, hinge
+A	82	hinge	Phe82, hinge
+A	83	hinge	Leu83, hinge. The 2-aminopyrimidine makes the hinge binding interaction here
+A	85	front_pocket	Gln85, water-mediated contact to the sulfonamide
+A	86	hinge	Asp86 backbone N-H donates to a sulfonamide oxygen
+A	89	front_pocket	Lys89, water-mediated contact to the sulfonamide
+A	145	DFG	Asp145 of the catalytic triad and of the DFG motif. Hydrogen bonds the tertiary hydroxyl of compound 17

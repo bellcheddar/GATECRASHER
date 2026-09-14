@@ -140,6 +140,7 @@ dependencies = [
 [package.optional-dependencies]
 interactions = [
     { name = "openbabel-wheel" },
+    { name = "pdb-tools" },
     { name = "plip" },
 ]
 
@@ -151,6 +152,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=1.26" },
     { name = "openbabel-wheel", marker = "extra == 'interactions'", specifier = ">=3.1.1.23" },
     { name = "pandas", specifier = ">=2.2" },
+    { name = "pdb-tools", marker = "extra == 'interactions'", specifier = ">=2.7.0" },
     { name = "plip", marker = "extra == 'interactions'", specifier = ">=2.3.0" },
     { name = "pymupdf", specifier = ">=1.24" },
     { name = "rdkit", specifier = ">=2024.3.5" },
@@ -360,6 +362,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/f3/9a/ffbd852d58bd74a617fe2f8ee6a58a96982271ce41cf981eab22190b4a4b/pandas-3.0.5-cp312-cp312-pyemscripten_2024_0_wasm32.whl", hash = "sha256:b2acb4650527eec6822c3dadb2b771277b65e7dae7a267d4bccf65fd1bb3fbce", size = 7197652, upload-time = "2026-07-22T22:18:22.502Z" },
     { url = "https://files.pythonhosted.org/packages/70/b5/d2d3e9ae73362ba4229651b0ee1455cf78073a1ce585f6ff693782ce263e/pandas-3.0.5-cp312-cp312-win_amd64.whl", hash = "sha256:80a611068e8a3ac23f7398c6c14eb46dc974e5cc9997f653e2dcfd1da74edd41", size = 9831691, upload-time = "2026-07-22T22:18:24.534Z" },
     { url = "https://files.pythonhosted.org/packages/52/51/dea1e89d6a6796b9c43f85a09b484ee03edb8a4c4842e73e200a8c11301c/pandas-3.0.5-cp312-cp312-win_arm64.whl", hash = "sha256:25ff585b972a18ef1fe9ffa3ac6544d9950508aa76832e5147640b6022821e49", size = 9105796, upload-time = "2026-07-22T22:18:27.064Z" },
+]
+
+[[package]]
+name = "pdb-tools"
+version = "2.7.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/98/9c/a80f76e97d56a160b025d0b556b33541e59c83fcc39423bb2404b68808a6/pdb_tools-2.7.0.tar.gz", hash = "sha256:a79bc2747de65dc0ef1866e05d7ab4a649e0510f87c919e3a9aed5a3e17713fd", size = 47957, upload-time = "2026-06-09T22:07:10.856Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7f/06/27fa27a99de39d19000c673250585b0bab19591f8250699d10f232fcf9a9/pdb_tools-2.7.0-py3-none-any.whl", hash = "sha256:6a15f9f90a2e80c282bdbb82ac8702708fc5f23727d1adfd5dfd7d329cb089e3", size = 125392, upload-time = "2026-06-09T22:07:09.619Z" },
 ]
 
 [[package]]

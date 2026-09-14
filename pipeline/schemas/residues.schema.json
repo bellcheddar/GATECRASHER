@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gatecrasher/residues.schema.json",
+  "title": "residues.csv rows",
+  "description": "Per structure: secondary structure from DSSP, KLIFS pocket index where the target is a kinase, and the motif a residue belongs to.",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": ["pdb_id", "chain", "resnum", "resname", "sse", "klifs_index", "motif"],
+    "additionalProperties": false,
+    "properties": {
+      "pdb_id": { "type": "string" },
+      "chain": { "type": "string" },
+      "resnum": { "type": "integer" },
+      "resname": { "type": "string", "minLength": 1, "maxLength": 5 },
+      "sse": { "enum": ["H", "E", "L"], "description": "DSSP output collapsed to helix, strand or loop." },
+      "klifs_index": {
+        "type": ["integer", "string"],
+        "description": "1-85 KLIFS pocket position, or the string NA for non-kinases.",
+        "minimum": 1,
+        "maximum": 85
+      },
+      "motif": {
+        "enum": ["hinge", "gatekeeper", "DFG", "catalytic_lys", "glycine_rich_loop", "P_loop", "solvent_front", "front_pocket", "back_pocket", "switch_I", "switch_II", "mutation_site", "other"]
+      },
+      "role_note": { "type": ["string", "null"] }
+    }
+  }
+}

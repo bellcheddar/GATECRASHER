@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gatecrasher/interactions.schema.json",
+  "title": "interactions/<pdb_id>.json",
+  "description": "Normalised PLIP output. distance_a feeds the amber measure lines directly, so no distance in the app is ever hand-placed.",
+  "type": "object",
+  "required": ["pdb_id", "ligand_code", "interactions"],
+  "additionalProperties": false,
+  "properties": {
+    "pdb_id": { "type": "string" },
+    "ligand_code": { "type": "string" },
+    "ligand_chain": { "type": "string" },
+    "plip_version": { "type": "string" },
+    "interactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "residue", "chain", "resnum", "distance_a"],
+        "additionalProperties": false,
+        "properties": {
+          "type": { "enum": ["hbond", "hydrophobic", "pi_stack", "salt_bridge", "water_bridge", "halogen", "pi_cation"] },
+          "residue": { "type": "string" },
+          "chain": { "type": "string" },
+          "resnum": { "type": "integer" },
+          "ligand_atom": { "type": ["string", "null"] },
+          "protein_atom": { "type": ["string", "null"] },
+          "distance_a": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 12,
+            "description": "For a water bridge this is the acceptor-to-water leg; the donor-to-water leg is distance_donor_water_a."
+          },
+          "distance_donor_water_a": { "type": ["number", "null"], "exclusiveMinimum": 0, "maximum": 12 },
+          "water_idx": { "type": ["integer", "null"], "description": "PLIP atom index of the bridging water." },
+          "angle_deg": { "type": ["number", "null"] },
+          "protein_is_donor": { "type": ["boolean", "null"] },
+          "ligand_coords": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 },
+          "protein_coords": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 }
+        }
+      }
+    }
+  }
+}
