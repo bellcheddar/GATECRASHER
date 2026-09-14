@@ -69,6 +69,26 @@ def retrieval(slug: str = typer.Argument("", help="Omit to index every bundled p
 
 
 @app.command()
+def dynamics(slug: str = typer.Argument(..., help="cdk2 | fgfr | kras | jak1"),
+             pdb: str = typer.Option("", help="One structure, rather than every one in the spec."),
+             stage: str = typer.Option("all", help="prepare | equilibrate | produce | analyse | all"),
+             chunk_ps: float = typer.Option(250.0, help="Production per process, in picoseconds.")):
+    """OpenMM minimisation and a short MD per structure: an RMSF track and a trajectory.
+
+    The work runs under a different interpreter (OpenMM, OpenFF and PDBFixer live in
+    FlexAppeal's pixi environment), invoked as a subprocess the way PLIP is. Production runs
+    one chunk per process on purpose: OpenMM on Apple's OpenCL leaks about 3 kB per step and
+    only a fresh process gives it back.
+    """
+    from . import dynamics as dynamics_mod
+    result = dynamics_mod.build(paths.check_slug(slug), pdb_id=pdb or None,
+                                stage=stage, chunk_ps=chunk_ps)
+    for line in result["lines"]:
+        console.print(line)
+    _problems(result["problems"])
+
+
+@app.command()
 def figures(slug: str):
     """PyMOL script, session and still per structure, for taking the view away."""
     from . import figures as figures_mod
