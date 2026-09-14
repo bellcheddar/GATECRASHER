@@ -774,6 +774,34 @@ def main() -> int:
               tab.js("(() => { const r = document.getElementById('drawer-tabs').getBoundingClientRect();"
                      " return r.bottom >= window.innerHeight - 1 && r.width >= window.innerWidth - 1; })()"),
               str(tab.js("JSON.stringify(document.getElementById('drawer-tabs').getBoundingClientRect())")))
+
+        # Tap to load 3D. Both halves matter and the first is the one worth guarding: a phone
+        # test that only checked the viewer works after a tap would pass just as happily if
+        # the gate did nothing and 5 MB of Mol* had already been fetched on arrival.
+        check("on a phone the viewer waits for a tap instead of loading",
+              tab.js("!!document.getElementById('viewer-tap')")
+              and not tab.js("!!document.querySelector('#viewer-target canvas')"),
+              f"tap target {tab.js('!!document.getElementById(\"viewer-tap\")')}, "
+              f"canvas {tab.js('!!document.querySelector(\"#viewer-target canvas\")')}")
+        check("Mol* is not fetched before the tap",
+              not tab.js("typeof window.molstar !== 'undefined'"))
+        tab.shot(out / "phone-tap.png")
+        tab.click("#viewer-tap")
+        check("tapping loads the viewer",
+              tab.wait_for("!!document.querySelector('#viewer-target canvas')", 60),
+              "no canvas after the tap")
+        # Same polled readPixels probe as the desktop twin check: a canvas exists long before
+        # it has drawn anything, and on an emulated phone it has a library and a coordinate
+        # file to fetch first.
+        colours = 0
+        for _ in range(60):
+            colours = tab.js(f"({drawn})('viewer-target')")
+            if isinstance(colours, int) and colours > 1:
+                break
+            time.sleep(0.5)
+        check("the tapped viewer has actually drawn something",
+              isinstance(colours, int) and colours > 1,
+              f"{colours} distinct colours in the centre of the canvas")
         tab.shot(out / "phone.png")
         tab.send("Emulation.clearDeviceMetricsOverride")
 

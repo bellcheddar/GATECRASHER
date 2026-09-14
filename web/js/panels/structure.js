@@ -120,6 +120,41 @@ export function initStructure(state) {
    * Structure tab is actually on screen. */
   let pendingLoad = false;
 
+  /* On a touch phone the 3D viewer is opened by a tap rather than by arriving on the page.
+   * Mol* is 5 MB of JavaScript and the coordinates another few hundred kB, which is a real
+   * cost on a phone connection for a reader who came for the contacts and the edit log.
+   *
+   * Gated on a coarse pointer AS WELL AS the width where .viewer-pair becomes a swipe. Width
+   * alone would have stopped a dragged-narrow laptop window from drawing structures at all,
+   * which is a regression wearing an optimisation's clothes: the reason to defer is a phone
+   * connection and a thumb, not a narrow viewport. */
+  let tapAccepted = false;
+
+  function wantsTapToLoad() {
+    if (tapAccepted) return false;
+    return window.matchMedia('(max-width: 900px) and (pointer: coarse)').matches;
+  }
+
+  /* Drawn INTO the host, which already holds its 4/3 box open, so offering the tap costs no
+   * layout shift and neither does replacing it with the canvas. */
+  function showTapTarget(entry) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'viewer-tap';
+    button.id = 'viewer-tap';
+    const strong = document.createElement('strong');
+    strong.textContent = 'Tap to load 3D';
+    const detail = document.createElement('span');
+    detail.textContent = `${entry.pdb_id} · about 5 MB`;
+    button.append(strong, detail);
+    button.addEventListener('click', () => {
+      tapAccepted = true;               // asked once a session, not once per structure
+      button.remove();
+      loadTarget().catch((err) => console.warn('[structure] viewer load failed', err));
+    }, { once: true });
+    el.targetHost.replaceChildren(button);
+  }
+
   async function loadTargetWhenVisible() {
     if (!bundle) return;
     if (el.targetHost.clientWidth === 0 || el.targetHost.clientHeight === 0) {
@@ -127,6 +162,14 @@ export function initStructure(state) {
       return;
     }
     pendingLoad = false;
+    if (wantsTapToLoad()) {
+      const entry = primaryStructure();
+      if (!entry) return;               // the no-structure empty state is loadTarget's to draw
+      el.targetLabel.textContent = `${entry.pdb_id} ${entry.contains.protein}`
+        + (entry.resolution_a ? ` ${entry.resolution_a} Å` : '');
+      showTapTarget(entry);
+      return;
+    }
     await loadTarget();
   }
 
