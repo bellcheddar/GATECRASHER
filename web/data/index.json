@@ -17,6 +17,15 @@
    "target": "FGFR3",
    "one_line": "An inhibitor that still works on the gatekeeper mutants that defeat the approved pan-FGFR drugs, while sparing FGFR1.",
    "bundle_version": "1.0.0"
+  },
+  {
+   "slug": "kras",
+   "title": "Discovery of INCB159020, an Orally Bioavailable KRAS G12D Inhibitor",
+   "authors_short": "Ye et al.",
+   "year": 2025,
+   "target": "KRAS G12D",
+   "one_line": "Aspartate is not cysteine, so the covalent trick that beat KRAS G12C does not work here. This one binds without a warhead.",
+   "bundle_version": "1.0.0"
   }
  ]
 }

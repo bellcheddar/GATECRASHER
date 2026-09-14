@@ -1,0 +1,15 @@
+# Table 3 of Ye et al. 2025: SAR around compound 17, and the campaign's endpoint.
+# R1 is the Switch II pocket aryl: A = 7-fluoronaphthalen-1-yl, B = 3-chloro-2-methylphenyl.
+# X is the linker substituent: H or (R)-methyl.
+# R2 is the solvent heteroaryl: C = 2-methylpyridin-4-yl, D = 1H-1,2,4-triazol-1-yl,
+#   E = pyrimidin-4-yl, F = 5-methylpyrazin-2-yl. Compound 17 carries a plain methyl there.
+# Compounds 18, 19 and 20 are mixtures of atropisomers. "N/A" means not tested.
+# Compounds 19 and 17 have single-measurement hWB values.
+entry	compound_id	r1	x	r2	kras_g12d_spr	kras_g12d_exc	perk	hwb_perk	caco2_papp	h_cl	atropisomers	n_note
+1	17	A	H	Me		2.7	7.2	677	0.7	>1.1		n = 1
+2	18	A	H	C	1.2	6.9	36	565	1.6	1.0	mixture
+3	19	A	H	D	0.84	3.7	10	519	1.7	>1.1	mixture	n = 1
+4	20	A	H	E		3.8	17	626	1.1	0.7	mixture
+5	21	A	(R)-Me	C	0.98	2.1	7.5	103	0.6	>1.1
+6	22	A	(R)-Me	F	1.5	2.8	6.8	55	1.4	>1.1
+7	23	B	(R)-Me	F	22	4.4	33	331	3.6	1.0

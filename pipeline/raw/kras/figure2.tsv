@@ -1,0 +1,8 @@
+# Figure 2 of Ye et al. 2025: initial optimisation of hit 1 to lead 5.
+# Values transcribed by hand from the figure panel. Blank means not reported in that panel.
+compound_id	kras_g12d_exc	kras_g12d_spr	perk
+1	8000
+2	704
+3	671
+4	12	3	1300
+5	2.9	0.02	127

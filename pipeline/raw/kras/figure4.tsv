@@ -1,0 +1,9 @@
+# Figure 4 of Ye et al. 2025: structural simplification of compound 10.
+# Removing either liability alone (11, the pyrrolidinol; 12, the naphthol) costs about
+# 200-fold of binding but holds whole blood potency. Removing both (13) collapses it.
+# Compound 13 is reported with an exchange value only.
+compound_id	kras_g12d_spr	perk	hwb_perk	kras_g12d_exc
+10	<0.001	20	410
+11	0.26	28	492
+12	0.24	62	1096
+13				391

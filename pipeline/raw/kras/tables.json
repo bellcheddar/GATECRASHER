@@ -1,0 +1,122 @@
+{
+  "_comment": [
+    "Column to assay mapping for the KRAS bundle. Seven sources: two figures and five tables.",
+    "Table 4 is per species, so it uses columns_by_species and carries its dose text as the",
+    "per-row note: an AUC in this paper is meaningless without the dose beside it."
+  ],
+  "tables": [
+    {
+      "file": "figure2.tsv",
+      "source_table": "Fig2",
+      "keys": ["compound_id"],
+      "columns": {
+        "kras_g12d_exc": "kras_g12d_exc",
+        "kras_g12d_spr": "kras_g12d_spr",
+        "perk": "perk"
+      }
+    },
+    {
+      "file": "table1.tsv",
+      "source_table": "T1",
+      "keys": ["compound_id"],
+      "columns": {
+        "kras_g12d_spr": "kras_g12d_spr",
+        "kras_g12d_exc": "kras_g12d_exc",
+        "perk": "perk",
+        "hwb_perk": "hwb_perk"
+      }
+    },
+    {
+      "file": "figure4.tsv",
+      "source_table": "Fig4",
+      "keys": ["compound_id"],
+      "columns": {
+        "kras_g12d_spr": "kras_g12d_spr",
+        "perk": "perk",
+        "hwb_perk": "hwb_perk",
+        "kras_g12d_exc": "kras_g12d_exc"
+      }
+    },
+    {
+      "file": "table2.tsv",
+      "source_table": "T2",
+      "keys": ["compound_id"],
+      "note_column": "n_note",
+      "columns": {
+        "kras_g12d_spr": "kras_g12d_spr",
+        "kras_g12d_exc": "kras_g12d_exc",
+        "perk": "perk",
+        "hwb_perk": "hwb_perk",
+        "caco2_papp": "caco2_papp",
+        "h_cl": "h_cl"
+      }
+    },
+    {
+      "file": "table3.tsv",
+      "source_table": "T3",
+      "keys": ["compound_id"],
+      "note_column": "n_note",
+      "columns": {
+        "kras_g12d_spr": "kras_g12d_spr",
+        "kras_g12d_exc": "kras_g12d_exc",
+        "perk": "perk",
+        "hwb_perk": "hwb_perk",
+        "caco2_papp": "caco2_papp",
+        "h_cl": "h_cl"
+      }
+    },
+    {
+      "file": "table4.tsv",
+      "source_table": "T4",
+      "keys": ["compound_id"],
+      "note_column": "dose_note",
+      "species_column": "species",
+      "columns_by_species": {
+        "rat": {
+          "po_cmax": "rat_po_cmax",
+          "po_auc": "rat_po_auc",
+          "po_f": "rat_po_f",
+          "cl_hbf": "rat_cl_hbf",
+          "t_half": "rat_t_half"
+        },
+        "NHP": {
+          "po_cmax": "nhp_po_cmax",
+          "po_auc": "nhp_po_auc",
+          "po_f": "nhp_po_f",
+          "cl_hbf": "nhp_cl_hbf",
+          "t_half": "nhp_t_half"
+        }
+      }
+    },
+    {
+      "file": "text.tsv",
+      "source_table": "Text p1926",
+      "keys": ["compound_id"],
+      "columns": {
+        "kras_g12d_spr": "kras_g12d_spr",
+        "kras_wt_spr": "kras_wt_spr"
+      }
+    },
+    {
+      "file": "table5.tsv",
+      "source_table": "T5",
+      "keys": ["compound_id"],
+      "columns": {
+        "kras_g12d_exc": "kras_g12d_exc",
+        "perk": "perk",
+        "ctg_viability": "ctg_viability",
+        "kras_wt_exc": "kras_wt_exc",
+        "wt_perk": "wt_perk",
+        "wt_ctg_viability": "wt_ctg_viability",
+        "caco2_papp": "caco2_papp",
+        "h_cl": "h_cl",
+        "pb_free": "pb_free",
+        "sgf_solubility": "sgf_solubility",
+        "fassif_solubility": "fassif_solubility",
+        "cyp3a4_ic50": "cyp3a4_ic50",
+        "cyp2d6_ic50": "cyp2d6_ic50",
+        "herg_ic50": "herg_ic50"
+      }
+    }
+  ]
+}

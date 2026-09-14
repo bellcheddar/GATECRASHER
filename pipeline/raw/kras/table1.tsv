@@ -1,0 +1,11 @@
+# Table 1 of Ye et al. 2025: solvent front SAR on the indole and imidazole cores.
+# X is the core atom at the position pointing at the solvent front: N gives the imidazole
+# core, C the indole core. R1 is the solvent-front substituent.
+# "N/A" in the published table means not tested, and is left blank here.
+entry	compound_id	x	r1	kras_g12d_spr	kras_g12d_exc	perk	hwb_perk
+1	5	N	3-(dimethylamino)azetidin-1-yl	0.02	2.9	127	977
+2	6	N	3-methyl-3-(dimethylamino)azetidin-1-yl	0.031	2.9	92	1241
+3	7	N	(2-methoxymethyl)-1-methylpyrrolidine ether		15	1242
+4	8	C	3-methyl-3-(dimethylamino)azetidin-1-yl	0.04	3	104	1131
+5	9	C	alpha-methyl pyrrolidinol ether	0.1	3.6	54	2625
+6	10	C	fluorinated bicyclic pyrrolizidine ether	<0.001	2.1	20	410

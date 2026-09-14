@@ -1,0 +1,11 @@
+# Table 2 of Ye et al. 2025: mutation site cyclisation SAR.
+# Locking the flexible ethyl amide into a ring, the change a 1 microsecond molecular
+# dynamics run identified as the one worth making.
+# Compound 14 is a mixture of atropisomers, marked in the published table with an asterisk.
+# "N/A" means not tested and is left blank. Compound 17's hWB value is a single measurement.
+entry	compound_id	r	kras_g12d_spr	kras_g12d_exc	perk	hwb_perk	caco2_papp	h_cl	atropisomers	n_note
+1	11	N,N-dimethylpropanamide (open chain)	0.26	3.8	28	492	0.2	>1.1
+2	14	2-oxopiperidin-1-yl (gamma-lactam)	0.05	2.6	21	2354	0.2	>1.1	mixture
+3	15	2-oxopiperidin-1-ylmethyl, 4-methyl core		3.5	45	597
+4	16	2-oxopiperidin-1-ylmethyl, 7-fluoronaphthyl		6.1	39	1030	0.7	>1.1
+5	17	3-oxomorpholinomethyl		2.7	7.2	677	0.7	>1.1		n = 1

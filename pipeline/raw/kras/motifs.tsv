@@ -1,0 +1,49 @@
+# Hand-curated motif table for the KRAS bundle.
+#
+# KRAS is not a kinase, so KLIFS does not apply and there is no pocket numbering to inherit:
+# every motif here is assigned by hand, and BUILD_SPEC 5.6 requires exactly that. The app's
+# ruler degrades to a plain sequence ruler for this paper.
+#
+# Regions follow the standard KRAS definitions: P-loop 10-17, switch I 30-40, switch II 60-76.
+# The residues the paper actually discusses are Asp12 (the mutation), Tyr96 and Gly10.
+# Applied to both deposited structures, which are the same protein and chain.
+chain	resnum	motif	role_note
+A	10	P_loop	Gly10. Reached by the azabicyclohexane amine through a bridging water, 2.9 and 3.1 A
+A	11	P_loop	P-loop
+A	12	mutation_site	Asp12. The mutation that defines the target. Compound 5a hydrogen bonds its BACKBONE N-H, never its side chain, and still holds 55-fold selectivity over wild-type KRAS
+A	13	P_loop	Gly13, another common KRAS mutation site
+A	14	P_loop	P-loop
+A	15	P_loop	P-loop
+A	16	P_loop	P-loop
+A	17	P_loop	Ser17, end of the P-loop
+A	30	switch_I	Switch I begins
+A	31	switch_I	Switch I
+A	32	switch_I	Switch I
+A	33	switch_I	Switch I
+A	34	switch_I	Switch I
+A	35	switch_I	Thr35, switch I, the residue whose nucleotide contact defines the active state
+A	36	switch_I	Switch I
+A	37	switch_I	Switch I
+A	38	switch_I	Switch I
+A	39	switch_I	Switch I
+A	40	switch_I	Switch I ends
+A	60	switch_II	Switch II begins. The loop the campaign hoped to open into an extended pocket, and which stayed shut
+A	61	switch_II	Gln61, the third common KRAS mutation site
+A	62	switch_II	Switch II
+A	63	switch_II	Switch II
+A	64	switch_II	Switch II
+A	65	switch_II	Switch II
+A	66	switch_II	Switch II
+A	67	switch_II	Switch II
+A	68	switch_II	Switch II
+A	69	switch_II	Switch II
+A	70	switch_II	Switch II
+A	71	switch_II	Switch II
+A	72	switch_II	Switch II
+A	73	switch_II	Switch II
+A	74	switch_II	Switch II
+A	75	switch_II	Switch II
+A	76	switch_II	Switch II ends
+A	95	back_pocket	His95, lines the switch II pocket
+A	96	back_pocket	Tyr96. Direct hydrogen bond to the protonated bicyclic amine at 2.8 A: the contact that makes the rigid cage worth its synthetic trouble
+A	99	back_pocket	Gln99, lines the switch II pocket

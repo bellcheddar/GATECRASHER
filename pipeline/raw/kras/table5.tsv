@@ -1,0 +1,6 @@
+# Table 5 of Ye et al. 2025: full profile of compound 23, INCB159020.
+# The wild-type columns are the counter-screens: for those, a higher value is the better
+# result. The published selectivity ratios are 45x (exchange), 80x (pERK) and 29x (viability).
+# CYP2C9, CYP2B6 and CYP1A2 are all reported as >20 uM.
+compound_id	kras_g12d_exc	perk	ctg_viability	kras_wt_exc	wt_perk	wt_ctg_viability	caco2_papp	h_cl	pb_free	sgf_solubility	fassif_solubility	cyp3a4_ic50	cyp2d6_ic50	herg_ic50
+23	4.4	33	78	205	2635	2251	3.6	1.0	1.1	>900	79	17	7.2	11.2

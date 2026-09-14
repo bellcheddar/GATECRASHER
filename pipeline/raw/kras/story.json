@@ -1,0 +1,89 @@
+{
+  "_comment": [
+    "Five beats for the KRAS G12D campaign. Residue ids are 9E5F numbering (KRAS is not a",
+    "kinase, so there is no KLIFS pocket index anywhere in this bundle).",
+    "Beat 5 deliberately does not show the paper's Figure 7 model of compound 23: there are no",
+    "coordinates for it and the publisher's figure may not be reproduced. See ISSUES.md item 5."
+  ],
+  "beats": [
+    {
+      "id": "kras-1",
+      "kicker": "Aspartate is not cysteine",
+      "title": "The trick that beat one KRAS mutant does not work on this one",
+      "body_specialist": "KRAS G12C fell to covalent drugs: a warhead reacts with the mutant cysteine and the inhibitor never leaves. G12D is the commoner mutation, 37 per cent of pancreatic tumours, and the swap from cysteine to aspartate removes that option. Aspartate is a far weaker nucleophile, and making a warhead reactive enough to compensate raises its own selectivity and safety problems. So the inhibitor has to be reversible, and it has to distinguish a mutant from a wild-type protein present in every healthy cell. The only starting point was a patent compound with its warhead removed: 8 uM.",
+      "body_plain": "An earlier KRAS drug works by permanently latching onto a sulphur atom in the mutated protein. This mutation puts a different chemical group there, one that will not react that way, and forcing the issue would make the drug dangerously indiscriminate. So the molecule has to hold on by shape alone, and it has to tell the mutated protein apart from the healthy version in every other cell. The only place to start was a compound that barely worked.",
+      "focus": {
+        "structure": "9E5F",
+        "residues": ["A:12"],
+        "compound": "1",
+        "plot": "selectivity",
+        "camera": "ligand"
+      },
+      "evidence": "Fig2"
+    },
+    {
+      "id": "kras-2",
+      "kicker": "A cage to reach an impossible angle",
+      "title": "The rigid bicycle that holds an amine below the core",
+      "body_specialist": "A screen of rigid amines found compound 3 at 671 nM, and its crystal structure at 1.35 A explains why nearly every replacement for that group failed. The azabicyclo[2.1.1]hexane orients its protonated amine directly below the plane of the core, a conformation that is otherwise hard to reach, and from there the amine hydrogen bonds Tyr96 at 2.8 A and reaches Gly10 through a bridging water. The structure also shows what is missing: no contact at all with Asp12, the residue the whole design was aimed at.",
+      "body_plain": "A small rigid cage in the molecule holds one arm at an angle it could not otherwise adopt, and from there it grips the protein in two places, one directly and one through a single water molecule. The same picture showed what was not happening: the molecule never touched the mutated residue itself. That absence is what the chemists worked on next.",
+      "focus": {
+        "structure": "9E5F",
+        "residues": ["A:96", "A:10"],
+        "compound": "3",
+        "edit": "kras-e02",
+        "plot": "selectivity",
+        "camera": "ligand"
+      },
+      "evidence": "Fig3A"
+    },
+    {
+      "id": "kras-3",
+      "kicker": "The backbone, not the side chain",
+      "title": "Fifty-five-fold selectivity without ever touching the mutation",
+      "body_specialist": "Growing a two-carbon linker from the imidazole 2-position towards Asp12 gave a fifty-fold potency gain, and the structure of 5a shows why it worked and how. The amide carbonyl hydrogen bonds the backbone N-H beside Asp12, not the aspartate side chain, and that is enough for 55-fold selectivity over wild-type KRAS. Two other predictions failed in the same structure: the switch II loop did not open into an extended pocket, and the cyanoethyl intended to prise it open had instead folded under the core onto the same water as the bicyclic amine.",
+      "body_plain": "The molecule now reaches the mutated residue, but not in the way anyone expected. It grips the protein's backbone just beside the mutation rather than the mutated part itself, and that alone is enough to prefer the mutant over the healthy protein fifty-five times over. Two other predictions in the same picture turned out wrong, which is a normal day in this work.",
+      "focus": {
+        "structure": "9E5D",
+        "residues": ["A:12", "A:10"],
+        "compound": "5a",
+        "edit": "kras-e04",
+        "plot": "selectivity",
+        "camera": "ligand"
+      },
+      "evidence": "Fig3B"
+    },
+    {
+      "id": "kras-4",
+      "kicker": "A microsecond of simulation",
+      "title": "The best binder in the programme could not leave the gut",
+      "body_specialist": "Compound 10 bottomed out the binding assay below 1 pM and was a dead end: no measurable Caco-2 flux at all, clearance above 1.1 L/h/kg, four identified liabilities and every one of them worth more than ten-fold of potency. Removing any single liability cost 200-fold; removing two cost thirty-fold more again. A 1 us molecular dynamics run settled where to spend the next effort: the cyanoethyl already sits mostly in its bioactive conformation, while the ethyl amide samples a wide ensemble of which the useful shape is a small sliver. Locking that amide into a ring is what broke the deadlock.",
+      "body_plain": "The strongest compound the team ever made was useless as a medicine: it could not cross a membrane and the liver cleared it quickly. Everything that made it potent also made it impossible to absorb, and removing any one of those features cost most of the potency. A simulation of the molecule's movement showed which flexible arm to tie down, and tying it down is what let the rest of the work proceed.",
+      "focus": {
+        "structure": "9E5D",
+        "residues": ["A:12"],
+        "compound": "10",
+        "edit": "kras-e10",
+        "plot": "property",
+        "camera": "ligand"
+      },
+      "evidence": "T2"
+    },
+    {
+      "id": "kras-5",
+      "kicker": "Giving potency away on purpose",
+      "title": "A thousand-fold weaker, and the first one that works by mouth",
+      "body_specialist": "Compound 23, INCB159020, binds around a thousand-fold more weakly than compound 10 and is the candidate. The (R)-methyl on the morpholinone linker bought five-fold in whole blood, a pyrazine for a pyridine bought two-fold more, and exchanging the fluoronaphthyl for 2-methyl-3-chlorophenyl gave away six-fold of whole blood potency in return for permeability of 3.6 and clearance of 1.0 L/h/kg. Dosed orally in non-human primate at 1.5 mg/kg it reached 42 per cent bioavailability, against zero for compound 18. In an HPAC mouse model, 300 mg/kg held near-maximal pERK inhibition out to 24 hours.",
+      "body_plain": "The compound they chose grips the protein a thousand times more weakly than their best one, and it is the one that works. Each of the last few changes traded some strength for the ability to survive the journey through a body. Given by mouth to a primate, nearly half the dose reached the bloodstream, where the previous compound managed none at all, and in mice it shut down the cancer signal for a full day.",
+      "focus": {
+        "structure": "9E5D",
+        "residues": ["A:12", "A:96"],
+        "compound": "23",
+        "edit": "kras-e16",
+        "plot": "pk",
+        "camera": "ligand"
+      },
+      "evidence": "T4"
+    }
+  ]
+}

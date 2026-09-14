@@ -1,0 +1,12 @@
+# Table 4 of Ye et al. 2025: pharmacokinetics for selected compounds.
+# Doses differ per row and compound 22's rat intravenous dose was limited by solubility,
+# so no AUC in this table is comparable with another without reading its dose.
+# BQL means below the quantifiable limit: compound 18 had no measurable oral exposure in
+# non-human primate at all, which is the result the whole last section of the paper answers.
+entry	compound_id	species	dose_note	po_cmax	po_auc	po_f	cl_hbf	t_half
+1	18	rat	1.0 mg/kg IV and 3.0 mg/kg PO	41.5	108	11	>100	3.5
+2	18	NHP	0.5 mg/kg IV and 2.0 mg/kg PO	2.5		0	37	8.4
+3	22	rat	0.1 mg/kg IV (dose limited by solubility) and 3.0 mg/kg PO	24	85	20	>100	2.5
+4	22	NHP	1.0 mg/kg IV and 20 mg/kg PO	7.2	68	2	39	4.9
+5	23	rat	1.0 mg/kg IV and 3.0 mg/kg PO	57	331	27	>100	3.8
+6	23	NHP	1.0 mg/kg IV and 1.5 mg/kg PO	100	952	42	37	6.4

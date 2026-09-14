@@ -243,17 +243,21 @@ PLIP_TYPES = {
 def _parse_plip(xml_path: Path, pdb_id: str, ligand_code: str, resname_map: dict) -> dict:
     import xml.etree.ElementTree as ET
 
-    # the vendored remapper shortens long residue names, so map back to the published code
-    inverse = {v: k for k, v in (resname_map or {}).items()}
-    wanted = {ligand_code.upper(), inverse.get(ligand_code.upper(), ligand_code).upper()}
-    for short, full in (resname_map or {}).items():
-        if full.upper() == ligand_code.upper():
-            wanted.add(short.upper())
+    # The vendored remapper shortens any residue name longer than three characters, so a
+    # modern five-character ligand code such as A1BEJ reaches PLIP as A1B. resname_map is
+    # keyed ORIGINAL -> SHORTENED; reading it the other way round silently matches nothing
+    # and returns an empty contact list for a structure full of contacts.
+    code = ligand_code.upper()
+    mapping = {k.upper(): v.upper() for k, v in (resname_map or {}).items()}
+    wanted = {code, mapping.get(code, code)}
+    wanted |= {k for k, v in mapping.items() if v == code}
 
     root = ET.parse(xml_path).getroot()
+    seen_hetids: list[str] = []
     best: tuple[int, list[dict], str, str] = (0, [], "", "")
     for site in root.iter("bindingsite"):
         hetid = (site.findtext("identifiers/hetid") or "").upper()
+        seen_hetids.append(hetid)
         if wanted and hetid not in wanted:
             continue
         rows: list[dict] = []
@@ -300,6 +304,15 @@ def _parse_plip(xml_path: Path, pdb_id: str, ligand_code: str, resname_map: dict
                 rows.append(row)
         if len(rows) > best[0]:
             best = (len(rows), rows, hetid, (site.findtext("identifiers/reschain") or "").strip())
+
+    if not best[1] and seen_hetids:
+        # Loud, not silent: PLIP ran and found binding sites, but none of them was the ligand
+        # asked for. That is a naming problem, and it must never look like "no contacts".
+        raise SystemExit(
+            f"{pdb_id}: PLIP found binding sites for {sorted(set(seen_hetids))} but none "
+            f"matched ligand {ligand_code} (tried {sorted(wanted)}). "
+            f"Residue name mapping was {resname_map}."
+        )
     return {
         "pdb_id": pdb_id,
         "ligand_code": ligand_code,

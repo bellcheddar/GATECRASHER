@@ -1,0 +1,8 @@
+# Values stated in the running text of Ye et al. 2025 rather than in any table.
+# They are here because the 55-fold wild-type selectivity claim rests on them, and a claim
+# with no row behind it cannot be shown in this app. source_table records the page.
+#
+# From page 1926: "compound 5a maintains significant selectivity over KRAS WT
+# (KRAS G12D SPR: 0.16 nM, KRAS WT SPR: 8.8 nM, 55x selectivity)".
+compound_id	kras_g12d_spr	kras_wt_spr
+5a	0.16	8.8
