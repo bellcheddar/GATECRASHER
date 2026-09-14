@@ -1,0 +1,75 @@
+{
+  "slug": "fgfr",
+  "title": "Discovery of Potent and Selective Inhibitors of Wild-Type and Gatekeeper Mutant Fibroblast Growth Factor Receptor (FGFR) 2/3",
+  "authors_short": "Shvartsbart et al.",
+  "authors_full": "Artem Shvartsbart, Jeremy J. Roach, Michael R. Witten, Holly Koblish, Jennifer J. Harris, Maryanne Covington, Rodrigo Hess, Luping Lin, Michelle Frascella, Lisa Truong, Lynn Leffet, Patricia Conlen, Elham Beshad, Ron Klabe, Kamna Katiyar, Laura Kaldon, Ruth Young-Sciame, Xin He, Susan Petusky, Kwang-Jong Chen, April Horsey, Hsiang-Ting Lei, Leslie B. Epling, Marc C. Deller, Oleg Vechorkin, Wenqing Yao",
+  "journal": "J. Med. Chem.",
+  "year": 2022,
+  "volume": 65,
+  "pages": "15433-15442",
+  "doi": "10.1021/acs.jmedchem.2c01366",
+  "target": {
+    "name": "FGFR3",
+    "partner": null,
+    "family": "TK receptor kinase",
+    "uniprot": "P22607"
+  },
+  "anti_targets": [
+    { "name": "FGFR1", "partner": null, "uniprot": "P11362" },
+    { "name": "FGFR4", "partner": null, "uniprot": "P22455" },
+    { "name": "FLT3", "partner": null },
+    { "name": "TRKA", "partner": null },
+    { "name": "KIT", "partner": null },
+    { "name": "PDGFRB", "partner": null }
+  ],
+  "one_line": "An inhibitor that still works on the gatekeeper mutants that defeat the approved pan-FGFR drugs, while sparing FGFR1.",
+  "abstract": "Upregulation of the fibroblast growth factor receptor (FGFR) signaling pathway has been implicated in multiple cancer types, including cholangiocarcinoma and bladder cancer. Consequently, small molecule inhibition of FGFR has emerged as a promising therapy for patients suffering from these diseases. First-generation pan-FGFR inhibitors, while highly effective, suffer from several drawbacks. These include treatment-related hyperphosphatemia and significant loss of potency for the mutant kinases. Herein, we present the discovery and optimization of novel FGFR2/3 inhibitors that largely maintain potency for the common gatekeeper mutants and have excellent selectivity over FGFR1. A combination of meticulous structure-activity relationship (SAR) analysis, structure-based drug design, and medicinal chemistry rationale ultimately led to compound 29, a potent and selective FGFR2/3 inhibitor with excellent in vitro absorption, distribution, metabolism, excretion (ADME), and pharmacokinetics in rat. A pharmacodynamic study of a closely related compound established that maximum inhibition of downstream ERK phosphorylation could be achieved with no significant effect on serum phosphate levels relative to vehicle.",
+  "graphical_abstract": {
+    "panels": [
+      {
+        "kind": "compound",
+        "compound_id": "4",
+        "caption": "Screening hit, already mutant-tolerant",
+        "values": [
+          { "assay_id": "fgfr3_ic50", "display": "68 nM" },
+          { "assay_id": "fgfr3_v555l_ic50", "display": "22 nM" },
+          { "assay_id": "fgfr1_ic50", "display": "918 nM" }
+        ]
+      },
+      {
+        "kind": "arrow",
+        "reason": "A docking model said an sp3 ring at the ether could reach an asparagine, so the isopropyl was cyclised."
+      },
+      {
+        "kind": "compound",
+        "compound_id": "19",
+        "caption": "The designed hydrogen bond: (S)-tetrahydrofuran",
+        "values": [
+          { "assay_id": "fgfr3_ic50", "display": "0.9 nM" },
+          { "assay_id": "fgfr1_ic50", "display": "36 nM" },
+          { "assay_id": "baf3_ic50", "display": "15 nM" }
+        ]
+      },
+      {
+        "kind": "arrow",
+        "reason": "A scaffold hop for permeability, then N-CD3 to shut down the metabolism that inhibited CYP3A4."
+      },
+      {
+        "kind": "compound",
+        "compound_id": "29",
+        "caption": "Lead compound, 82 per cent oral in rat",
+        "values": [
+          { "assay_id": "fgfr3_ic50", "display": "0.5 nM" },
+          { "assay_id": "cyp3a4_ic50", "display": ">25 uM" },
+          { "assay_id": "rat_po_f", "display": "82%" }
+        ]
+      }
+    ]
+  },
+  "problem": {
+    "disease": "Cancers driven by FGFR alterations: FGFR3 in bladder cancer, FGFR2 in cholangiocarcinoma, gastric and uterine cancer. Three pan-FGFR inhibitors are approved, and patients on them relapse.",
+    "selectivity": "Two selectivity problems at once. Inhibiting FGFR1 is thought to cause the hyperphosphataemia that is the commonest toxicity of the approved drugs, so FGFR1 had to be spared by more than 20-fold. And resistance arises from gatekeeper mutations (FGFR3 V555I/L/M/F, FGFR2 V564I/L/M/F) whose larger residue can no longer accommodate the 3,5-dimethoxyphenyl group the approved drugs bind through, so a chemotype was needed that does not rely on that pocket at all.",
+    "property": "CYP3A4 inhibition and cell permeability, which moved against each other: the polar core that cleared CYP3A4 would not cross a membrane, and the permeable core inhibited CYP3A4."
+  },
+  "bundle_version": "1.0.0"
+}

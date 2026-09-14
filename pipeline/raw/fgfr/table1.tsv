@@ -1,0 +1,6 @@
+# Table 1 of Shvartsbart et al. 2022: HTS hit 4 and methoxy derivative 5.
+# Core: 3-(benzamide-aryl)-7-(1-methyl-1H-pyrazol-4-yl)imidazo[1,2-b]pyridazine, R1 at C6.
+# Blank means the cell is empty in the published table.
+entry	compound_id	r1	fgfr3_ic50	fgfr3_v555l_ic50	fgfr1_ic50
+1	4	H	68	22	918
+2	5	OMe	4.6		86

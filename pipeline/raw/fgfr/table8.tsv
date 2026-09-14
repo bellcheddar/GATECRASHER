@@ -1,0 +1,5 @@
+# Table 8 of Shvartsbart et al. 2022: pharmacokinetics of compound 29 in rat.
+# Doses differ from those used for compound 25 in Table 5, so the AUC values are not
+# comparable between the two tables without reading both dose columns.
+compound_id	rat_iv_dose	rat_iv_hbf	rat_iv_vdss	rat_iv_t_half	rat_po_dose	rat_po_cmax	rat_po_auc	rat_po_f
+29	1.0	35	1.6	1.7	3.0	2303	5108	82

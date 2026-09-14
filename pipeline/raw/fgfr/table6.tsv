@@ -1,0 +1,8 @@
+# Table 6 of Shvartsbart et al. 2022: the scaffold hop.
+# Imidazo[1,2-b]pyridazine (20) against pyrazolo[1,5-a]pyrimidine (26): moving the bridgehead
+# nitrogen makes a much less polar core and fixes the cellular translation.
+# The CYP3A4 column is published as a bound with a per cent inhibition in brackets; the
+# bracketed figure is kept in cyp3a4_note rather than being turned into a number.
+entry	compound_id	fgfr3_ic50	fgfr1_fold	baf3_ic50	cyp3a4_ic50	cyp3a4_note	caco2_papp
+1	20	2.2	67	969	>5	0% inhibition at 5 uM
+2	26	1.0	50	29	>5	15% inhibition at 5 uM	0.2

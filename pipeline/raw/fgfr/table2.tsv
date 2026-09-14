@@ -1,0 +1,10 @@
+# Table 2 of Shvartsbart et al. 2022: SAR adjacent to the pyridazine nitrogen.
+# Same core as Table 1 but with the m-pyridyl amide; R1 varies at C6.
+entry	compound_id	r1	fgfr3_ic50	fgfr1_ic50
+1	6	OMe	13	428
+2	7	NHMe	34	420
+3	8	OEt	56	477
+4	9	Oi-Pr	54	365
+5	10	OPh	1177	2648
+6	11	OBn	441	362
+7	12	OCH2CH2N(Me)2	247	415

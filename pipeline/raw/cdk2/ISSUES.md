@@ -20,13 +20,27 @@ where the paper disagrees with itself, both readings are recorded and neither is
    reader comparing the app with the paper sees the same numbers. Where a fold is absent it stays
    absent rather than being derived.
 
-3. **SMILES provenance.** No structure was read off a table image. Compounds 2 to 18 were built
-   from the IUPAC names in the Experimental Section, then checked against the molecular formula
-   the paper reports for each `(M + H)+`: all 17 match. Compound 17 uses the RCSB chemical
-   component `XKU` SMILES verbatim, so the depiction cannot drift from the crystal ligand.
-   Compound 1 has no synthesis in the paper and was transcribed from the Figure 2 depiction
-   by eye: it is the one identity in this bundle resting on a drawing, and it is flagged in
-   `compounds.tsv` `notes`.
+3. **SMILES provenance, and how strongly each one is verified.** No structure was read off a
+   table image. Compounds 2 to 18 were built from the IUPAC names in the Experimental Section.
+   Every one matches the molecular formula the paper reports for its `(M + H)+`, and
+   **sixteen of them (compounds 3 to 18) were additionally confirmed atom for atom** by
+   parsing the published name with OPSIN and comparing canonical SMILES: all sixteen agree.
+
+   That second check matters more than it sounds. While curating the FGFR bundle, a
+   hand-built scaffold reproduced the published molecular formula **exactly while having the
+   wrong connectivity**: an ether oxygen had migrated. A formula check cannot see that, and a
+   depiction built from it would have been quietly wrong in every panel. Formula agreement is
+   necessary and is not sufficient.
+
+   Two compounds here rest on weaker evidence and are marked as such:
+   - **Compound 2**: its name sits inside a "Step 2" heading rather than under its own
+     compound heading, so it was verified by formula (C18H26ClN6O3S) rather than by name.
+   - **Compound 1**: the HTS hit has no synthesis in the paper at all, and was transcribed by
+     eye from the Figure 2 depiction. It is the one identity in this bundle resting on a
+     drawing, and it is flagged in `compounds.tsv` `notes`.
+
+   Compound 17 uses the RCSB chemical component `XKU` SMILES verbatim, so the depiction cannot
+   drift from the crystal ligand.
 
 4. **Compound 1 is racemic** (published as `(+/-)-1`). The SMILES carries no stereocentre
    configuration, which is correct for a racemate, so any ligand efficiency or property

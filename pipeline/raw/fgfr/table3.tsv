@@ -1,0 +1,13 @@
+# Table 3 of Shvartsbart et al. 2022: SAR of (hetero)cycloalkyl ethers.
+# The isopropyl of 9 cyclised to rings of varying size, to deliver a heteroatom to the
+# primary amide N-H of Asn562 (FGFR3 numbering). R2 is the ether substituent at C6.
+# Transcribed by hand from the published table image: its rows have no text layer.
+# Blank means the cell is empty in the published table.
+entry	compound_id	r2	fgfr3_ic50	fgfr1_ic50	baf3_ic50
+1	13	1-acetylazetidin-3-yl	515	1683
+2	14	1-methyl-5-oxopyrrolidin-3-yl	18	155
+3	15	tetrahydro-2H-pyran-4-yl	167	283
+4	16	oxetan-3-yl	1.1	71	29
+5	17	tetrahydrofuran-3-yl (racemic)	2.4	117	42
+6	18	(R)-tetrahydrofuran-3-yl	41	433
+7	19	(S)-tetrahydrofuran-3-yl	0.9	30	15

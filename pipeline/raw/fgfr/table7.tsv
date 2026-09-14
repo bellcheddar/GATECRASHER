@@ -1,0 +1,8 @@
+# Table 7 of Shvartsbart et al. 2022: potency and in vitro ADME of lead compound 29.
+# 27 is the N-methyl amide, 28 the N-ethyl, 29 the N-CD3 congener. Both 28 and 29 clear the
+# CYP3A4 liability; only 29 keeps the potency.
+# Solubility is published as a FaSSIF/SGF pair (spelled FASSIF in Table 5).
+entry	compound_id	fgfr3_ic50	fgfr1_ic50	fgfr1_fold	fgfr3_v555l_ic50	fgfr3_v555m_ic50	baf3_ic50	wb_ic50	caco2_papp	h_cl	cyp3a4_ic50	fassif_solubility	sgf_solubility
+1	27	0.4	17	43	1.8	5.2	7.2		1.5	1.0	9	17	>400
+2	28	2.6	54	21			22		0.6	1.0	>25
+3	29	0.5	21	42	2.7	6.1	5.5	177	2.0	0.5	>25	18	679

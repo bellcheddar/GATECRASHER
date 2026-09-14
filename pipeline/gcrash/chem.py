@@ -90,7 +90,11 @@ def scaffold(compounds: list[Compound], timeout: int = 20) -> tuple[Chem.Mol | N
     Ring matching is constrained so the MCS cannot cut a ring in half, which would make
     the aligned depictions flip between compounds for no chemical reason.
     """
-    mols = [c.mol for c in compounds if c.mol is not None]
+    # Reference compounds are other people's drugs, shown for comparison: including them
+    # collapses the MCS to nothing (two atoms, for the FGFR set) and leaves every depiction
+    # in the campaign unaligned. The template comes from the campaign's own compounds.
+    campaign = [c for c in compounds if c.role != "reference"]
+    mols = [c.mol for c in (campaign or compounds) if c.mol is not None]
     if len(mols) < 2:
         return None, ""
     res = rdFMCS.FindMCS(

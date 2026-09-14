@@ -75,6 +75,19 @@ the provenance of the data.
    section 10 Stage 4 calls for both. Per-project `make_icon.py` scripts exist in ALPHABETTI,
    PfamIE, HAWKER and PUNT; Stage 4 will follow one of those instead.
 
+## Added here, not harvested
+
+- **OPSIN (`py2opsin`) for name-to-structure verification.** Nothing in the portfolio does
+  this, and it turned out to be the most valuable check in the pipeline. The papers print a
+  full IUPAC name for each final compound, so every hand-built SMILES can be compared, atom
+  for atom, against the published name rather than merely against its molecular formula.
+  It needs Java, which is already on this machine (Temurin 11). Installed in the `qc` extra.
+
+  This check earns its place: a hand-built FGFR scaffold reproduced the paper's molecular
+  formula **exactly while having the wrong connectivity**, because an ether oxygen had moved.
+  Formula agreement cannot detect an isomer, and `gc validate`'s chemistry gate now treats a
+  formula match as necessary but not sufficient wherever a published name exists.
+
 ## Known traps carried forward
 
 - **The CONECT serial gap.** `pdb_tidy` gives the inter-chain TER its own serial and then

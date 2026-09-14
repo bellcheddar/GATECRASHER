@@ -1,0 +1,5 @@
+# Table 5 of Shvartsbart et al. 2022: in vitro ADME and rat pharmacokinetics of compound 25.
+# The published column header reads FASSIF here and FaSSIF in Table 7: one assay, two
+# spellings. See ISSUES.md item 1.
+compound_id	caco2_papp	h_cl	fassif_solubility	sgf_solubility	cyp3a4_ic50	rat_iv_dose	rat_iv_hbf	rat_iv_vdss	rat_iv_t_half	rat_po_dose	rat_po_cmax	rat_po_auc	rat_po_f
+25	5.7	0.5	118	>400	3.9	0.73	3.3	0.35	5.3	3.1	6173	33587	54

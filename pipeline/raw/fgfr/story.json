@@ -1,0 +1,87 @@
+{
+  "_comment": [
+    "Five beats for the FGFR campaign. Written fresh; every number appears in raw/fgfr/*.tsv",
+    "with its source table. Residue ids are 8E1X (FGFR2) numbering, with the FGFR3 equivalent",
+    "given in the text because the paper's design discussion uses FGFR3 throughout."
+  ],
+  "beats": [
+    {
+      "id": "fgfr-1",
+      "kicker": "The approved drugs have two problems",
+      "title": "Hit FGFR1 and the phosphate goes up; miss the mutants and the cancer comes back",
+      "body_specialist": "Three pan-FGFR inhibitors are approved, and Table 9 shows what is wrong with them. All three are as potent on FGFR1 as on the target isoforms, and FGFR1 inhibition is the hypothesised cause of the hyperphosphataemia that is their commonest toxicity. All three also collapse on the gatekeeper mutants that drive clinical resistance: erdafitinib loses 35-fold on FGFR3 V555L, pemigatinib 220-fold. They bind through a 3,5-dimethoxyphenyl group that reaches past the gatekeeper, and a larger gatekeeper residue leaves it nowhere to go. A different chemotype was needed, not a better version of the same one.",
+      "body_plain": "Three drugs of this kind are already approved, and both of their weaknesses come from the same place. They block a related protein they should leave alone, which raises phosphate in the blood. And when the target protein mutates, in the exact spot these drugs reach into, they stop working and the cancer returns. Both problems trace to one part of the molecule, so the answer was not a better version of it: it was a different sort of molecule.",
+      "focus": {
+        "structure": "8E1X",
+        "residues": ["A:564"],
+        "compound": "1",
+        "plot": "selectivity",
+        "camera": "gatekeeper"
+      },
+      "evidence": "T9"
+    },
+    {
+      "id": "fgfr-2",
+      "kicker": "A discouraging result, read correctly",
+      "title": "One carbon too many, then a branch that fitted",
+      "body_specialist": "The screening hit 4 was already unusual: 68 nM on FGFR3 and 22 nM on the V555L mutant, so mutant tolerance came free with the chemotype. A methoxy at the ether vector took potency to 4.6 nM. Growing it to ethoxy then cost four-fold, which normally means the pocket is full. The informative result is compound 9: the bulkier but branched isopropoxy lost nothing at all. A pocket that rejects a linear group and accepts a branched one is not small, it is shaped, and that is what suggested a ring would fit.",
+      "body_plain": "The starting compound already worked on the mutated protein, which was half the problem solved by luck. Making one group slightly bigger made things worse, which usually means there is no more room. But a bigger, branched group worked perfectly well. That combination says the space is not too small, it is a particular shape, and the way to use it is a ring.",
+      "focus": {
+        "structure": "8E1X",
+        "residues": ["A:571"],
+        "compound": "9",
+        "edit": "fgfr-e03",
+        "plot": "property",
+        "camera": "front"
+      },
+      "evidence": "T2"
+    },
+    {
+      "id": "fgfr-3",
+      "kicker": "Designed on a model, then measured",
+      "title": "A hydrogen bond drawn before it existed",
+      "body_specialist": "Docking compound 9 into FGFR3 put the isopropyl group beside Asn562, and the design became explicit: deliver a heteroatom there and engage the asparagine N-H. The oxetane 16 gave 1.1 nM, fifty-fold better, with FGFR1 selectivity up to 65-fold. Resolving the tetrahydrofuran settled the rest: the (S) enantiomer 19 is 0.9 nM and the (R) enantiomer 41 nM, a 45-fold difference between mirror images. The authors note honestly that FGFR1 carries the same asparagine, so modelling did not explain why selectivity improved too.",
+      "body_plain": "A computer model suggested that an oxygen atom, placed just so, could grab a specific part of the protein. Building that molecule made it fifty times more potent, which is about as good as structure-based design gets. Splitting it into its two mirror-image forms showed one does nearly all the work. The chemists also say plainly that their model could not explain the selectivity that came with it.",
+      "focus": {
+        "structure": "8E1X",
+        "residues": ["A:571", "A:567"],
+        "compound": "19",
+        "edit": "fgfr-e05",
+        "plot": "selectivity",
+        "camera": "hinge"
+      },
+      "evidence": "T3"
+    },
+    {
+      "id": "fgfr-4",
+      "kicker": "The structure said otherwise",
+      "title": "The ring was the wrong way round, and that explained the mutants",
+      "body_specialist": "The co-crystal structure of compound 30 in FGFR2 at 2.68 A confirmed the designed contact: the tetrahydrofuran oxygen does hydrogen bond the asparagine, Asn571 here and Asn562 in FGFR3. Everything else about the pose was wrong. The pyridyl ring sits flipped relative to the model, with the amide reaching into the sugar pocket and the pyridine nitrogen pointing at the gatekeeper. That misplacement is the explanation for the one weakness of the lead: a polar nitrogen against the larger, more lipophilic V555L and V555M gatekeepers, and five to ten-fold potency lost.",
+      "body_plain": "The crystal structure showed the designed contact was real. It also showed that a whole ring of the molecule sits the opposite way round to what the model predicted, pointing a polar atom straight at the part of the protein that mutates. That single misunderstanding explains why the final compound, unlike its predecessors, loses some potency against the mutated forms. Being wrong in a way you can see is more useful than being vaguely right.",
+      "focus": {
+        "structure": "8E1X",
+        "residues": ["A:564", "A:571", "A:517"],
+        "compound": "30",
+        "plot": "selectivity",
+        "camera": "ligand"
+      },
+      "evidence": "Fig3"
+    },
+    {
+      "id": "fgfr-5",
+      "kicker": "Two changes to make it a drug",
+      "title": "A rearranged core, and three heavy hydrogens",
+      "body_specialist": "Two problems remained, and they pulled against each other: the polar core that spared CYP3A4 would not enter cells, and the permeable one inhibited it. Moving the bridgehead nitrogen to give a pyrazolo[1,5-a]pyrimidine cut the polarity and took cellular potency from 969 nM to 29 nM. The CYP3A4 liability was traced to N-demethylation of the amide, so the N-methyl became N-CD3: a carbon-deuterium bond is harder to break. Compound 29 cleared CYP3A4 past 25 uM, halved clearance, kept 0.5 nM potency, and reached 82 per cent oral bioavailability in rat with serum phosphate flat.",
+      "body_plain": "Two problems were left, and fixing one made the other worse: the version that left the liver alone could not get into cells, and the one that got into cells upset the liver. Rearranging the middle of the molecule solved the first. For the second, three hydrogens were swapped for a heavier form of hydrogen, making that part of the molecule harder for the body to pull apart. The result works in animals, and the phosphate problem that dogs the approved drugs did not appear.",
+      "focus": {
+        "structure": "8E1X",
+        "residues": ["A:567", "A:571"],
+        "compound": "29",
+        "edit": "fgfr-e12",
+        "plot": "pk",
+        "camera": "ligand"
+      },
+      "evidence": "T7"
+    }
+  ]
+}

@@ -25,6 +25,9 @@ interactions = [
     "plip>=2.3.0",
     "websocket-client>=1.9.2",
 ]
+qc = [
+    "py2opsin>=1.2.0",
+]
 
 [project.scripts]
 gc = "gcrash.cli:app"

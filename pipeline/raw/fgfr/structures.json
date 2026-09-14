@@ -1,0 +1,38 @@
+[
+  {
+    "pdb_id": "8E1X",
+    "role": "primary",
+    "contains": {
+      "protein": "FGFR2",
+      "ligand_compound_id": "30",
+      "ligand_code": "U9P"
+    },
+    "resolution_a": 2.68,
+    "chain": "A",
+    "klifs": true,
+    "uniprot": "P21802",
+    "caption_specialist": "Compound 30 in the FGFR2 kinase domain at 2.68 A. FGFR2 crystallised more readily than FGFR3 and compound 30 is equipotent in both, so this is the structure the design was checked against. The tetrahydrofuran oxygen makes the designed hydrogen bond to Asn571 (Asn562 in FGFR3 numbering). The pyridyl ring, however, is flipped relative to the docking model: the pyridine nitrogen points at the gatekeeper Val564 (Val555 in FGFR3), which is what explains the potency lost on the V555L and V555M mutants.",
+    "caption_plain": "The compound sitting in its target protein. One contact here was designed on a computer beforehand and turned out to be right. Another part of the molecule sits the opposite way round to what was predicted, and that mistake is what explains why the drug works less well on the mutated forms of the protein.",
+    "source": "deposited",
+    "numbering_note": "Deposited in FGFR2 numbering. The paper's design discussion is in FGFR3 numbering: Ala567 here is Ala558 there, Lys517 is Lys508, Val564 is Val555, and Asn571 is Asn562.",
+    "evidence": "Fig3"
+  },
+  {
+    "pdb_id": "4K33",
+    "role": "reference",
+    "contains": {
+      "protein": "FGFR3",
+      "ligand_compound_id": null,
+      "ligand_code": "ACP"
+    },
+    "resolution_a": 2.34,
+    "chain": "A",
+    "klifs": true,
+    "uniprot": "P22607",
+    "caption_specialist": "The FGFR3 kinase domain used for the docking in Figure 2, which produced the design hypothesis that an sp3 ring at the ether could reach Asn562. The paper calls it apo FGFR3; the deposited entry is in fact the K650E gain-of-function mutant with AMP-PCP and magnesium bound. It is shown here as the reference structure the model was built on, not as a structure of any compound in this campaign.",
+    "caption_plain": "The protein used for the computer model that suggested the key design change. No compound from this paper is in it: it is the starting picture the chemists reasoned from, and the real crystal structure later corrected part of that reasoning.",
+    "source": "referenced",
+    "numbering_note": "FGFR3 numbering, which is the numbering the paper uses throughout its design discussion.",
+    "evidence": "Fig2"
+  }
+]

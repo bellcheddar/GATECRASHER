@@ -8,6 +8,15 @@
    "target": "CDK2",
    "one_line": "A screening hit that was really a JAK2 inhibitor, turned into a CDK2 inhibitor selective over five other CDKs.",
    "bundle_version": "1.0.0"
+  },
+  {
+   "slug": "fgfr",
+   "title": "Discovery of Potent and Selective Inhibitors of Wild-Type and Gatekeeper Mutant Fibroblast Growth Factor Receptor (FGFR) 2/3",
+   "authors_short": "Shvartsbart et al.",
+   "year": 2022,
+   "target": "FGFR3",
+   "one_line": "An inhibitor that still works on the gatekeeper mutants that defeat the approved pan-FGFR drugs, while sparing FGFR1.",
+   "bundle_version": "1.0.0"
   }
  ]
 }

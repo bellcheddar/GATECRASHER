@@ -1,0 +1,19 @@
+# Hand-curated motif overrides for the FGFR bundle.
+#
+# 8E1X is FGFR2 and the paper's design discussion is FGFR3, so every residue the text names
+# appears here in the deposited FGFR2 numbering with its FGFR3 equivalent spelled out in the
+# role_note. BUILD_SPEC 9.2 asks for the dual numbering to be handled rather than hidden:
+# this is where that happens, and the note travels with the residue everywhere in the app.
+#
+# Source: Shvartsbart et al. 2022, Figure 2 (FGFR3 numbering) and Figure 3 (FGFR2, 8E1X).
+chain	resnum	motif	role_note
+A	517	catalytic_lys	Lys517 catalytic lysine. FGFR3 numbering: Lys508. The amide carbonyl was modelled hydrogen bonding here
+A	564	gatekeeper	Val564 gatekeeper. FGFR3 numbering: Val555. The mutants that defeat the approved drugs are V555I/L/M/F in FGFR3 and V564I/L/M/F in FGFR2
+A	565	hinge	Glu565 hinge. FGFR3 numbering: Glu556
+A	566	hinge	Tyr566 hinge. FGFR3 numbering: Tyr557
+A	567	hinge	Ala567 hinge. FGFR3 numbering: Ala558. The imidazole nitrogen makes the hinge hydrogen bond here
+A	571	front_pocket	Asn571 lower hinge. FGFR3 numbering: Asn562. This is the residue the tetrahydrofuran ether was designed to reach, and the crystal structure confirms the contact
+B	517	catalytic_lys	Second copy in the asymmetric unit. Lys517, FGFR3 Lys508
+B	564	gatekeeper	Second copy in the asymmetric unit. Val564 gatekeeper, FGFR3 Val555
+B	567	hinge	Second copy in the asymmetric unit. Ala567 hinge, FGFR3 Ala558
+B	571	front_pocket	Second copy in the asymmetric unit. Asn571, FGFR3 Asn562
