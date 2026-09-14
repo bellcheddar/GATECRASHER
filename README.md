@@ -2,6 +2,7 @@
 
 > **Four drug discovery campaigns, opened up: the pocket, the structure-activity relationships, the chemical edits, and the structural basis of selectivity.**
 
+[![live](https://img.shields.io/badge/live-gatecrasher.mdeller.com-00d084?logo=icloud&logoColor=white)](https://gatecrasher.mdeller.com)
 ![python](https://img.shields.io/badge/python-3.12.13-3776AB?logo=python&logoColor=white)
 ![rdkit](https://img.shields.io/badge/rdkit-2026.3.6-8B0000)
 ![gemmi](https://img.shields.io/badge/gemmi-0.7.5-2E8B57)
@@ -20,7 +21,7 @@
 
 | | |
 |---|---|
-| 🌐 **Website** | [marcdeller.com](https://marcdeller.com) |
+| 🌐 **App** | [gatecrasher.mdeller.com](https://gatecrasher.mdeller.com) |
 | ✉️ **Contact** | [marc@marcdeller.com](mailto:marc@marcdeller.com) |
 | 📦 **Repository** | [github.com/bellcheddar/GATECRASHER](https://github.com/bellcheddar/GATECRASHER) |
 
@@ -142,8 +143,8 @@ Where a paper's only record of something is a figure we may not copy, the app sa
 - [x] **Story and Edit Log** — five beats per paper in two registers, the graphical abstract re-creation drawn from SMILES, change-type filtering
 - [x] **All four papers** — FGFR, KRAS and JAK1 curated, including the non-KLIFS path and the twin-structure anti-target
 - [x] **Verification** — OPSIN name-to-structure checking, `molzip` fragment assembly, 67 browser checks, the copy gate
-- [ ] **About sheet** — the pipeline schematic, the software and reference table with DOIs, and the statement of what is rendered rather than reproduced
-- [ ] **Deploy** — nginx and certbot on the droplet, then the entry in the mdeller.com launcher. Needs a DNS A record for `gatecrasher.mdeller.com`
+- [x] **About sheet** — the pipeline in six stages, every tool with its version, licence and DOI, the data sources, and the statement of what is rendered rather than reproduced, all rendered from `data/software.json`
+- [x] **Deploy** — nginx and certbot on the droplet, HTTP/2 patched in the form nginx 1.24 wants, asset URLs stamped with their modification times so an immutable cache cannot hide a deploy, and the entry in the mdeller.com launcher
 - [ ] **In-browser search** — chunk, embed once on the Mac, cosine search in the page, with "not stated in this paper" as a first-class answer
 - [ ] **Short molecular dynamics** — an RMSF track on the ruler and a decimated trajectory per primary structure, and no trajectory ships that does not support what the paper claims
 - [ ] **PyMOL downloads** — a `.pml` script and a `.pse` session per structure

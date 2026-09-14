@@ -11,7 +11,11 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
-if [[ -f .env ]]; then set -a; source .env; set +a; fi
+# Config lives beside this script, next to .env.example, and .gitignore protects it there.
+# The repo root is still read as a fallback for anyone who put it there first.
+for envfile in deploy/.env .env; do
+  if [[ -f "$envfile" ]]; then set -a; source "$envfile"; set +a; break; fi
+done
 DROPLET_SSH="${DROPLET_SSH:-}"
 DROPLET_PATH="${DROPLET_PATH:-/var/www/gatecrasher}"
 SSH_KEY="${SSH_KEY:-}"

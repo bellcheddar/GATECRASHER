@@ -14,3 +14,4 @@ __pycache__/
 20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]-*.txt
 pipeline/build/
 deploy/.env
+.env
