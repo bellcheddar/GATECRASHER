@@ -31,11 +31,38 @@ Zhuo et al., *J. Med. Chem.* 2026, drug annotation. DOI 10.1021/acs.jmedchem.5c0
    provenance rail is for: the data is a measurement, the explanation is a proposal, and the
    difference is visible.
 
-4. **JAK1 and JAK2 residue numbers are not equivalent.** Glu930 and Leu932 are the hinge in
-   both isoforms, which is a coincidence of numbering and not an alignment; His885 and Asn859
-   occupy analogous positions with completely different numbers. `motifs.tsv` scopes every
-   row to its structure with a `pdb_id` column, because without that scoping JAK1's His885
-   would be stamped onto whatever JAK2 happens to have at residue 885.
+4. **The paper numbers the JAK1 hinge with JAK2's residue numbers.** The text names the hinge
+   Glu930 and Leu932 while describing both isoforms. That is right for JAK2: in 10PJ, 930 is
+   GLU and 932 is LEU. It is wrong for JAK1: in 10PI, 930 is ARG, and the hinge is 957 GLU,
+   958 PHE, 959 LEU against JAK2's 930 GLU, 931 TYR, 932 LEU. PLIP finds the ligand hydrogen
+   bonding LEU959 of 10PI, which is the contact the paper calls Leu932. The offset is +27 at
+   the hinge and +26 at the P-loop (JAK1 His885 is JAK2 Asn859, JAK1 Phe886 is JAK2 Phe860),
+   so no single offset converts one numbering into the other.
+
+   This app uses each entry's own deposited numbering and says so wherever the paper's
+   numbers differ. Both readings are kept: the caption names Glu957 and Leu959 and records
+   that the paper calls them Glu930 and Leu932.
+
+   Corrected on 2026-09-14. Until then `motifs.tsv` annotated 10PI residues 930 and 932 as
+   the JAK1 hinge, which marked an arginine as a hinge residue, and gave the JAK1 DFG
+   aspartate as Asp1042. The DFG is 1021 ASP, 1022 PHE, 1023 GLY; 1042 is an unrelated
+   aspartate. `motifs.tsv` scopes every row to its structure with a `pdb_id` column, because
+   without that scoping JAK1's His885 would be stamped onto whatever JAK2 has at 885 (it is
+   a glutamine).
+
+## The contact list is shorter than the caption, and the caption is right
+
+4b. **PLIP does not report the pyrazole NH donation to the hinge glutamate.** The captions
+   describe two hinge hydrogen bonds, and the deposited coordinates carry both: in 10PI the
+   Glu957 backbone carbonyl is 2.81 A from ligand nitrogen N6, and Leu959's backbone amide
+   is 2.93 A from N5. In 10PJ the same pair is 2.91 A to Glu930 and 2.96 A from Leu932. PLIP
+   lists only the leucine half in either structure.
+
+   The likely reason is the tautomer: a deposited structure carries no hydrogens, and the
+   3,5-dimethylpyrazole's NH can be placed on either ring nitrogen. PLIP appears to put it on
+   the nitrogen that accepts from the leucine, which leaves the donation to the glutamate
+   with no hydrogen to donate. The distances are measured here rather than asserted, and the
+   contact list ships exactly as PLIP produced it: the app never hand-adds a contact.
 
 ## KLIFS has not indexed these structures yet
 

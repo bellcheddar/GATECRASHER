@@ -1,7 +1,9 @@
 {
   "_comment": [
-    "Five beats for the JAK1 campaign. Residue ids are 10PI (JAK1) numbering; JAK2's residues",
-    "are cited in the text by their own numbers, because the two proteins are not aligned.",
+    "Five beats for the JAK1 campaign. Residue ids are each structure's OWN deposited",
+    "numbering: the JAK1 hinge is Glu957 and Leu959 in 10PI, the JAK2 hinge is Glu930 and",
+    "Leu932 in 10PJ. The paper uses the JAK2 numbers throughout, which is why they differ",
+    "from the text quoted here. See ISSUES.md item 4.",
     "Beat 5 marks the selectivity explanation as the authors' hypothesis, which is what they",
     "call it themselves."
   ],
@@ -14,7 +16,7 @@
       "body_plain": "Drugs of this class already work for inflammatory disease. The problem is that they also block a near-identical enzyme the body uses to make blood cells, so patients can become anaemic. The aim here was to block one and not the other. That is hard, because the two enzymes are nearly the same shape where the drug binds, and the company's previous attempt managed only a twenty-fold preference.",
       "focus": {
         "structure": "10PI",
-        "residues": ["A:930", "A:932"],
+        "residues": ["A:957", "A:959"],
         "compound": "3",
         "plot": "selectivity",
         "camera": "hinge"
@@ -29,7 +31,7 @@
       "body_plain": "Three changes in a row, each simplifying the molecule: a different chemical group at one end, a smaller and more rigid ring in the middle, and then opening a ring into something simpler still. Potency held, the liver slowed down, and the margin over the enzyme to avoid doubled. Then the compound was given to dogs, where it did worse than the drug it was meant to beat.",
       "focus": {
         "structure": "10PI",
-        "residues": ["A:932"],
+        "residues": ["A:959"],
         "compound": "9",
         "edit": "jak1-e03",
         "plot": "property",
@@ -61,7 +63,7 @@
       "body_plain": "To prove the fluorine was doing what they thought, the chemists made the same molecule without it. It was exactly as potent and far worse at everything else: six times less able to cross a membrane, half the exposure in an animal. Undoing a change and watching the benefit vanish is the cleanest evidence in this whole set of four papers.",
       "focus": {
         "structure": "10PI",
-        "residues": ["A:885", "A:932"],
+        "residues": ["A:885", "A:959"],
         "compound": "19",
         "edit": "jak1-e07",
         "plot": "property",
@@ -73,7 +75,7 @@
       "id": "jak1-5",
       "kicker": "One ligand, two proteins",
       "title": "Giving away 44-fold to fix the dog",
-      "body_specialist": "The pyrrolo[2,3-d]pyrimidine hinge binder is electron-rich and prone to CYP oxidation, so it was replaced by a 3,5-dimethylpyrazole: 44-fold weaker on the enzyme, nearly twice as isoform-selective at 46-fold, and in beagle dogs clearance fell from 82 to 4 per cent of hepatic blood flow with oral bioavailability rising from 1 to 100 per cent. Povorcitinib was then crystallised in both JAK1 and JAK2, the only true twin structure in this set. The hinge contacts to Glu930 and Leu932 are identical in both. The authors attribute the selectivity to JAK1's P-loop sitting about 2 A higher, opening a lipophilic groove for the trifluoromethyl, with JAK2's Asn859, Phe860 and Glu1015 closing that space, and they state plainly that this is speculative.",
+      "body_specialist": "The pyrrolo[2,3-d]pyrimidine hinge binder is electron-rich and prone to CYP oxidation, so it was replaced by a 3,5-dimethylpyrazole: 44-fold weaker on the enzyme, nearly twice as isoform-selective at 46-fold, and in beagle dogs clearance fell from 82 to 4 per cent of hepatic blood flow with oral bioavailability rising from 1 to 100 per cent. Povorcitinib was then crystallised in both JAK1 and JAK2, the only true twin structure in this set. The hinge contacts are identical in both: Glu957 and Leu959 in JAK1, the same two positions numbered Glu930 and Leu932 in JAK2, which is the pair of numbers the paper uses for both. The authors attribute the selectivity to JAK1's P-loop sitting about 2 A higher, opening a lipophilic groove for the trifluoromethyl, with JAK2's Asn859, Phe860 and Glu1015 closing that space, and they state plainly that this is speculative.",
       "body_plain": "The last change replaced the part that grips the protein with something smaller and harder for the body to destroy. It cost a great deal of raw potency and fixed the dog completely: a compound that had been almost entirely destroyed before absorption now arrived intact. The drug was then crystallised in both proteins, the one it should block and the one it should spare. It grips both identically at the hinge, and the explanation for its preference lies around the edges of the pocket, which the chemists are careful to call a hypothesis.",
       "focus": {
         "structure": "10PJ",

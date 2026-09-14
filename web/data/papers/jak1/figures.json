@@ -1,17 +1,17 @@
 {
  "10PI": {
   "png": "figures/10pi.png",
-  "png_bytes": 482541,
+  "png_bytes": 482520,
   "pml": "figures/10pi_gatecrasher.pml",
-  "pml_bytes": 1357,
+  "pml_bytes": 1358,
   "pse": "figures/10pi_gatecrasher.pse",
   "pse_bytes": 831755
  },
  "10PJ": {
   "png": "figures/10pj.png",
-  "png_bytes": 430962,
+  "png_bytes": 431037,
   "pml": "figures/10pj_gatecrasher.pml",
-  "pml_bytes": 1385,
+  "pml_bytes": 1386,
   "pse": "figures/10pj_gatecrasher.pse",
   "pse_bytes": 899576
  }

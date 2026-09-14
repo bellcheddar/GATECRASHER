@@ -17,7 +17,7 @@ pdb_id,chain,resnum,resname,sse,klifs_index,motif,role_note
 10PI,A,883,GLU,E,NA,other,
 10PI,A,884,GLY,L,NA,other,
 10PI,A,885,HIS,L,NA,P_loop,"His885, JAK1. Directed towards solvent, which leaves the P-loop sitting about 2 A higher than JAK2's and opens the small lipophilic groove the trifluoromethyl group uses. The authors call this explanation speculative"
-10PI,A,886,PHE,L,NA,other,
+10PI,A,886,PHE,L,NA,P_loop,"Phe886, JAK1. The position JAK2 fills with Phe860"
 10PI,A,887,GLY,E,NA,other,
 10PI,A,888,LYS,E,NA,other,
 10PI,A,889,VAL,E,NA,other,
@@ -61,9 +61,9 @@ pdb_id,chain,resnum,resname,sse,klifs_index,motif,role_note
 10PI,A,927,GLU,H,NA,other,
 10PI,A,928,ILE,H,NA,other,
 10PI,A,929,LEU,H,NA,other,
-10PI,A,930,ARG,H,NA,hinge,"Glu930, JAK1 hinge. Its main-chain carbonyl accepts from a pyrazole nitrogen"
-10PI,A,931,ASN,L,NA,hinge,JAK1 hinge
-10PI,A,932,LEU,L,NA,hinge,"Leu932, JAK1 hinge. Its main-chain amide donates to the other pyrazole nitrogen"
+10PI,A,930,ARG,H,NA,other,
+10PI,A,931,ASN,L,NA,other,
+10PI,A,932,LEU,L,NA,other,
 10PI,A,933,TYR,L,NA,other,
 10PI,A,934,HIS,L,NA,other,
 10PI,A,935,GLU,L,NA,other,
@@ -83,9 +83,9 @@ pdb_id,chain,resnum,resname,sse,klifs_index,motif,role_note
 10PI,A,954,LEU,E,NA,other,
 10PI,A,955,ILE,E,NA,other,
 10PI,A,956,MET,E,NA,other,
-10PI,A,957,GLU,E,NA,other,
-10PI,A,958,PHE,L,NA,other,
-10PI,A,959,LEU,L,NA,other,
+10PI,A,957,GLU,E,NA,hinge,"Glu957, JAK1 hinge. Its main-chain carbonyl accepts from a pyrazole nitrogen. The paper calls this contact Glu930, which is the JAK2 number"
+10PI,A,958,PHE,L,NA,hinge,JAK1 hinge
+10PI,A,959,LEU,L,NA,hinge,"Leu959, JAK1 hinge. Its main-chain amide donates to the other pyrazole nitrogen. The paper calls this contact Leu932, which is the JAK2 number"
 10PI,A,960,PRO,L,NA,other,
 10PI,A,961,SER,L,NA,other,
 10PI,A,962,GLY,L,NA,other,
@@ -147,7 +147,7 @@ pdb_id,chain,resnum,resname,sse,klifs_index,motif,role_note
 10PI,A,1018,LYS,E,NA,other,
 10PI,A,1019,ILE,E,NA,other,
 10PI,A,1020,GLY,L,NA,other,
-10PI,A,1021,ASP,L,NA,other,
+10PI,A,1021,ASP,L,NA,DFG,"Asp1021, JAK1 DFG"
 10PI,A,1022,PHE,L,NA,other,
 10PI,A,1023,GLY,L,NA,other,
 10PI,A,1024,LEU,L,NA,other,
@@ -168,7 +168,7 @@ pdb_id,chain,resnum,resname,sse,klifs_index,motif,role_note
 10PI,A,1039,ASP,L,NA,other,
 10PI,A,1040,ASP,L,NA,other,
 10PI,A,1041,ARG,L,NA,other,
-10PI,A,1042,ASP,L,NA,DFG,"Asp1042, JAK1"
+10PI,A,1042,ASP,L,NA,other,
 10PI,A,1043,SER,L,NA,other,
 10PI,A,1044,PRO,L,NA,other,
 10PI,A,1045,VAL,H,NA,other,
@@ -381,9 +381,9 @@ pdb_id,chain,resnum,resname,sse,klifs_index,motif,role_note
 10PJ,A,927,LEU,E,NA,other,
 10PJ,A,928,ILE,E,NA,other,
 10PJ,A,929,MET,E,NA,other,
-10PJ,A,930,GLU,E,NA,hinge,"Glu930, JAK2 hinge. Same contact as in JAK1, and the same residue number by coincidence rather than by alignment"
+10PJ,A,930,GLU,E,NA,hinge,"Glu930, JAK2 hinge. The same contact as JAK1's Glu957, at a different residue number"
 10PJ,A,931,TYR,L,NA,hinge,JAK2 hinge
-10PJ,A,932,LEU,L,NA,hinge,"Leu932, JAK2 hinge"
+10PJ,A,932,LEU,L,NA,hinge,"Leu932, JAK2 hinge. The same contact as JAK1's Leu959"
 10PJ,A,933,PRO,L,NA,other,
 10PJ,A,934,TYR,L,NA,other,
 10PJ,A,935,GLY,L,NA,other,
@@ -445,7 +445,7 @@ pdb_id,chain,resnum,resname,sse,klifs_index,motif,role_note
 10PJ,A,991,LYS,E,NA,other,
 10PJ,A,992,ILE,E,NA,other,
 10PJ,A,993,GLY,L,NA,other,
-10PJ,A,994,ASP,L,NA,other,
+10PJ,A,994,ASP,L,NA,DFG,"Asp994, JAK2 DFG"
 10PJ,A,995,PHE,L,NA,other,
 10PJ,A,996,GLY,L,NA,other,
 10PJ,A,997,LEU,L,NA,other,

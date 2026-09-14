@@ -209,7 +209,7 @@ def _vendor():
     return mod
 
 
-def plip_interactions(pdb_id: str, ligand_code: str) -> dict:
+def plip_interactions(pdb_id: str, ligand_code: str, chain: str = "") -> dict:
     """Run PLIP on a tidied, renumbered PDB and normalise the XML to our schema.
 
     The order tidy -> renumber -> CONECT matters: pdb_tidy gives the inter-chain TER its own
@@ -236,7 +236,11 @@ def plip_interactions(pdb_id: str, ligand_code: str) -> dict:
     subprocess.run([sys.executable, "-m", "plip.plipcmd", "-f", str(tidied),
                     "-x", "-o", str(work), "--name", "report"],
                    check=True, capture_output=True, timeout=600, env=env)
-    return _parse_plip(work / "report.xml", pdb_id, ligand_code, resname_map)
+    # chain_map is ORIGINAL -> the single letter PLIP will see, assigned in order of
+    # appearance. The caller names the chain the rest of the bundle describes, and the
+    # contacts have to come from that same copy.
+    return _parse_plip(work / "report.xml", pdb_id, ligand_code, resname_map,
+                       (chain_map or {}).get(chain, chain))
 
 
 PLIP_TYPES = {
@@ -250,7 +254,8 @@ PLIP_TYPES = {
 }
 
 
-def _parse_plip(xml_path: Path, pdb_id: str, ligand_code: str, resname_map: dict) -> dict:
+def _parse_plip(xml_path: Path, pdb_id: str, ligand_code: str, resname_map: dict,
+                prefer_chain: str = "") -> dict:
     import xml.etree.ElementTree as ET
 
     # The vendored remapper shortens any residue name longer than three characters, so a
@@ -264,7 +269,8 @@ def _parse_plip(xml_path: Path, pdb_id: str, ligand_code: str, resname_map: dict
 
     root = ET.parse(xml_path).getroot()
     seen_hetids: list[str] = []
-    best: tuple[int, list[dict], str, str] = (0, [], "", "")
+    # (chain matches the one we asked for, number of contacts, rows, hetid, chain)
+    best: tuple[int, int, list[dict], str, str] = (0, 0, [], "", "")
     for site in root.iter("bindingsite"):
         hetid = (site.findtext("identifiers/hetid") or "").upper()
         seen_hetids.append(hetid)
@@ -312,10 +318,23 @@ def _parse_plip(xml_path: Path, pdb_id: str, ligand_code: str, resname_map: dict
                     row["distance_donor_water_a"] = _maybe_float(node.findtext("dist_d-w"))
                     row["water_idx"] = _maybe_int(node.findtext("water_idx"))
                 rows.append(row)
-        if len(rows) > best[0]:
-            best = (len(rows), rows, hetid, (site.findtext("identifiers/reschain") or "").strip())
+        # PLIP names a binding site's chain in identifiers/chain. identifiers/reschain does
+        # not exist, which is why every interactions file used to record ligand_chain as an
+        # empty string. The contact rows carry their residues' chains, so if the identifier
+        # is ever missing the chain most of them share stands in for it.
+        site_chain = (site.findtext("identifiers/chain") or "").strip()
+        if not site_chain and rows:
+            chains = [row["chain"] for row in rows if row["chain"]]
+            site_chain = max(set(chains), key=chains.count) if chains else ""
+        # The asymmetric unit usually holds more than one copy, and picking whichever copy
+        # happened to have the most contacts is how 10PI came to describe chain B while
+        # residues.csv, the ruler and every caption described chain A: contacts that named
+        # residues the rest of the bundle did not contain.
+        rank = (1 if prefer_chain and site_chain == prefer_chain else 0, len(rows))
+        if rows and rank > (best[0], best[1]):
+            best = (rank[0], len(rows), rows, hetid, site_chain)
 
-    if not best[1] and seen_hetids:
+    if not best[2] and seen_hetids:
         # Loud, not silent: PLIP ran and found binding sites, but none of them was the ligand
         # asked for. That is a naming problem, and it must never look like "no contacts".
         raise SystemExit(
@@ -323,11 +342,16 @@ def _parse_plip(xml_path: Path, pdb_id: str, ligand_code: str, resname_map: dict
             f"matched ligand {ligand_code} (tried {sorted(wanted)}). "
             f"Residue name mapping was {resname_map}."
         )
+    if prefer_chain and best[2] and best[4] != prefer_chain:
+        raise SystemExit(
+            f"{pdb_id}: the only binding site PLIP found for {ligand_code} is in chain "
+            f"{best[4]!r}, but this bundle describes chain {prefer_chain!r}. Contacts from "
+            f"another copy would name residues that are not in residues.csv.")
     return {
         "pdb_id": pdb_id,
         "ligand_code": ligand_code,
-        "ligand_chain": best[3],
-        "interactions": best[1],
+        "ligand_chain": best[4],
+        "interactions": best[2],
     }
 
 
@@ -391,7 +415,7 @@ def build(slug: str) -> dict:
         n_inter = 0
         ligand_code = (entry.get("contains") or {}).get("ligand_code")
         if ligand_code:
-            data = plip_interactions(entry["pdb_id"], ligand_code)
+            data = plip_interactions(entry["pdb_id"], ligand_code, entry["chain"])
             (out_dir / "interactions" / f"{entry['pdb_id']}.json").write_text(
                 json.dumps(data, indent=1))
             n_inter = len(data["interactions"])

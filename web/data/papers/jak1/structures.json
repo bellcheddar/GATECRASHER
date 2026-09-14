@@ -11,7 +11,7 @@
     "chain": "A",
     "klifs": false,
     "uniprot": "P23458",
-    "caption_specialist": "Povorcitinib bound to the JAK1 JH1 domain at 1.54 A. The two pyrazole nitrogens hydrogen bond the hinge: the main-chain amide of Leu932 and the main-chain carbonyl of Glu930. The molecule is longer than a conventional dual JAK1/JAK2 inhibitor, so its phenyl ring reaches towards the P-loop, which in JAK1 sits about 2 A higher than in JAK2 and opens a small lipophilic groove for the trifluoromethyl group.",
+    "caption_specialist": "Povorcitinib bound to the JAK1 JH1 domain at 1.54 A. The two pyrazole nitrogens hydrogen bond the hinge: the main-chain amide of Leu959 and the main-chain carbonyl of Glu957. The paper calls these Leu932 and Glu930, which are the JAK2 numbers; in this entry 930 is an arginine. The molecule is longer than a conventional dual JAK1/JAK2 inhibitor, so its phenyl ring reaches towards the P-loop, which in JAK1 sits about 2 A higher than in JAK2 and opens a small lipophilic groove for the trifluoromethyl group.",
     "caption_plain": "The drug sitting in JAK1. It grips the protein at the hinge, the same place most kinase drugs bind, and reaches further than usual towards a loop that sits higher in JAK1 than in its near-twin JAK2. That extra room is the paper's explanation for why it prefers JAK1.",
     "source": "deposited",
     "evidence": "Fig4"
@@ -28,10 +28,10 @@
     "chain": "A",
     "klifs": false,
     "uniprot": "O60674",
-    "caption_specialist": "The same compound bound to JAK2 JH1 at 1.59 A: the true twin structure, one ligand in both isoforms. The hinge contacts to Glu930 and Leu932 are conserved. The differences the authors point to are elsewhere: JAK2 has Asn859 bent towards the pocket and hydrogen bonding Glu1015, where JAK1 has His885 pointing at solvent, and JAK2's Phe860 may orient the phenyl ring into a closed disposition. The authors describe this explanation as speculative, and the app says so wherever it is shown.",
+    "caption_specialist": "The same compound bound to JAK2 JH1 at 1.59 A: the true twin structure, one ligand in both isoforms. The hinge contacts are conserved: Glu930 and Leu932 here, the residues numbered Glu957 and Leu959 in JAK1. The differences the authors point to are elsewhere: JAK2 has Asn859 bent towards the pocket and hydrogen bonding Glu1015, where JAK1 has His885 pointing at solvent, and JAK2's Phe860 may orient the phenyl ring into a closed disposition. The authors describe this explanation as speculative, and the app says so wherever it is shown.",
     "caption_plain": "The very same drug molecule, in the protein it is meant to avoid. Having both pictures is unusual and valuable: the grip at the hinge is identical, and the differences are around the edges of the pocket. The chemists are careful to call their explanation a hypothesis, not a finding.",
     "source": "deposited",
-    "numbering_note": "JAK1 and JAK2 are different proteins, and their residue numbers are not equivalent. Glu930 and Leu932 are the hinge in both, which is a coincidence of numbering rather than an alignment. JAK1 His885 and JAK2 Asn859 occupy the analogous P-loop position.",
+    "numbering_note": "JAK1 and JAK2 are different proteins and their residue numbers are not equivalent. The hinge is Glu957 and Leu959 in JAK1 (10PI) and Glu930 and Leu932 in JAK2 (10PJ); JAK1 His885 and JAK2 Asn859 are the analogous P-loop position, and JAK1 Phe886 is JAK2 Phe860. The offset is +27 at the hinge and +26 at the P-loop, so no single offset converts one numbering into the other. The paper uses the JAK2 numbers for both isoforms; this app uses each entry's own, and says where they differ.",
     "evidence": "Fig4"
   }
 ]

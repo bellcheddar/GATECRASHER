@@ -251,7 +251,7 @@
   "vector": "hinge binder",
   "change_type": "ring_change",
   "headline": "Shrinking the hinge binder, and paying for it",
-  "rationale_specialist": "The 7H-pyrrolo[2,3-d]pyrimidine is ubiquitous in kinase inhibitors and, being electron-rich, is prone to CYP-mediated oxidation. A bare pyrazole still binds the hinge, at 314 nM: a 1250-fold loss. The two pyrazole nitrogens make the same contacts, to the main-chain amide of Leu932 and the carbonyl of Glu930, but the smaller ring has poorer geometry and less surface to work with.",
+  "rationale_specialist": "The 7H-pyrrolo[2,3-d]pyrimidine is ubiquitous in kinase inhibitors and, being electron-rich, is prone to CYP-mediated oxidation. A bare pyrazole still binds the hinge, at 314 nM: a 1250-fold loss. The two pyrazole nitrogens make the same contacts, to the main-chain amide of Leu959 and the carbonyl of Glu957 (the paper calls these Leu932 and Glu930, using JAK2 numbering), but the smaller ring has poorer geometry and less surface to work with.",
   "rationale_plain": "The part of the molecule that grips the protein was replaced with something smaller and less vulnerable to being broken down. It still gripped, in the same two places, but a thousand times more weakly. The rest of this work is buying that potency back.",
   "consequences": [
    {
@@ -270,8 +270,8 @@
    }
   ],
   "structural_basis": [
-   "A:930",
-   "A:932"
+   "A:957",
+   "A:959"
   ],
   "evidence": "T5"
  },
@@ -301,8 +301,8 @@
    }
   ],
   "structural_basis": [
-   "A:930",
-   "A:932"
+   "A:957",
+   "A:959"
   ],
   "evidence": "T5"
  },
@@ -346,8 +346,8 @@
    }
   ],
   "structural_basis": [
-   "A:930",
-   "A:932",
+   "A:957",
+   "A:959",
    "A:885"
   ],
   "evidence": "T6"

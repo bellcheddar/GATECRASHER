@@ -1,7 +1,7 @@
 {
  "pdb_id": "10PJ",
  "ligand_code": "A1C68",
- "ligand_chain": "",
+ "ligand_chain": "A",
  "interactions": [
   {
    "type": "hbond",

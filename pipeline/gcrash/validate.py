@@ -167,6 +167,30 @@ def run(slug: str) -> Report:
 
     # structure gate: every cited residue must exist in the structure it is cited against
     residue_keys = {f"{row['chain']}:{row['resnum']}" for row in residues}
+    keys_by_structure: dict[str, set] = {}
+    for row in residues:
+        keys_by_structure.setdefault(row["pdb_id"], set()).add(f"{row['chain']}:{row['resnum']}")
+
+    # Contacts must come from the copy of the molecule the rest of the bundle describes.
+    # Without this, PLIP picking the fullest binding site in the asymmetric unit put 10PI's
+    # contacts in chain B while the ruler, the motifs and every caption were chain A: the
+    # contact list named residues that residues.csv did not contain, and nothing failed.
+    for path in sorted((bundle / "interactions").glob("*.json")) if (bundle / "interactions").is_dir() else []:
+        payload = json.loads(path.read_text())
+        pdb_id = payload.get("pdb_id") or path.stem
+        known = keys_by_structure.get(pdb_id)
+        declared = next((e["chain"] for e in structures if e["pdb_id"] == pdb_id), None)
+        if declared and payload.get("ligand_chain") and payload["ligand_chain"] != declared:
+            report.fail(f"interactions/{path.name}: contacts come from chain "
+                        f"{payload['ligand_chain']}, but structures.json declares chain {declared}")
+        if not known:
+            continue
+        for row in payload.get("interactions", []):
+            key = f"{row.get('chain') or declared}:{row['resnum']}"
+            if key not in known:
+                report.fail(f"interactions/{path.name}: {row['type']} cites {row['residue']}"
+                            f"{row['resnum']} in chain {row.get('chain') or declared}, which is "
+                            f"not in residues.csv for {pdb_id}")
     for edit in edits:
         for ref in (edit.get("structural_basis") or []):
             if residues and ref not in residue_keys:
