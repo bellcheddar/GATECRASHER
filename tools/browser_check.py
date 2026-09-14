@@ -386,6 +386,41 @@ def main() -> int:
               and len(copies.get("before") or []) > 1 and copies.get("keptHeader"),
               str(copies)[:160])
 
+        # The short-MD row, where a run exists. Written to assert the SUBSTANCE when there is
+        # one and to say so when there is not, rather than passing vacuously either way: a
+        # check that cannot fail is how the blank twin viewer survived a day.
+        md = tab.js("""(async () => {
+            const index = await (await fetch('data/papers/cdk2/dynamics.json')).json().catch(() => null);
+            if (!index) return {ran: false};
+            const run = index['8UV0'];
+            if (!run) return {ran: false};
+            const host = document.getElementById('structure-dynamics');
+            return {
+              ran: true,
+              verdict: run.verdict,
+              chips: host ? host.querySelectorAll('.chip').length : 0,
+              claimChips: host ? host.querySelectorAll('.claim-held, .claim-broke').length : 0,
+              rmsfCells: document.querySelectorAll('#klifs-ruler .rmsf-cell').length,
+              hasPlay: host ? !!host.querySelector('button') : false,
+              withheld: host ? host.textContent.includes('withheld') : false,
+            };
+        })()""") or {}
+        if md.get("ran"):
+            check("the short MD row says what was run and what it showed",
+                  md.get("chips", 0) >= 2 and md.get("claimChips", 0) >= 1,
+                  f"{md.get('chips')} chips, {md.get('claimChips')} of them claims")
+            check("the ruler carries an RMSF band from that run",
+                  md.get("rmsfCells", 0) > 50, f"{md.get('rmsfCells')} RMSF cells")
+            # A trajectory ships only where the verdict supports the paper's claim, so the
+            # control and the verdict must agree: BUILD_SPEC Stage 4.
+            expected_play = md.get("verdict") == "supports"
+            check("the trajectory control matches the verdict",
+                  md.get("hasPlay") == expected_play and md.get("withheld") != expected_play,
+                  f"verdict {md.get('verdict')}, play control {md.get('hasPlay')}, "
+                  f"withheld notice {md.get('withheld')}")
+        else:
+            print("  skip  no MD run bundled for CDK2 yet, so the dynamics row is not asserted")
+
         check("the pocket ruler drew its cells",
               (tab.js("document.querySelectorAll('#klifs-ruler .ruler-cell').length") or 0) >= 80,
               f"{tab.js('document.querySelectorAll(\"#klifs-ruler .ruler-cell\").length')} cells")
