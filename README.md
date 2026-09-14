@@ -12,7 +12,7 @@
 ![molstar](https://img.shields.io/badge/mol*-5.11.0-1B6FA8)
 ![plotly](https://img.shields.io/badge/plotly-2.35.2-3F4F75?logo=plotly&logoColor=white)
 ![rdkit.js](https://img.shields.io/badge/rdkit.js-2025.3.4-8B0000)
-![browser checks](https://img.shields.io/badge/browser%20checks-67%20passing-00d084)
+![browser checks](https://img.shields.io/badge/browser%20checks-73%20passing-00d084)
 ![bundles](https://img.shields.io/badge/bundles-4%20validating-00d084)
 ![data](https://img.shields.io/badge/data-RCSB%20PDB%20·%20KLIFS%20·%20PubChem-fcb900)
 ![phase](https://img.shields.io/badge/phase-stage%204-ff6900)

@@ -25,6 +25,7 @@ let bundle = null;
 
 async function boot() {
   const state = appState;
+  document.documentElement.dataset.ready = 'false';
 
   /* Theme first, so nothing renders in the wrong palette and then repaints. */
   const stored = state.theme.load();
@@ -76,6 +77,12 @@ function selectPaper(slug, patch = {}) {
 }
 
 async function selectPaperNow(slug, patch = {}) {
+  /* Readiness is published on the root element so anything driving this page can wait for
+   * a real signal instead of guessing. document.readyState goes to complete as soon as the
+   * markup and modules have loaded, which is well before a bundle has been fetched and
+   * drawn: on the deployed site that gap is seconds, and everything in it is empty
+   * furniture. */
+  document.documentElement.dataset.ready = 'false';
   bundle = await loadPaper(slug);
   const state = appState;
 
@@ -125,6 +132,7 @@ async function selectPaperNow(slug, patch = {}) {
   renderSwitcher();
   showTab(state.get('tab'));
   state.writeHash();
+  document.documentElement.dataset.ready = 'true';
 }
 
 /* --------------------------------------------------------------------- shell */

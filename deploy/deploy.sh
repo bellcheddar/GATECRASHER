@@ -81,4 +81,28 @@ data=$(curl -s -o /dev/null -w '%{http_code}' "https://${SERVER_NAME}/data/index
 echo "    https://${SERVER_NAME}/                 ${code}"
 echo "    https://${SERVER_NAME}/data/index.json  ${data}"
 [[ "$code" == "200" && "$data" == "200" ]] || { echo "    live check FAILED"; exit 1; }
-echo "==> Live."
+
+# A status code is not enough, and this is not hypothetical: a stray `types` block in the
+# vhost once made nginx serve every asset as application/octet-stream. Browsers refuse
+# stylesheets and ES modules with that type, so the site was blank furniture while every
+# file returned 200 and this script happily printed "Live". Check what the bytes claim to be.
+echo "==> Verifying content types"
+ct_fail=0
+check_type() {
+  local path="$1" want="$2"
+  local got
+  got=$(curl -s -D- -o /dev/null "https://${SERVER_NAME}/${path}" \
+        | tr -d '\r' | awk 'tolower($1)=="content-type:"{print $2}')
+  printf '    %-32s %s\n' "$path" "${got:-none}"
+  case "$got" in *"$want"*) ;; *) echo "        expected $want"; ct_fail=1 ;; esac
+}
+check_type "css/tokens.css"                 "text/css"
+check_type "js/app.js"                      "javascript"
+check_type "data/index.json"                "application/json"
+check_type "icon.svg"                       "image/svg+xml"
+check_type "js/vendor/RDKit_minimal.wasm"   "application/wasm"
+[[ $ct_fail -eq 0 ]] || { echo "    content types are wrong: the page will not render"; exit 1; }
+
+echo "==> Live: https://${SERVER_NAME}"
+echo "    Run the browser check against production to be sure:"
+echo "    python3 tools/browser_check.py --base https://${SERVER_NAME}"

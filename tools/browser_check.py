@@ -67,12 +67,25 @@ class Tab:
                 return msg.get("result", {})
 
     def goto(self, url: str) -> None:
+        """Navigate, then wait for the app's own readiness signal.
+
+        document.readyState reaches 'complete' once the markup and modules have loaded,
+        which is well before the first data bundle has been fetched and drawn. Against a
+        local server that gap is invisible; against the deployed site it is seconds, and
+        asserting inside it reports an empty page as a broken one. The app sets
+        data-ready on the root element when a paper has finished loading.
+        """
         self.send("Page.navigate", url=url)
         for _ in range(300):
             if self.js("document.readyState") == "complete":
-                time.sleep(0.4)
+                break
+            time.sleep(0.1)
+        for _ in range(600):                    # up to 60 s for the first bundle
+            if self.js("document.documentElement.dataset.ready") == "true":
                 return
             time.sleep(0.1)
+        # No signal: carry on and let the assertions report what is actually there.
+        time.sleep(0.4)
 
     def js(self, expr: str):
         r = self.send("Runtime.evaluate", expression=expr, returnByValue=True,
