@@ -41,6 +41,8 @@ export function initStructure(state) {
     pair: document.getElementById('viewer-pair'),
     targetHost: document.getElementById('viewer-target'),
     antiHost: document.getElementById('viewer-anti'),
+    targetFrame: document.getElementById('viewer-target-frame'),
+    antiFrame: document.getElementById('viewer-anti-frame'),
     targetLabel: document.getElementById('viewer-target-label'),
     antiLabel: document.getElementById('viewer-anti-label'),
     antiToggle: document.getElementById('anti-toggle'),
@@ -121,7 +123,8 @@ export function initStructure(state) {
   /* The anti-target viewer is off by default and opens on demand: the comparison is
    * available, never imposed. */
   async function toggleAnti(on) {
-    el.antiHost.hidden = !on;
+    /* The FRAME is hidden, not the host: the label lives in the frame. */
+    el.antiFrame.hidden = !on;
     el.antiToggle.setAttribute('aria-pressed', String(on));
     if (!on) {
       unlock?.();
@@ -132,10 +135,14 @@ export function initStructure(state) {
     }
     const twin = bundle.structures.find((s) => s.role === 'anti_target');
     if (!twin) {
+      el.antiLabel.textContent = 'none';
       el.antiHost.replaceChildren(emptyState('No paired anti-target structure',
         'This paper has no co-structure of the same compound in the protein to be avoided.'));
       return;
     }
+    /* Label first: once Mol* mounts it owns the host, and the label is outside it. */
+    el.antiLabel.textContent = `${twin.pdb_id} ${twin.contains.protein}`
+      + (twin.resolution_a ? ` ${twin.resolution_a} Å` : '');
     anti = new StructureViewer(el.antiHost);
     await anti.create({ background: colourToInt(cssToken('--surface-2')) });
     el.antiLabel.textContent = `${twin.pdb_id} ${twin.contains.protein}`;
@@ -500,7 +507,7 @@ export function initStructure(state) {
       unlock = null;
       anti?.dispose();
       anti = null;
-      el.antiHost.hidden = true;
+      el.antiFrame.hidden = true;
       el.antiToggle.setAttribute('aria-pressed', 'false');
       await loadTargetWhenVisible();
       renderChips();

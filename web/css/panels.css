@@ -179,6 +179,11 @@
   gap: calc(var(--unit) * 0.5);
 }
 
+/* The frame owns the positioning context, so the label can sit over the canvas without
+ * being a child of the element Mol* mounts into and wipes. */
+.viewer-frame { position: relative; min-width: 0; }
+.viewer-frame[hidden] { display: none !important; }
+
 .viewer-pair .viewer-label {
   position: absolute;
   top: 6px;
@@ -192,8 +197,8 @@
   border-radius: var(--radius);
 }
 
-.viewer-pair .is-target .viewer-label { color: var(--target); border-color: var(--target); }
-.viewer-pair .is-anti .viewer-label { color: var(--anti); border-color: var(--anti); }
+.viewer-frame.is-target .viewer-label { color: var(--target); border-color: var(--target); }
+.viewer-frame.is-anti .viewer-label { color: var(--anti); border-color: var(--anti); }
 
 /* Mol* paints its own ground, so the panel colour is set on the canvas host and the
  * plugin chrome is hidden: the app supplies its own controls. */

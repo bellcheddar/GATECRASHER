@@ -49,14 +49,29 @@ async function boot() {
   const slug = fromHash.paper || papers[0]?.slug;
   if (!slug) return;
 
-  await selectPaper(slug, fromHash);
+  /* Wire the shell BEFORE the first bundle loads. Doing it afterwards means the keyboard
+   * shortcuts and the toggles do not exist until the heaviest panel has finished drawing,
+   * so a key pressed during load is silently swallowed: press 2 while CDK2 is still
+   * rendering and nothing happens at all. The handlers are safe to attach early because
+   * paper switches are serialised and every panel guards on its bundle. */
   wireShell();
   window.addEventListener('hashchange', onHashChange);
+  await selectPaper(slug, fromHash);
 }
 
 /* ------------------------------------------------------------------ paper swap */
 
-async function selectPaper(slug, patch = {}) {
+/* Paper switches are serialised. A visitor can press 2 while the first bundle is still
+ * loading, and two concurrent switches race: the slower one finishes last and overwrites
+ * the paper the reader actually asked for. */
+let switching = Promise.resolve();
+
+function selectPaper(slug, patch = {}) {
+  switching = switching.catch(() => {}).then(() => selectPaperNow(slug, patch));
+  return switching;
+}
+
+async function selectPaperNow(slug, patch = {}) {
   bundle = await loadPaper(slug);
   const state = appState;
 
@@ -89,6 +104,12 @@ async function selectPaper(slug, patch = {}) {
     motif: null,
     beat: null,
   }, 'app:select-paper');
+
+  /* The address bar follows the reader's action immediately. Waiting until every panel has
+   * finished means the URL lags the click by however long the heaviest bundle takes to
+   * draw its depictions and fetch its coordinates, which for FGFR is seconds: long enough
+   * for a copied link to be the previous paper. */
+  state.writeHash();
 
   panels.rail.setBundle(bundle);
   await panels.story.setBundle(bundle);

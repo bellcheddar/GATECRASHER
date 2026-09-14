@@ -238,24 +238,36 @@ def main() -> int:
 
         # --------------------------------------------------------- register
         print("\nregister toggle")
-        prose = "document.querySelector('#beats .beat .prose').textContent"
+        # The prose nodes are REPLACED on every register change, so polling their textContent
+        # races the re-render: a poll landing mid-render throws, reads as None, and reports a
+        # working toggle as broken. The button label is a single node that is only ever
+        # rewritten in place, so the wait keys on that and the prose is read afterwards.
+        prose = "(document.querySelector('#beats .beat .prose')||{}).textContent||''"
+        label = "document.getElementById('register-button').textContent.trim()"
         before = tab.js(prose)
         tab.click("#register-button")
-        # Poll rather than sleeping a fixed interval: the panels re-render on the state
-        # dispatch, and a fixed wait reports a working toggle as broken if anything else
-        # (a depiction, a plot) is still settling on the same frame.
-        changed = tab.wait_for(f"{prose} !== {json.dumps(before)}", 10)
+        flipped = tab.wait_for(f"{label} === 'Plain'", 6)
+        # If the synthetic pointer click did not land, say so and then drive the control
+        # directly, so the rest of the register assertions still mean something and the
+        # output distinguishes "the control is unreachable" from "the logic is broken".
+        by_pointer = flipped
+        if not flipped:
+            tab.js("document.getElementById('register-button').click()")
+            flipped = tab.wait_for(f"{label} === 'Plain'", 6)
         after = tab.js(prose)
-        label = tab.js("document.getElementById('register-button').textContent")
+        check("the register control responds to a real pointer click", by_pointer,
+              "a direct .click() " + ("did work, so the handler is fine and the synthetic "
+                                      "press missed the element" if flipped else "did not work either"))
+        check("switching register flips the control", flipped,
+              f"button reads {tab.js(label)!r}, hash {tab.js('location.hash')!r}")
         check("switching register rewrites the beat prose",
-              changed and bool(after) and before != after,
-              f"button reads {(label or '').strip()!r}, hash {tab.js('location.hash')!r}, "
+              bool(after) and before != after,
               f"before={(before or '')[:50]!r} after={(after or '')[:50]!r}")
         check("the plain register really is plainer",
               len(after or "") > 0 and "sp3" not in (after or ""),
               (after or "")[:80])
         tab.click("#register-button")
-        tab.wait_for(f"{prose} === {json.dumps(before)}", 10)
+        tab.wait_for(f"{label} === 'Specialist'", 10)
 
         # -------------------------------------------------------- structure
         print("\nstructure sheet")
@@ -377,10 +389,69 @@ def main() -> int:
         })()""")
         check("tabbing to a control shows a focus ring", focus_ring == "visible", str(focus_ring))
         tab.key("r")
+        tab.wait_for("document.getElementById('register-button').textContent.trim() === 'Plain'", 5)
         check("'r' switches register",
-              tab.js("document.getElementById('register-button').textContent").strip() == "Plain",
-              tab.js("document.getElementById('register-button').textContent"))
+              (tab.js("document.getElementById('register-button').textContent") or "").strip() == "Plain",
+              f"label reads {tab.js('document.getElementById(\"register-button\").textContent')!r}")
         tab.key("r")
+
+        # ------------------------------------------------- all four papers
+        # Everything above runs on CDK2. These are the rows of the section 8 matrix that
+        # only exist once there is more than one bundle, plus the twin-structure path that
+        # only JAK1 has.
+        print("\nfour papers")
+        tab.goto(args.base + "/")
+        # Wait for the first bundle to finish loading before touching the keyboard: the app
+        # serialises paper switches, but a key pressed mid-boot still has to queue behind it,
+        # and the check should measure the switch rather than the boot.
+        tab.wait_for("document.querySelectorAll('#beats .beat').length === 5", 30)
+        papers = tab.js("[...document.querySelectorAll('#paper-switcher button')]"
+                        ".map(b => b.textContent.replace(/\\d+$/, '').trim())")
+        check("all four campaigns are in the switcher",
+              isinstance(papers, list) and len(papers) == 4, str(papers))
+
+        for index, slug in ((2, "fgfr"), (3, "kras"), (4, "jak1")):
+            tab.key(str(index))
+            loaded = tab.wait_for(f"location.hash.startsWith('#{slug}')", 25)
+            check(f"keyboard {index} switches to {slug}", loaded, tab.js("location.hash"))
+            check(f"{slug}: the provenance rail followed the paper",
+                  bool(tab.js("document.getElementById('rail-paper').textContent")),
+                  tab.js("document.getElementById('rail-paper').textContent"))
+            check(f"{slug}: story beats rendered",
+                  (tab.js("document.querySelectorAll('#beats .beat').length") or 0) == 5,
+                  f"{tab.js('document.querySelectorAll(\"#beats .beat\").length')} beats")
+
+        # KRAS is not a kinase: the ruler must degrade with no empty pocket affordances.
+        tab.key("3")
+        tab.wait_for("location.hash.startsWith('#kras')", 25)
+        tab.click("#tab-strip button[data-tab='structure']")
+        time.sleep(1.0)
+        check("kras: the ruler still draws, from the sequence",
+              (tab.js("document.querySelectorAll('#klifs-ruler .ruler-cell').length") or 0) > 100,
+              f"{tab.js('document.querySelectorAll(\"#klifs-ruler .ruler-cell\").length')} cells")
+        check("kras: no KLIFS numbering is claimed anywhere",
+              "KLIFS" not in (tab.js("document.getElementById('klifs-ruler')"
+                                     ".getAttribute('aria-label')") or ""),
+              tab.js("document.getElementById('klifs-ruler').getAttribute('aria-label')"))
+
+        # JAK1 is the only paper with the same ligand in the target and the anti-target.
+        tab.key("4")
+        tab.wait_for("location.hash.startsWith('#jak1')", 25)
+        tab.click("#tab-strip button[data-tab='structure']")
+        check("jak1: the target viewer loaded",
+              tab.wait_for("!!document.querySelector('#viewer-target canvas')", 40))
+        tab.click("#anti-toggle")
+        check("jak1: the anti-target viewer opens on demand",
+              tab.wait_for("!document.getElementById('viewer-anti').hidden", 15))
+        check("jak1: the second structure loaded its own coordinates",
+              tab.wait_for("!!document.querySelector('#viewer-anti canvas')", 40),
+              "no canvas in the anti-target host")
+        check("jak1: the twin is labelled as the anti-target",
+              "JAK2" in (tab.js("document.getElementById('viewer-anti-label').textContent") or ""),
+              tab.js("document.getElementById('viewer-anti-label').textContent"))
+        tab.shot(out / "jak1-twin.png")
+        tab.key("1")
+        tab.wait_for("location.hash.startsWith('#cdk2')", 25)
 
         # --------------------------------------------------------- themes
         print("\nthemes")

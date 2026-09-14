@@ -129,12 +129,17 @@
             <span class="sheet-number">SHEET 02</span>
           </div>
 
+          <!-- The label is a SIBLING of the viewer host, never a child: Mol* clears its
+               host's children when it mounts, which would destroy the label and leave the
+               app holding a detached node. -->
           <div class="viewer-pair" id="viewer-pair">
-            <div class="viewer-host is-target" id="viewer-target">
+            <div class="viewer-frame is-target" id="viewer-target-frame">
               <span class="viewer-label mono" id="viewer-target-label">·</span>
+              <div class="viewer-host" id="viewer-target"></div>
             </div>
-            <div class="viewer-host is-anti" id="viewer-anti" hidden>
+            <div class="viewer-frame is-anti" id="viewer-anti-frame" hidden>
               <span class="viewer-label mono" id="viewer-anti-label">·</span>
+              <div class="viewer-host" id="viewer-anti"></div>
             </div>
           </div>
 
