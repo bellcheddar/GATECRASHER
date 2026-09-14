@@ -106,6 +106,12 @@ def bundle(slug: str):
     console.print(f"compounds {result['compounds']}, measurements {result['measurements']}, "
                   f"assays {result['assays']}, cliffs {result['cliffs']}, "
                   f"{result['bytes'] / 1024:.0f} kB")
+    # A published file the build no longer makes is deleted, and said out loud. A withdrawn
+    # trajectory vanishing without a line in the log is how you end up unsure, weeks later,
+    # whether it was ever published at all.
+    if result["withdrawn"]:
+        console.print(f"withdrawn {len(result['withdrawn'])}: "
+                      + ", ".join(result["withdrawn"]))
     _problems(result["problems"])
 
 

@@ -92,6 +92,29 @@ def primary_values(assays: dict, rows: list[dict]) -> dict[str, float]:
             if r["assay_id"] == primary and r["qualifier"] == "=" and r["value"]}
 
 
+def mirror(source: Path, target: Path) -> list[str]:
+    """Copy every file of `source` into `target` and delete what `source` no longer has.
+
+    A plain copy leaves a withdrawn artefact published forever, and for the MD stage that
+    breaks the one rule the design exists to enforce. When a trajectory stops supporting its
+    claims, analyse_md deletes it from the build directory (it does, explicitly) but a copy
+    that only ever adds files would leave the previously published .pdb and .xtc sitting in
+    web/data and deploying. The manifest would not reference them, so nothing would play
+    them, and the bundle would still be shipping the trajectory of a run that was withheld.
+
+    Returns the names removed, so the caller can report them rather than delete in silence.
+    """
+    target.mkdir(parents=True, exist_ok=True)
+    keep = {src.name for src in source.iterdir() if src.is_file()}
+    removed = sorted(p.name for p in target.iterdir() if p.is_file() and p.name not in keep)
+    for name in removed:
+        (target / name).unlink()
+    for src in sorted(source.iterdir()):
+        if src.is_file():
+            shutil.copy2(src, target / src.name)
+    return removed
+
+
 def _write_csv(path: Path, rows: list[dict], fields: list[str]) -> None:
     with path.open("w", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
@@ -120,6 +143,10 @@ def build(slug: str) -> dict:
     assays = json.loads((raw / "assays.json").read_text())
     compounds = json.loads((build_d / "compounds.json").read_text())
     rows, problems = measurements(slug, assays)
+    # Published files the build no longer produces, deleted by mirror() and reported rather
+    # than removed in silence: a withdrawn trajectory disappearing without a word is how you
+    # end up unsure whether it was ever there.
+    withdrawn: list[str] = []
 
     # compounds.csv
     fields = ["compound_id", "label", "series", "role", "smiles", "inchikey", "r_groups",
@@ -150,11 +177,8 @@ def build(slug: str) -> dict:
     # offering a control that does nothing or, worse, implying a run that never happened.
     if (build_d / "dynamics").is_dir():
         dynamics_out = out / "dynamics"
-        dynamics_out.mkdir(exist_ok=True)
         manifest: dict[str, dict] = {}
-        for src in sorted((build_d / "dynamics").iterdir()):
-            if src.is_file():
-                shutil.copy2(src, dynamics_out / src.name)
+        withdrawn += [f"dynamics/{n}" for n in mirror(build_d / "dynamics", dynamics_out)]
         for report_path in sorted((build_d / "dynamics").glob("*.json")):
             report = json.loads(report_path.read_text())
             pdb_id = (report.get("pdb_id") or report_path.stem).upper()
@@ -182,27 +206,24 @@ def build(slug: str) -> dict:
             manifest[pdb_id] = entry
         (out / "dynamics.json").write_text(json.dumps(manifest, indent=1))
     if (build_d / "interactions").is_dir():
-        target = out / "interactions"
-        target.mkdir(exist_ok=True)
-        for src in (build_d / "interactions").glob("*.json"):
-            shutil.copy2(src, target / src.name)
+        withdrawn += [f"interactions/{n}"
+                      for n in mirror(build_d / "interactions", out / "interactions")]
 
     # depictions
-    dep_out = out / "depictions"
-    dep_out.mkdir(exist_ok=True)
-    for src in (build_d / "depictions").glob("*.svg"):
-        shutil.copy2(src, dep_out / src.name)
+    withdrawn += [f"depictions/{n}"
+                  for n in mirror(build_d / "depictions", out / "depictions")]
 
     # PyMOL deliverables, where gc figures has produced them. A .pse is several megabytes,
     # so it is published as a download rather than anything the page loads.
     if (build_d / "figures").is_dir():
         fig_out = out / "figures"
-        fig_out.mkdir(exist_ok=True)
         manifest: dict[str, dict] = {}
+        # Mirrored first, then walked: the loop below builds the manifest from each file, so
+        # the copying and the indexing are two passes over the same directory, not one.
+        withdrawn += [f"figures/{n}" for n in mirror(build_d / "figures", fig_out)]
         for src in sorted((build_d / "figures").iterdir()):
             if not src.is_file():
                 continue
-            shutil.copy2(src, fig_out / src.name)
             # Files are named <pdbid>_gatecrasher.pml / .pse and <pdbid>.png, so the entry
             # they belong to is the leading token. A manifest means the page can offer only
             # the downloads that exist, rather than linking at a URL and hoping.
@@ -222,6 +243,7 @@ def build(slug: str) -> dict:
         "measurements": len(rows),
         "assays": len(assays),
         "cliffs": len(cliff_rows),
+        "withdrawn": withdrawn,
         "problems": problems,
         "bytes": sum(f.stat().st_size for f in out.rglob("*") if f.is_file()),
     }
