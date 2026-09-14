@@ -88,17 +88,6 @@ Each run carries the paper's own claims, written as testable statements before t
 
 Where a run passes, the page gains a per-residue RMSF band on the pocket ruler and a decimated trajectory of the pocket and ligand that plays in the viewer.
 
-## 🔍 What the papers disagree with themselves about
-
-Each bundle carries an `ISSUES.md` recording every place a paper contradicts itself, with both readings kept and neither averaged. Some of what is in there:
-
-- **KRAS**: the graphical abstract gives compound 10 at 451 nM and compound 23 at 2.2 nM where the tables give 410 nM and 22 nM. Both are shown, labelled by source.
-- **JAK1**: the PDB codes are printed two ways, and one spelling points at two real but unrelated entries (an RNA recognition motif and auto-inhibited c-Abl). Resolved against RCSB before anything was built.
-- **JAK1**: the abstract says the arthritis model was murine; the methods describe rats. The app says rats.
-- **JAK1**: the paper discusses both isoforms in JAK2 numbering, so its "Glu930" is an arginine in the app's own entry. Every cited residue is now checked against the coordinates it is cited against, and the hinge is labelled Glu957 and Leu959 in JAK1 numbering, as the structure has it.
-- **FGFR**: the RCSB entry title for 8E1X names compound 29, while the paper names compound 30. The deposited ligand's formula settles it: it is compound 30.
-- **CDK2**: Table 1 puts two isoform values in one cell, which reads like a value and a fold and is not.
-
 ## ⚖️ What this app does not reproduce
 
 No publisher figure, graphical abstract or full text is reproduced here. Every molecule is drawn from SMILES with RDKit, every structure is rendered from coordinates fetched from the RCSB PDB, and the narrative is written fresh. Abstracts are quoted verbatim in a marked quotation block with their citation and DOI, which is ordinary scholarly quotation. The paper PDFs themselves are not in this repository and never will be.
