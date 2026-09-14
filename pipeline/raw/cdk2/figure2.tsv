@@ -1,0 +1,6 @@
+# Figure 2 of Hummel et al. 2024: HTS hit 1 and initial scaffold discovery.
+# Values transcribed by hand from the figure panel. Blank means not reported in that panel.
+compound_id	cdk2_e1_ic50	cdk1_b1_ic50	jak2_ic50
+1	607		<1
+2	16	1021	>10000
+3	3.2	407	>10000

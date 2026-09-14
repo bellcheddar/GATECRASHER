@@ -1,0 +1,35 @@
+[project]
+name = "gatecrasher-pipeline"
+version = "0.1.0"
+description = "Mac-only precompute pipeline for GATECRASHER: chemistry, structures, interactions and bundles"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "rdkit>=2024.3.5",
+    "gemmi>=0.6.6",
+    "biotite>=1.0.1",
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "requests>=2.32",
+    "jsonschema>=4.23",
+    "pymupdf>=1.24",
+    "typer>=0.12",
+    "rich>=13.7",
+]
+
+[project.optional-dependencies]
+# PLIP needs OpenBabel Python bindings, which are awkward on Apple silicon.
+# Installed and verified separately; see HARVEST.md.
+interactions = [
+    "openbabel-wheel>=3.1.1.23",
+    "plip>=2.3.0",
+]
+
+[project.scripts]
+gc = "gc.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["gc"]

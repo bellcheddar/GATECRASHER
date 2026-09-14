@@ -1,0 +1,10 @@
+# Table 3 of Hummel et al. 2024: cross-species pharmacokinetic profiles of 12, 14 and 17.
+# dose_note reproduces the published per-row footnote, because the doses differ row by row
+# and the AUC values are meaningless without them.
+entry	compound_id	species	po_auc	po_cmax	po_f	iv_hbf	iv_t_half	iv_vdss	dose_note
+1	12	rat	3498	412	69	36	3.8	5.7	Cassette study. 0.5 mg/kg IV and 3 mg/kg PO.
+2	12	cyno	923	93	20	26	6	4.4	Cassette study. 0.5 mg/kg IV and 1.5 mg/kg PO.
+3	14	rat	6950	813	48	12	3.3	1.4	Cassette study. 0.43 mg/kg IV and 3 mg/kg PO.
+4	14	cyno	7590	778	8	4.3	3.2	0.37	Discrete study. 0.5 mg/kg IV and 3 mg/kg PO.
+5	17	rat	751	757	51	130	2	1.8	Cassette study. 0.5 mg/kg IV and 3 mg/kg PO.
+6	17	cyno	5652	962	21	9	2.6	0.4	Discrete study. 0.3 mg/kg IV and 2 mg/kg PO.

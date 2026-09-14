@@ -1,0 +1,73 @@
+{
+  "slug": "cdk2",
+  "title": "Discovery of (4-Pyrazolyl)-2-aminopyrimidines as Potent and Selective Inhibitors of Cyclin-Dependent Kinase 2",
+  "authors_short": "Hummel et al.",
+  "authors_full": "Joshua R. Hummel, Kai-Jiong Xiao, Jeffrey C. Yang, Leslie B. Epling, Ken Mukai, Qinda Ye, Meizhong Xu, Dingquan Qian, Lu Huo, Michael Weber, Valerie Roman, Yvonne Lo, Katherine Drake, Kristine Stump, Maryanne Covington, Kanishk Kapilashrami, Guofeng Zhang, Min Ye, Sharon Diamond, Swamy Yeleswaram, Ricardo Macarron, Marc C. Deller, Susan Wee, Sunkyu Kim, Xiaozhao Wang, Liangxing Wu, Wenqing Yao",
+  "journal": "J. Med. Chem.",
+  "year": 2024,
+  "volume": 67,
+  "pages": "3112-3126",
+  "doi": "10.1021/acs.jmedchem.3c02287",
+  "target": {
+    "name": "CDK2",
+    "partner": "cyclin E1",
+    "family": "CMGC kinase",
+    "uniprot": "P24941"
+  },
+  "anti_targets": [
+    { "name": "CDK1", "partner": "cyclin B1" },
+    { "name": "CDK4", "partner": "cyclin D1" },
+    { "name": "CDK6", "partner": "cyclin D3" },
+    { "name": "CDK7", "partner": "cyclin H" },
+    { "name": "CDK9", "partner": "cyclin T1" },
+    { "name": "JAK2", "partner": null }
+  ],
+  "one_line": "A screening hit that was really a JAK2 inhibitor, turned into a CDK2 inhibitor selective over five other CDKs.",
+  "abstract": "CDK2 is a critical regulator of the cell cycle. For a variety of human cancers, the dysregulation of CDK2/cyclin E1 can lead to tumor growth and proliferation. Historically, early efforts to develop CDK2 inhibitors with clinical applications proved unsuccessful due to challenges in achieving selectivity over off-target CDK isoforms with associated toxicity. In this report, we describe the discovery of (4-pyrazolyl)-2-aminopyrimidines as a potent class of CDK2 inhibitors that display selectivity over CDKs 1, 4, 6, 7, and 9. SAR studies led to the identification of compound 17, a kinase selective and highly potent CDK2 inhibitor (IC50 = 0.29 nM). The evaluation of 17 in CCNE1-amplified mouse models shows the pharmacodynamic inhibition of CDK2, measured by reduced Rb phosphorylation, and antitumor activity.",
+  "graphical_abstract": {
+    "panels": [
+      {
+        "kind": "compound",
+        "compound_id": "1",
+        "caption": "Screening hit, and a JAK2 inhibitor",
+        "values": [
+          { "assay_id": "cdk2_e1_ic50", "display": "607 nM" },
+          { "assay_id": "jak2_ic50", "display": "<1 nM" }
+        ]
+      },
+      {
+        "kind": "arrow",
+        "reason": "Swapping the aniline for an sp3 aminopiperidine erased JAK2 and found CDK2."
+      },
+      {
+        "kind": "compound",
+        "compound_id": "3",
+        "caption": "Core scaffold, C5 trifluoromethyl",
+        "values": [
+          { "assay_id": "cdk2_e1_ic50", "display": "3.2 nM" },
+          { "assay_id": "cdk1_b1_ic50", "display": "407 nM" }
+        ]
+      },
+      {
+        "kind": "arrow",
+        "reason": "Property work at the pyrazole and the sulfonyl bought solubility without losing isoform selectivity."
+      },
+      {
+        "kind": "compound",
+        "compound_id": "17",
+        "caption": "Lead candidate, crystallised in 8UV0",
+        "values": [
+          { "assay_id": "cdk2_e1_ic50", "display": "0.29 nM" },
+          { "assay_id": "cdk1_fold", "display": "220-fold over CDK1" },
+          { "assay_id": "sgf_solubility", "display": ">400 ug/mL" }
+        ]
+      }
+    ]
+  },
+  "problem": {
+    "disease": "CCNE1-amplified cancers, where cyclin E1 amplification drives proliferation and predicts poor prognosis, and where CDK2 activity is also a route of resistance to CDK4/6 inhibitors.",
+    "selectivity": "CDK1 is pan-lethal, so inhibiting it is thought to account for much of the toxicity of earlier multi-targeted CDK inhibitors. The campaign needed CDK2 potency with a wide margin over CDK1, and over CDK4, CDK6, CDK7 and CDK9. The screening hit also had to be stripped of its original JAK2 activity.",
+    "property": "Potency was never the hard part once the scaffold was found. Gastric solubility, human microsomal clearance and permeability were, and they moved against each other at every step."
+  },
+  "bundle_version": "1.0.0"
+}

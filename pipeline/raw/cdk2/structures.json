@@ -1,0 +1,19 @@
+[
+  {
+    "pdb_id": "8UV0",
+    "role": "primary",
+    "contains": {
+      "protein": "CDK2",
+      "ligand_compound_id": "17",
+      "ligand_code": "XKU"
+    },
+    "resolution_a": 1.55,
+    "chain": "A",
+    "klifs": true,
+    "uniprot": "P24941",
+    "caption_specialist": "Compound 17 in the CDK2 ATP site at 1.55 A. The 2-aminopyrimidine makes the hinge contact, the C5 trifluoromethyl points at the Phe80 gatekeeper, and the sulfonamide oxygens accept from the Asp86 backbone amide with a water-mediated contact to Lys89 and Gln85.",
+    "caption_plain": "The lead compound sitting in the pocket where CDK2 would normally hold ATP. Every contact the chemists designed is visible here, which is how they knew why the molecule worked.",
+    "source": "deposited",
+    "evidence": "Fig4"
+  }
+]

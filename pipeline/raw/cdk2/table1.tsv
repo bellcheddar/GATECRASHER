@@ -1,0 +1,12 @@
+# Table 1 of Hummel et al. 2024: Selected SAR of N-substituted pyrazoles.
+# Transcribed by hand from the published table image (the PDF text layer carries only the footnotes).
+# The published CDK4/D1 CDK6/D3 column holds TWO values in one cell, for example "3.2/10" = CDK4 3.2 nM and CDK6 10 nM.
+# It is NOT a value/fold pair. Only the CDK1/B1 column carries a fold, written "257/130x".
+# Blank means the cell is empty in the published table.
+entry	compound_id	cdk2_e1_ic50	cdk1_b1_ic50	cdk1_fold	cdk4_d1_ic50	cdk6_d3_ic50	wb_pRb	sgf_solubility	h_cl
+1	4	2.0	257	130	3.2	10	5046	11	1.1
+2	5	6.1	174	29	20	153	708	>400	0.7
+3	6	2.1	350	170	14	31	5111	46	<0.5
+4	7	0.56	90	160	10	24	823		1
+5	8	1.8	205	110	11	22	709	3	<0.5
+6	9	0.42	63	150	37	160	1208	842	<0.5
