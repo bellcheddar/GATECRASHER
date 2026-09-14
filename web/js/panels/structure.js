@@ -221,7 +221,11 @@ export function initStructure(state) {
       viewBox: `0 0 ${width} ${height}`,
       width,
       height,
-      role: 'group',
+      /* A listbox of options, because aria-selected is only allowed on roles that can be
+       * selected: on a bare rect inside a group it failed Lighthouse's aria-allowed-attr. Each
+       * option is named by its <title>. */
+      role: 'listbox',
+      'aria-multiselectable': 'true',
       'aria-label': isKinase ? 'KLIFS pocket ruler, 85 positions' : 'Sequence ruler',
     }, el.ruler);
 
@@ -239,6 +243,7 @@ export function initStructure(state) {
         'fill-opacity': residue.motif === 'other' ? 0.9 : 0.85,
         stroke: selected.has(key) ? cssToken('--focus') : cssToken('--line'),
         'stroke-width': selected.has(key) ? 1.5 : 0.5,
+        role: 'option',
         'aria-selected': String(selected.has(key)),
         tabindex: '-1',
       }, root);
@@ -586,8 +591,13 @@ export function initStructure(state) {
       el.antiToggle.setAttribute('aria-pressed', 'false');
       figures = null;
       /* Not awaited: this is the landing sheet, and its chips, ruler, contacts and caption
-       * must not wait for 5 MB of Mol* and a coordinate file before the page can show. */
-      loadTargetWhenVisible().catch((err) => console.warn('[structure] viewer load failed', err));
+       * must not wait for 5 MB of Mol* and a coordinate file before the page can show. Nor is
+       * it started until a frame has gone by: evaluating Mol* is a long task, and started
+       * straight away it held the caption's first paint back by seconds on a throttled
+       * phone. A frame, then a task, lets the sheet paint first. */
+      requestAnimationFrame(() => setTimeout(() => {
+        loadTargetWhenVisible().catch((err) => console.warn('[structure] viewer load failed', err));
+      }, 0));
       renderChips();
       renderRuler();
       renderContacts();

@@ -301,6 +301,10 @@ def main() -> int:
         check("Escape closes the drawer",
               tab.wait_for("document.querySelectorAll('.drawer.is-open').length === 0", 5))
 
+        # Closing a drawer slides the tabs back from right: 540px. Click one mid-slide and
+        # the click lands where the button was a frame ago. That happens while Mol* is still
+        # evaluating, when a 0.24 s transition runs at 6 frames a second, so wait for rest.
+        tab.wait_for("getComputedStyle(document.getElementById('drawer-tabs')).right === '0px'", 5)
         tab.click("#drawer-tabs button[data-drawer='plot']")
         check("the selectivity drawer draws its plot when it is opened",
               tab.wait_for("!!document.querySelector('#story-plot .main-svg')", 25),
@@ -648,10 +652,14 @@ def main() -> int:
                  deviceScaleFactor=3, mobile=True)
         tab.goto(args.base + "/")
         time.sleep(1.5)
+        # Against clientWidth, not innerWidth. Under mobile emulation an overflowing page
+        # widens the layout viewport, and innerWidth grows WITH the overflow: a 413 px page on
+        # a 390 px phone reported innerWidth 413 and passed, while the real phone zoomed the
+        # whole app out and pushed the drawer tab bar off the bottom of the screen.
         check("nothing overflows the page sideways",
-              tab.js("document.documentElement.scrollWidth <= window.innerWidth + 1"),
+              tab.js("document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1"),
               f"scrollWidth {tab.js('document.documentElement.scrollWidth')} "
-              f"vs {tab.js('window.innerWidth')}")
+              f"vs clientWidth {tab.js('document.documentElement.clientWidth')}")
         check("the edit log becomes its own tab below 900px",
               tab.js("""getComputedStyle(document.querySelector("#tab-strip button[data-tab='editlog']")).display""")
               != "none")

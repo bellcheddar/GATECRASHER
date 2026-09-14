@@ -6,6 +6,11 @@
 .app {
   display: grid;
   grid-template-rows: auto auto 1fr;
+  /* minmax(0, 1fr), not the implicit auto column: an auto column sizes to its widest
+   * row's min-content, and on a 390 px phone the tab strip's 413 px pushed the header, the
+   * rail and main to 413 as well, so the whole app zoomed out and the drawer tab bar fell
+   * off the bottom of the screen. */
+  grid-template-columns: minmax(0, 1fr);
   min-height: 100vh;
 }
 
@@ -133,7 +138,14 @@
   padding: 0 var(--sheet-pad);
   background: var(--bg);
   border-bottom: var(--rule) solid var(--line);
+  /* Where the tabs are wider than the screen they scroll inside the strip, as a phone's
+   * tab bar does, rather than widening the page. */
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+
+.tab-strip::-webkit-scrollbar { display: none; }
+.tab-strip button { flex: 0 0 auto; white-space: nowrap; }
 
 .tab-strip button {
   border: 0;
@@ -434,6 +446,11 @@ html[data-booting] main { visibility: hidden; }
 }
 
 .beat-show { margin-top: 6px; }
+
+/* WCAG 2.5.8: every chip is a control (motif filters, downloads, change-type filters), and
+ * at 22.5 px tall they missed the 24 px minimum target. Lighthouse only saw it once the
+ * Structure sheet became the landing sheet. */
+.chip { min-height: 24px; }
 
 /* ------------------------------------------------------------------- drawers */
 /* The story pulls out over whichever sheet is open, so the structure never leaves the
