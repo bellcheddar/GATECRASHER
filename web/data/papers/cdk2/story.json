@@ -1,0 +1,91 @@
+{
+  "_comment": [
+    "Five beats, no more, per BUILD_SPEC 7.5. Written fresh: no sentence is lifted from the",
+    "paper. Every number in them appears in raw/cdk2/*.tsv with its source table, and every",
+    "residue and compound id is checked against residues.csv and compounds.csv by gc validate.",
+    "body_specialist runs 60-110 words, body_plain 50-90 words and uses no jargon.",
+    "The last beat ends on the lead compound and its in vivo result, then hands off to the",
+    "Structure tab."
+  ],
+  "beats": [
+    {
+      "id": "cdk2-1",
+      "kicker": "The hit was somebody else's drug",
+      "title": "A screening hit that preferred a different kinase",
+      "body_specialist": "Screening an internal collection returned compound 1: submicromolar against CDK2 at 607 nM, but subnanomolar against JAK2, which was its real target. The pyrazolyl aminopyrimidine core was worth keeping. The anilino methanesulfonamide was not, because that end of the molecule sits in the hinge region, and hinge substitution is what decides kinase selectivity in this scaffold class. Ebvaciclib, carrying an aminopiperidine there, spares JAK2; zotiraciclib, carrying a substituted phenyl, inhibits both. So the hinge was the first thing to change.",
+      "body_plain": "The starting molecule came out of testing a large library of compounds. It blocked the intended target, CDK2, only weakly, and blocked a different enzyme called JAK2 six hundred times more strongly. Its central shape was still promising, so the chemists kept that and replaced the flat end. That end sits in a part of the protein known to decide which enzymes a molecule will block, which made it the obvious place to start.",
+      "focus": {
+        "structure": "8UV0",
+        "residues": ["A:81", "A:82", "A:83"],
+        "compound": "1",
+        "plot": "selectivity",
+        "camera": "hinge"
+      },
+      "evidence": "Fig2"
+    },
+    {
+      "id": "cdk2-2",
+      "kicker": "The swap that changed target",
+      "title": "A three-dimensional ring erased JAK2 and found CDK2",
+      "body_specialist": "Replacing the flat aniline with an sp3 1-(methylsulfonyl)piperidin-4-ylamine moved CDK2 potency from 607 nM to 16 nM and removed JAK2 activity entirely, past 10,000 nM. Selectivity against an in-house panel of eight kinases was clean. The authors attribute this to the sp3 hybridisation at the hinge rather than to any single new contact, and the later crystal structure shows why the group is tolerated: its sulfonamide oxygens reach the backbone amide of Asp86, with a water-mediated contact onward to Gln85 and Lys89.",
+      "body_plain": "Swapping that flat end for a puckered, three-dimensional ring changed which protein the molecule cared about. It became nearly forty times better at CDK2, and it stopped blocking JAK2 altogether. It also left eight other enzymes alone. The reason is partly shape: a ring that is not flat fits this pocket without clashing, and the crystal structure later showed it making a firm grip on the protein's backbone.",
+      "focus": {
+        "structure": "8UV0",
+        "residues": ["A:86", "A:85", "A:89"],
+        "compound": "2",
+        "edit": "cdk2-e01",
+        "plot": "selectivity",
+        "camera": "hinge"
+      },
+      "evidence": "Fig2"
+    },
+    {
+      "id": "cdk2-3",
+      "kicker": "One atom at the gatekeeper",
+      "title": "Chlorine to trifluoromethyl, and CDK1 falls away",
+      "body_specialist": "CDK1 was the isoform that mattered: it is pan-lethal, and much of the toxicity of earlier multi-targeted CDK inhibitors is thought to follow from inhibiting it. Compound 2 had only 64-fold margin. Exchanging the pyrimidine C5 chlorine for a trifluoromethyl group, which projects at the Phe80 gatekeeper, took CDK2 to 3.2 nM and CDK1 to 407 nM: 130-fold. That established C5 as the selectivity lever for the entire series, and the campaign returned to it three more times.",
+      "body_plain": "The dangerous relative here is CDK1, which healthy cells cannot do without. The new molecule was only sixty-four times more selective for CDK2, which is not enough. Replacing one chlorine atom with a slightly bulkier fluorinated group doubled that margin and made the compound five times more potent. The change sits directly against a large residue that guards the entrance to the pocket, and it became the campaign's most reliable adjustment.",
+      "focus": {
+        "structure": "8UV0",
+        "residues": ["A:80"],
+        "compound": "3",
+        "edit": "cdk2-e02",
+        "plot": "selectivity",
+        "camera": "gatekeeper"
+      },
+      "evidence": "Fig2"
+    },
+    {
+      "id": "cdk2-4",
+      "kicker": "Every fix cost something",
+      "title": "Solubility against selectivity, traded twelve times over",
+      "body_specialist": "What follows in Tables 1 and 2 is not an optimisation so much as a negotiation. An isoelectronic N-methylpiperidine cleared 400 ug/mL of gastric solubility and dropped CDK1 margin from 130-fold to 29-fold. A nitrile lowered clearance and took solubility below 1 ug/mL. The one clean move was a nitrogen walk from N-methylpyrazole to N-methylimidazole on the sulfonyl group, which raised solubility from below 1 ug/mL to 322 ug/mL and cost nothing. Applying the C5 nitrile to that compound then undid the solubility again.",
+      "body_plain": "From here the work becomes a series of trades. Making the compound dissolve better usually made it less selective, and making it more selective usually made it dissolve worse. One change was free: moving a single nitrogen atom around a small ring made the compound more than three hundred times more soluble and made nothing else worse. The next attempt to improve it undid that gain, which is how this work usually goes.",
+      "focus": {
+        "structure": "8UV0",
+        "residues": ["A:86", "A:89"],
+        "compound": "14",
+        "edit": "cdk2-e13",
+        "plot": "property",
+        "camera": "front"
+      },
+      "evidence": "T2"
+    },
+    {
+      "id": "cdk2-5",
+      "kicker": "The one they took forward",
+      "title": "Compound 17, and what it did in an animal",
+      "body_specialist": "Compound 17 carries the trifluoromethyl at C5, the geminal dimethyl alcohol on the pyrazole and a cyclopropyl on the sulfonyl. It inhibits CDK2 at 0.29 nM with 220-fold margin over CDK1, dissolves above 400 ug/mL, clears at 0.5 L/h/kg and permeates well. In a panel of over fifty kinases, none was inhibited below 3 uM. In CCNE1-amplified OVCAR3 tumours it cut Rb phosphorylation by roughly half and gave 38 per cent tumour growth inhibition at 30 mg/kg. The crystal structure is 8UV0, at 1.55 A.",
+      "body_plain": "The molecule they chose blocks CDK2 at a third of a nanomolar, leaves CDK1 alone more than two hundred times over, dissolves readily and survives the liver. Out of more than fifty other enzymes tested, it blocked none of them meaningfully. In mice carrying tumours of the type it was designed for, it halved the chemical signal that CDK2 produces and slowed tumour growth by about a third. Its crystal structure shows every contact the chemists had aimed for.",
+      "focus": {
+        "structure": "8UV0",
+        "residues": ["A:80", "A:83", "A:86", "A:145"],
+        "compound": "17",
+        "edit": "cdk2-e16",
+        "plot": "selectivity",
+        "camera": "ligand"
+      },
+      "evidence": "T2"
+    }
+  ]
+}

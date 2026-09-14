@@ -4,6 +4,10 @@ This deliberately does not write raw/. The SAR tables in all four papers are ima
 text layer, so their numbers cannot be parsed: they are read off a rendered page by eye and
 typed into raw/<slug>/*.tsv by hand, which is also what makes the transcription reviewable.
 Publisher PDFs and anything derived verbatim from them stay out of the repository.
+
+PDF handling is pypdfium2 (BSD-3-Clause / Apache-2.0), not PyMuPDF. PyMuPDF is AGPL-3.0,
+and because this module imports it, keeping it would have made the whole project AGPL. See
+THIRD_PARTY.md.
 """
 from __future__ import annotations
 
@@ -30,25 +34,32 @@ def parse_pages(spec: str, page_count: int) -> list[int]:
 
 
 def run(slug: str, pdf: str, pages: str = "", dpi: int = 200) -> dict:
-    import pymupdf
+    import pypdfium2 as pdfium
 
     slug = paths.check_slug(slug)
     source = Path(pdf).expanduser()
     if not source.is_file():
         raise SystemExit(f"no PDF at {source}")
 
-    doc = pymupdf.open(source)
-    text_dir = paths.cache_dir("text")
-    text_path = text_dir / f"{slug}.txt"
-    text_path.write_text(
-        "\n".join(f"\n=== PAGE {i + 1} ===\n" + page.get_text() for i, page in enumerate(doc))
-    )
+    doc = pdfium.PdfDocument(source)
+    try:
+        page_count = len(doc)
+        chunks = []
+        for i in range(page_count):
+            textpage = doc[i].get_textpage()
+            chunks.append(f"\n=== PAGE {i + 1} ===\n" + textpage.get_text_bounded())
+            textpage.close()
+        text_path = paths.cache_dir("text") / f"{slug}.txt"
+        text_path.write_text("\n".join(chunks))
 
-    image_dir = paths.cache_dir("pages")
-    images = []
-    for number in parse_pages(pages, doc.page_count):
-        out = image_dir / f"{slug}_p{number}.png"
-        doc[number - 1].get_pixmap(dpi=dpi).save(out)
-        images.append(str(out))
+        image_dir = paths.cache_dir("pages")
+        images = []
+        for number in parse_pages(pages, page_count):
+            out = image_dir / f"{slug}_p{number}.png"
+            # PDF user space is 72 points per inch, so the scale for a given dpi is dpi / 72.
+            doc[number - 1].render(scale=dpi / 72).to_pil().save(out)
+            images.append(str(out))
+    finally:
+        doc.close()
 
-    return {"text": str(text_path), "images": images, "page_count": doc.page_count}
+    return {"text": str(text_path), "images": images, "page_count": page_count}

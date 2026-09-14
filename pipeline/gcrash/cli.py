@@ -58,6 +58,27 @@ def struct(slug: str):
 
 
 @app.command()
+def retrieval(slug: str = typer.Argument("", help="Omit to index every bundled paper.")):
+    """Build the in-page search index over this project's own prose and data."""
+    from . import retrieval as retrieval_mod
+    result = retrieval_mod.build(paths.check_slug(slug) if slug else None)
+    console.print(f"units {result['units']}, terms {result['terms']}, "
+                  f"{result['bytes'] / 1024:.0f} kB")
+    for one, count in result["by_slug"].items():
+        console.print(f"  {one}: {count} units")
+
+
+@app.command()
+def figures(slug: str):
+    """PyMOL script, session and still per structure, for taking the view away."""
+    from . import figures as figures_mod
+    result = figures_mod.build(paths.check_slug(slug))
+    console.print(f"scripts {result['scripts']}, sessions {result['sessions']}, "
+                  f"stills {result['stills']}")
+    _problems(result["problems"])
+
+
+@app.command()
 def bundle(slug: str):
     """Write web/data/papers/<slug>/ from the curated files and the build products."""
     from . import bundle as bundle_mod
@@ -102,6 +123,14 @@ def run_all(slug: str):
     struct(slug)
     bundle(slug)
     validate(slug)
+
+
+@app.command(name="third-party")
+def third_party():
+    """Rewrite THIRD_PARTY.md from web/data/software.json."""
+    from . import thirdparty
+    result = thirdparty.build()
+    console.print(f"{result['path']}: {result['bytes'] / 1024:.1f} kB")
 
 
 @app.command()

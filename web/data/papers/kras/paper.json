@@ -1,0 +1,71 @@
+{
+  "slug": "kras",
+  "title": "Discovery of INCB159020, an Orally Bioavailable KRAS G12D Inhibitor",
+  "authors_short": "Ye et al.",
+  "authors_full": "Qinda Ye, Artem Shvartsbart, Zhenwu Li, Pei Gan, Rocco L. Policarpo, Chao Qi, Jeremy J. Roach, Wenyu Zhu, Matthew S. McCammant, Bin Hu, Gencheng Li, Haolin Yin, Peter Carlsen, Gia Hoang, Le Zhao, Robert Susick, Fenglei Zhang, Cheng-Tsung Lai, Abdellah Allali Hassani, Leslie B. Epling, Alexandra Gallion, Kerri Kurzeja-Lipinski, Karen Gallagher, Valerie Roman, Matthew R. Farren, Weixi Kong, Marc C. Deller, Guofeng Zhang, Maryanne Covington, Sharon Diamond, Sunkyu Kim, Wenqing Yao, Alexander Sokolsky, Xiaozhao Wang",
+  "journal": "J. Med. Chem.",
+  "year": 2025,
+  "volume": 68,
+  "pages": "1924-1939",
+  "doi": "10.1021/acs.jmedchem.4c02662",
+  "target": {
+    "name": "KRAS G12D",
+    "partner": null,
+    "family": "small GTPase",
+    "uniprot": "P01116"
+  },
+  "anti_targets": [
+    { "name": "KRAS wild type", "partner": null, "uniprot": "P01116" },
+    { "name": "HRAS", "partner": null },
+    { "name": "NRAS", "partner": null },
+    { "name": "TRKA", "partner": null },
+    { "name": "Aurora B", "partner": null }
+  ],
+  "one_line": "Aspartate is not cysteine, so the covalent trick that beat KRAS G12C does not work here. This one binds without a warhead.",
+  "abstract": "The inhibition of mutant KRAS proteins has emerged as a promising approach for treating KRAS-driven cancers, as evidenced by the clinical success of KRAS G12C inhibitors. KRAS G12D, the most common mutant, promises significant expansion of the addressable patient population; however, the reduced nucleophilicity of aspartate compared to cysteine poses significant challenges in balancing sufficient potency with ADME properties to support oral exposure. Herein, we describe the discovery of KRAS G12D inhibitor 23 (INCB159020), which achieves oral exposure in nonhuman primate (NHP). Starting from a weakly potent hit, structure-based drug design was utilized to drive significant potency. Focus on molecular rigidity and balanced polarity then allowed for successful optimization of properties required for oral exposure.",
+  "graphical_abstract": {
+    "panels": [
+      {
+        "kind": "compound",
+        "compound_id": "1",
+        "caption": "A patent hit with its warhead removed",
+        "values": [
+          { "assay_id": "kras_g12d_exc", "display": "8 uM" }
+        ]
+      },
+      {
+        "kind": "arrow",
+        "reason": "A rigid bicyclic amine, then a two-carbon linker reaching the Asp12 backbone, took it from micromolar to picomolar."
+      },
+      {
+        "kind": "compound",
+        "compound_id": "10",
+        "caption": "Picomolar, and it cannot leave the gut",
+        "values": [
+          { "assay_id": "kras_g12d_spr", "display": "<1 pM" },
+          { "assay_id": "hwb_perk", "display": "451 nM (410 nM in Table 1)" }
+        ]
+      },
+      {
+        "kind": "arrow",
+        "reason": "A thousand-fold of binding potency was traded away, deliberately, for rigidity and balanced polarity."
+      },
+      {
+        "kind": "compound",
+        "compound_id": "23",
+        "caption": "INCB159020: oral exposure in non-human primate",
+        "values": [
+          { "assay_id": "kras_g12d_spr", "display": "2.2 nM (22 nM in Table 3)" },
+          { "assay_id": "hwb_perk", "display": "331 nM" },
+          { "assay_id": "nhp_po_f", "display": "42%" }
+        ]
+      }
+    ]
+  },
+  "problem": {
+    "disease": "Cancers driven by KRAS G12D, the most common KRAS mutation: 37 per cent of pancreatic tumours and 12 per cent of colorectal. KRAS mutations drive around a fifth of all human tumours.",
+    "selectivity": "The mutant differs from the wild-type protein by one residue, and that residue is an aspartate rather than the cysteine that made the G12C drugs possible. Aspartate is a far weaker nucleophile, so a covalent warhead is uncertain and would need an electrophilicity that raises its own safety questions. The inhibitor therefore has to be reversible, and it still has to tell a mutant apart from a wild-type protein present in every healthy cell.",
+    "property": "Every substituent that bought potency also made the molecule less able to reach a cell. Two basic amines, a metabolically labile naphthol and two flexible chains gave picomolar binding with no measurable permeability, high clearance and no oral exposure at all."
+  },
+  "bundle_version": "1.0.0"
+}

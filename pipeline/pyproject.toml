@@ -11,7 +11,9 @@ dependencies = [
     "numpy>=1.26",
     "requests>=2.32",
     "jsonschema>=4.23",
-    "pymupdf>=1.24",
+    # Not PyMuPDF: that is AGPL-3.0, and importing it would make the project AGPL. See THIRD_PARTY.md.
+    "pypdfium2>=4.30",
+    "pillow>=10.0",
     "typer>=0.12",
     "rich>=13.7",
 ]
@@ -26,6 +28,7 @@ interactions = [
     "websocket-client>=1.9.2",
 ]
 qc = [
+    "markdown>=3.10.3",
     "py2opsin>=1.2.0",
 ]
 

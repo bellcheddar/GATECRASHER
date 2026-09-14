@@ -1,0 +1,114 @@
+{
+  "jak1_ic50": {
+    "label": "JAK1 enzymatic IC50",
+    "short": "JAK1",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true,
+    "is_primary": true
+  },
+  "jak2_ic50": {
+    "label": "JAK2 enzymatic IC50",
+    "short": "JAK2",
+    "units": "nM",
+    "category": "potency",
+    "direction": "higher_better",
+    "log": true,
+    "anti_target_of": "jak1_ic50",
+    "note": "The isoform that must be spared: JAK2 supports blood cell production, so a HIGHER value is the better outcome."
+  },
+  "jak2_jak1_fold": {
+    "label": "JAK2 over JAK1 selectivity (as published)",
+    "short": "JAK2/JAK1",
+    "units": "fold",
+    "category": "selectivity",
+    "direction": "higher_better",
+    "log": true,
+    "of_assay": "jak2_ic50"
+  },
+  "ina6_ic50": {
+    "label": "INA-6 cellular IC50",
+    "short": "INA6",
+    "units": "nM",
+    "category": "cell",
+    "direction": "lower_better",
+    "log": true
+  },
+  "wb_il6": {
+    "label": "Whole blood IL-6 IC50",
+    "short": "WB IL-6",
+    "units": "nM",
+    "category": "cell",
+    "direction": "lower_better",
+    "log": true,
+    "conditions": "IL-6 stimulated, JAK1-dependent"
+  },
+  "wb_tpo": {
+    "label": "Whole blood TPO IC50",
+    "short": "WB TPO",
+    "units": "nM",
+    "category": "cell",
+    "direction": "higher_better",
+    "log": true,
+    "anti_target_of": "wb_il6",
+    "conditions": "Thrombopoietin stimulated, JAK2-dependent",
+    "note": "The cellular counter-screen: TPO signalling runs through JAK2, so a higher value here is what sparing JAK2 looks like in blood."
+  },
+  "wb_tpo_il6_fold": {
+    "label": "Whole blood TPO over IL-6 selectivity (as published)",
+    "short": "WB sel",
+    "units": "fold",
+    "category": "selectivity",
+    "direction": "higher_better",
+    "log": true,
+    "of_assay": "wb_tpo"
+  },
+  "caco2_papp": {
+    "label": "Caco-2 permeability",
+    "short": "Caco2",
+    "units": "1e-6 cm/s",
+    "category": "adme",
+    "direction": "higher_better",
+    "log": false
+  },
+  "proj_h_cl": {
+    "label": "Projected human hepatic clearance",
+    "short": "proj h-CL",
+    "units": "L/h/kg",
+    "category": "adme",
+    "direction": "lower_better",
+    "log": false
+  },
+  "proj_h_f": {
+    "label": "Projected human oral fraction absorbed",
+    "short": "proj %F",
+    "units": "%",
+    "category": "adme",
+    "direction": "higher_better",
+    "log": false
+  },
+  "rat_cl_hbf": { "label": "Rat clearance as hepatic blood flow", "short": "Rat Cl", "units": "%", "category": "pk", "direction": "lower_better", "log": false, "species": "rat" },
+  "rat_iv_t_half": { "label": "Rat IV half-life", "short": "Rat t1/2", "units": "h", "category": "pk", "direction": "higher_better", "log": false, "species": "rat" },
+  "rat_vdss": { "label": "Rat volume of distribution at steady state", "short": "Rat Vdss", "units": "L/kg", "category": "pk", "direction": "neutral", "log": false, "species": "rat" },
+  "rat_po_auc": { "label": "Rat oral AUC", "short": "Rat AUC", "units": "nM.h", "category": "pk", "direction": "higher_better", "log": false, "species": "rat", "note": "Doses differ between rows: read the source note." },
+  "rat_po_t_half": { "label": "Rat oral half-life", "short": "Rat PO t1/2", "units": "h", "category": "pk", "direction": "higher_better", "log": false, "species": "rat" },
+  "rat_po_f": { "label": "Rat oral bioavailability", "short": "Rat F", "units": "%", "category": "pk", "direction": "higher_better", "log": false, "species": "rat" },
+  "cyno_cl_hbf": { "label": "Cynomolgus clearance as hepatic blood flow", "short": "Cyno Cl", "units": "%", "category": "pk", "direction": "lower_better", "log": false, "species": "cynomolgus" },
+  "cyno_iv_t_half": { "label": "Cynomolgus IV half-life", "short": "Cyno t1/2", "units": "h", "category": "pk", "direction": "higher_better", "log": false, "species": "cynomolgus" },
+  "cyno_vdss": { "label": "Cynomolgus volume of distribution at steady state", "short": "Cyno Vdss", "units": "L/kg", "category": "pk", "direction": "neutral", "log": false, "species": "cynomolgus" },
+  "cyno_po_auc": { "label": "Cynomolgus oral AUC", "short": "Cyno AUC", "units": "nM.h", "category": "pk", "direction": "higher_better", "log": false, "species": "cynomolgus" },
+  "cyno_po_t_half": { "label": "Cynomolgus oral half-life", "short": "Cyno PO t1/2", "units": "h", "category": "pk", "direction": "higher_better", "log": false, "species": "cynomolgus" },
+  "cyno_po_f": { "label": "Cynomolgus oral bioavailability", "short": "Cyno F", "units": "%", "category": "pk", "direction": "higher_better", "log": false, "species": "cynomolgus" },
+  "dog_cl_hbf": { "label": "Dog clearance as hepatic blood flow", "short": "Dog Cl", "units": "%", "category": "pk", "direction": "lower_better", "log": false, "species": "dog", "note": "The species that decided this campaign: every candidate before povorcitinib failed here." },
+  "dog_iv_t_half": { "label": "Dog IV half-life", "short": "Dog t1/2", "units": "h", "category": "pk", "direction": "higher_better", "log": false, "species": "dog" },
+  "dog_vdss": { "label": "Dog volume of distribution at steady state", "short": "Dog Vdss", "units": "L/kg", "category": "pk", "direction": "neutral", "log": false, "species": "dog" },
+  "dog_po_auc": { "label": "Dog oral AUC", "short": "Dog AUC", "units": "nM.h", "category": "pk", "direction": "higher_better", "log": false, "species": "dog" },
+  "dog_po_t_half": { "label": "Dog oral half-life", "short": "Dog PO t1/2", "units": "h", "category": "pk", "direction": "higher_better", "log": false, "species": "dog" },
+  "dog_po_f": { "label": "Dog oral bioavailability", "short": "Dog F", "units": "%", "category": "pk", "direction": "higher_better", "log": false, "species": "dog" },
+  "il2_t_cell": { "label": "IL-2 stimulated T cell signalling IC50", "short": "IL-2 Tcell", "units": "nM", "category": "cell", "direction": "lower_better", "log": true, "conditions": "JAK1/JAK3 dependent: pSTAT3, pSTAT5 and proliferation" },
+  "wb_il6_pstat1": { "label": "Whole blood IL-6 pSTAT1 IC50", "short": "pSTAT1", "units": "nM", "category": "cell", "direction": "lower_better", "log": true },
+  "wb_il6_pstat3": { "label": "Whole blood IL-6 pSTAT3 IC50", "short": "pSTAT3", "units": "nM", "category": "cell", "direction": "lower_better", "log": true },
+  "pbmc_mcp1": { "label": "PBMC MCP-1 production IC50", "short": "MCP-1", "units": "nM", "category": "cell", "direction": "lower_better", "log": true },
+  "herg_ic50": { "label": "hERG inhibition IC50", "short": "hERG", "units": "uM", "category": "adme", "direction": "higher_better", "log": false }
+}

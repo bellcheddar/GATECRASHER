@@ -1,0 +1,391 @@
+[
+ {
+  "edit_id": "fgfr-e01",
+  "from_compound": "4",
+  "to_compound": "5",
+  "vector": "pyridazine C6",
+  "change_type": "polar_addition",
+  "headline": "A methoxy for fifteen-fold potency",
+  "rationale_specialist": "Adding a methoxy group at the carbon adjacent to the pyridazine nitrogen took FGFR3 from 68 nM to 4.6 nM while holding FGFR1 selectivity at about 19-fold. This position, the ether vector, became the campaign's main potency lever and everything in Tables 2 and 3 explores it.",
+  "rationale_plain": "Adding a single small group made the compound fifteen times more potent without costing any of the selectivity it already had. That spot on the molecule turned out to be the one worth pushing on.",
+  "consequences": [
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 68,
+    "to": 4.6,
+    "fold": 15,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "fgfr1_ic50",
+    "from": 918,
+    "to": 86,
+    "fold": null,
+    "direction": "loss"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T1"
+ },
+ {
+  "edit_id": "fgfr-e02",
+  "from_compound": "6",
+  "to_compound": "8",
+  "vector": "pyridazine C6 ether",
+  "change_type": "homologation",
+  "headline": "One carbon too many",
+  "rationale_specialist": "Growing the methoxy to an ethoxy cost four-fold potency, 13 nM to 56 nM. Read alone this says the pocket is small and the campaign should stop here.",
+  "rationale_plain": "Making the group one carbon bigger made the compound four times worse, which normally means there is no room. That reading turned out to be wrong.",
+  "consequences": [
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 13,
+    "to": 56,
+    "fold": 4.3,
+    "direction": "loss"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T2"
+ },
+ {
+  "edit_id": "fgfr-e03",
+  "from_compound": "8",
+  "to_compound": "9",
+  "vector": "pyridazine C6 ether",
+  "change_type": "alkylation",
+  "headline": "The branch that changed the plan",
+  "rationale_specialist": "The bulkier isopropoxy did not lose potency relative to ethoxy, 54 nM against 56 nM. A branched group being tolerated where a linear one was not is what told the authors that sp3 rings would fit, and it is the observation the rest of the paper is built on.",
+  "rationale_plain": "A bigger but branched group worked just as well as the smaller straight one. That is the clue that the pocket is not too small after all: it is a particular shape, and rings would fit it.",
+  "consequences": [
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 56,
+    "to": 54,
+    "fold": 1.0,
+    "direction": "neutral"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T2"
+ },
+ {
+  "edit_id": "fgfr-e04",
+  "from_compound": "9",
+  "to_compound": "16",
+  "vector": "pyridazine C6 ether",
+  "change_type": "ring_change",
+  "headline": "Cyclised onto an oxetane",
+  "rationale_specialist": "Docking compound 9 into FGFR3 placed the isopropyl beside Asn562, suggesting a heteroatom there could engage the asparagine N-H. Cyclising to an oxetane gave 1.1 nM, a fifty-fold gain, and lifted FGFR1 selectivity to 65-fold.",
+  "rationale_plain": "The computer model suggested that putting an oxygen atom in the right place would let the molecule grab a nearby part of the protein. Making that change made it fifty times more potent.",
+  "consequences": [
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 54,
+    "to": 1.1,
+    "fold": 49,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "fgfr1_ic50",
+    "from": 365,
+    "to": 71,
+    "fold": null,
+    "direction": "loss"
+   }
+  ],
+  "structural_basis": [
+   "A:571"
+  ],
+  "evidence": "T3"
+ },
+ {
+  "edit_id": "fgfr-e05",
+  "from_compound": "16",
+  "to_compound": "19",
+  "vector": "pyridazine C6 ether",
+  "change_type": "stereochemistry",
+  "headline": "The active enantiomer",
+  "rationale_specialist": "The racemic tetrahydrofuran 17 gave 2.4 nM. Resolving it showed the whole of the activity sits in one enantiomer: the (S) isomer 19 at 0.9 nM against the (R) isomer 18 at 41 nM, a 45-fold difference between mirror images. 19 was the first sub-nanomolar compound in the series.",
+  "rationale_plain": "The compound was a mixture of two mirror-image forms. Separating them showed one form does nearly all the work and its mirror image is forty-five times weaker. Nothing about the molecule changed except which hand it was.",
+  "consequences": [
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 2.4,
+    "to": 0.9,
+    "fold": 2.7,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "baf3_ic50",
+    "from": 42,
+    "to": 15,
+    "fold": 2.8,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [
+   "A:571"
+  ],
+  "evidence": "T3"
+ },
+ {
+  "edit_id": "fgfr-e06",
+  "from_compound": "5",
+  "to_compound": "21",
+  "vector": "benzamide R4",
+  "change_type": "halogenation",
+  "headline": "Fluorine para to the amide kills two off-targets",
+  "rationale_specialist": "A fluorine para to the N-methyl amide abolished KIT and PDGFRB activity: KIT 33 nM to 180 nM and PDGFRB 38 nM to 348 nM, with FGFR3 potency roughly held.",
+  "rationale_plain": "One fluorine atom in the right place stopped the compound hitting two unrelated proteins it should not have been touching.",
+  "consequences": [
+   {
+    "assay_id": "kit_ic50",
+    "from": 33,
+    "to": 180,
+    "fold": 5.5,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "pdgfrb_ic50",
+    "from": 38,
+    "to": 348,
+    "fold": 9.2,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 4.6,
+    "to": 2.6,
+    "fold": 1.8,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T4"
+ },
+ {
+  "edit_id": "fgfr-e07",
+  "from_compound": "19",
+  "to_compound": "22",
+  "vector": "benzamide R3",
+  "change_type": "alkylation",
+  "headline": "A methyl meta to the amide clears the other two",
+  "rationale_specialist": "A methyl in the meta position cut FLT3 and TRKA: FLT3 25 nM to 114 nM and TRKA 118 nM to 363 nM. With the R4 fluorine handling KIT and PDGFRB, the two trends together define the substitution pattern the lead needs.",
+  "rationale_plain": "A methyl group in a different position dealt with the other two unwanted targets. Put both changes on the same molecule and all four problems go at once.",
+  "consequences": [
+   {
+    "assay_id": "flt3_ic50",
+    "from": 25,
+    "to": 114,
+    "fold": 4.6,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "trka_ic50",
+    "from": 118,
+    "to": 363,
+    "fold": 3.1,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T4"
+ },
+ {
+  "edit_id": "fgfr-e08",
+  "from_compound": "22",
+  "to_compound": "23",
+  "vector": "benzamide R3 and R4",
+  "change_type": "halogenation",
+  "headline": "Both trends on one ring",
+  "rationale_specialist": "Combining the meta methyl with the para fluorine gave compound 23 at 0.7 nM with more than 100-fold selectivity over all four problem kinases: KIT 1657 nM and PDGFRB 1386 nM.",
+  "rationale_plain": "Putting both fixes on the same molecule worked exactly as predicted, which is rarer than it sounds. The result is potent and leaves the other four proteins alone.",
+  "consequences": [
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 1.3,
+    "to": 0.7,
+    "fold": 1.9,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "kit_ic50",
+    "from": 22,
+    "to": 1657,
+    "fold": 75,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "pdgfrb_ic50",
+    "from": 126,
+    "to": 1386,
+    "fold": 11,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T4"
+ },
+ {
+  "edit_id": "fgfr-e09",
+  "from_compound": "23",
+  "to_compound": "25",
+  "vector": "benzamide R3",
+  "change_type": "halogenation",
+  "headline": "Methyl to fluorine for the best profile",
+  "rationale_specialist": "Replacing the meta methyl with fluorine gave the best biochemical potency of the series at 0.6 nM with the cleanest kinase profile, cellular potency of 6.8 nM, low clearance and good solubility. It also inhibited CYP3A4 at 3.9 uM, which is what sent the campaign back to compound 20.",
+  "rationale_plain": "This version was the best of the series on every measure the chemists had been optimising, and then failed on one they had not: it blocked a liver enzyme that drugs must leave alone.",
+  "consequences": [
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 0.7,
+    "to": 0.6,
+    "fold": 1.2,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "baf3_ic50",
+    "from": 12,
+    "to": 6.8,
+    "fold": 1.8,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "cyp3a4_ic50",
+    "from": null,
+    "to": 3.9,
+    "fold": null,
+    "direction": "loss"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T4"
+ },
+ {
+  "edit_id": "fgfr-e10",
+  "from_compound": "20",
+  "to_compound": "26",
+  "vector": "bicyclic core",
+  "change_type": "scaffold_hop",
+  "headline": "Moving the bridgehead nitrogen",
+  "rationale_specialist": "Switching the imidazo[1,2-b]pyridazine core to a pyrazolo[1,5-a]pyrimidine makes a much less basic, less polar bicycle. FGFR3 potency doubled to 1.0 nM and cellular potency improved from 969 nM to 29 nM: a 33-fold gain in translation from enzyme to cell, with CYP3A4 still clean.",
+  "rationale_plain": "Rearranging the core of the molecule, so one nitrogen sits in a different place, made it far better at getting into cells. The same compound went from barely working in cells to working thirty times better.",
+  "consequences": [
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 2.2,
+    "to": 1.0,
+    "fold": 2.2,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "baf3_ic50",
+    "from": 969,
+    "to": 29,
+    "fold": 33,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T6"
+ },
+ {
+  "edit_id": "fgfr-e11",
+  "from_compound": "26",
+  "to_compound": "27",
+  "vector": "pyrazole N1",
+  "change_type": "alkylation",
+  "headline": "Isopropyl for permeability",
+  "rationale_specialist": "Replacing the pyrazole N-methyl with isopropyl raised Caco-2 permeability from 0.2 to 1.5 and gave 0.4 nM potency with 7.2 nM in cells. CYP3A4 inhibition remained at 9 uM.",
+  "rationale_plain": "A slightly larger group on one ring helped the compound cross the gut wall, and made it more potent at the same time. The liver enzyme problem was still there.",
+  "consequences": [
+   {
+    "assay_id": "caco2_papp",
+    "from": 0.2,
+    "to": 1.5,
+    "fold": 7.5,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 1.0,
+    "to": 0.4,
+    "fold": 2.5,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T7"
+ },
+ {
+  "edit_id": "fgfr-e12",
+  "from_compound": "27",
+  "to_compound": "29",
+  "vector": "amide N-methyl",
+  "change_type": "deuteration",
+  "headline": "Three deuteriums to close a metabolic door",
+  "rationale_specialist": "If CYP3A4 inhibition came from the amide carbonyl or its N-demethylated metabolite, blocking N-demethylation should remove it. The N-CD3 congener cleared CYP3A4 past 25 uM and halved intrinsic clearance from 1.0 to 0.5 L/h/kg while keeping potency at 0.5 nM. The N-ethyl analogue 28 cleared CYP3A4 too, but lost potency and selectivity, so the deuterium is doing something the extra carbon cannot.",
+  "rationale_plain": "Replacing three ordinary hydrogens with their heavier isotope makes one bond harder to break, so the body cannot strip that group off as easily. The liver enzyme problem disappeared, the compound lasted longer, and its potency was untouched.",
+  "consequences": [
+   {
+    "assay_id": "cyp3a4_ic50",
+    "from": 9,
+    "to": 25,
+    "fold": null,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "h_cl",
+    "from": 1.0,
+    "to": 0.5,
+    "fold": 2,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 0.4,
+    "to": 0.5,
+    "fold": 1.3,
+    "direction": "loss"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T7"
+ },
+ {
+  "edit_id": "fgfr-e13",
+  "from_compound": "27",
+  "to_compound": "28",
+  "vector": "amide N-methyl",
+  "change_type": "homologation",
+  "headline": "The alternative that did not work",
+  "rationale_specialist": "Increasing the amide's steric bulk with an N-ethyl group also cleared CYP3A4 past 25 uM, but potency fell to 2.6 nM and FGFR1 selectivity to 21-fold. It is the control that shows the deuterium in 29 is not simply bulk.",
+  "rationale_plain": "Making the same group bigger, rather than heavier, also fixed the liver problem but made the compound worse at its job. It is the comparison that proves the heavier-hydrogen trick was the right one.",
+  "consequences": [
+   {
+    "assay_id": "cyp3a4_ic50",
+    "from": 9,
+    "to": 25,
+    "fold": null,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "fgfr3_ic50",
+    "from": 0.4,
+    "to": 2.6,
+    "fold": 6.5,
+    "direction": "loss"
+   },
+   {
+    "assay_id": "fgfr1_fold",
+    "from": 43,
+    "to": 21,
+    "fold": null,
+    "direction": "loss"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T7"
+ }
+]

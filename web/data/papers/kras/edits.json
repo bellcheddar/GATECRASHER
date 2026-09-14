@@ -1,0 +1,460 @@
+[
+ {
+  "edit_id": "kras-e01",
+  "from_compound": "1",
+  "to_compound": "2",
+  "vector": "piperazine",
+  "change_type": "rigidification",
+  "headline": "A bridge across the piperazine",
+  "rationale_specialist": "The patent hit engaged Asp12 through a piperazine nitrogen. Bridging that ring took exchange potency from 8 uM to 704 nM, an observation several groups made independently. It is the first evidence that a reversible inhibitor of G12D was worth pursuing at all.",
+  "rationale_plain": "The starting molecule was barely active. Adding a bridge across one of its rings, so it could no longer flex, made it ten times better. That was the first sign this approach could work without the chemical warhead that earlier drugs relied on.",
+  "consequences": [
+   {
+    "assay_id": "kras_g12d_exc",
+    "from": 8000,
+    "to": 704,
+    "fold": 11,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [
+   "A:12"
+  ],
+  "evidence": "Fig2"
+ },
+ {
+  "edit_id": "kras-e02",
+  "from_compound": "2",
+  "to_compound": "3",
+  "vector": "whole scaffold",
+  "change_type": "scaffold_hop",
+  "headline": "A new core, and a cage that holds an amine where it should not reach",
+  "rationale_specialist": "Moving to a tricyclic imidazole scaffold with an azabicyclo[2.1.1]hexane held potency at 671 nM while changing chemical series entirely. The crystal structure explains why almost every replacement for that cage failed: it orients the protonated amine directly below the plane of the core, a conformation that is otherwise hard to reach, where it hydrogen bonds Tyr96 at 2.8 A and reaches Gly10 through a bridging water.",
+  "rationale_plain": "The chemists rebuilt the molecule around a different core, keeping a small rigid cage that holds one arm in an unusual position. The crystal structure shows that arm gripping the protein in two places. Almost nothing else they tried in that position worked, and now they could see why.",
+  "consequences": [
+   {
+    "assay_id": "kras_g12d_exc",
+    "from": 704,
+    "to": 671,
+    "fold": 1.0,
+    "direction": "neutral"
+   }
+  ],
+  "structural_basis": [
+   "A:96",
+   "A:10"
+  ],
+  "evidence": "Fig2"
+ },
+ {
+  "edit_id": "kras-e03",
+  "from_compound": "3",
+  "to_compound": "4",
+  "vector": "imidazole 2-position",
+  "change_type": "homologation",
+  "headline": "A two-carbon reach towards the mutation",
+  "rationale_specialist": "The structure of 3 showed no contact with Asp12 at all, which made the imidazole 2-position an obvious vector. A two-carbon linker capped with a tertiary amide proved the right length, with shorter and longer chains both worse, and changing chloro to methyl at the 8 position added about two-fold. Together, fifty-fold: 671 nM to 12 nM, and the first cellular activity at 1.3 uM.",
+  "rationale_plain": "The first crystal structure showed the molecule never touched the mutated residue it was aimed at. Adding an arm of exactly the right length to reach it made the compound fifty times more potent, and for the first time it worked in cells.",
+  "consequences": [
+   {
+    "assay_id": "kras_g12d_exc",
+    "from": 671,
+    "to": 12,
+    "fold": 56,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "perk",
+    "from": null,
+    "to": 1300,
+    "fold": null,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [
+   "A:12"
+  ],
+  "evidence": "Fig2"
+ },
+ {
+  "edit_id": "kras-e04",
+  "from_compound": "4",
+  "to_compound": "5",
+  "vector": "core 8-position",
+  "change_type": "alkylation",
+  "headline": "A cyanoethyl that folds back under the core",
+  "rationale_specialist": "Replacing the 8-methyl with cyanoethyl took exchange potency to 2.9 nM, the floor of that assay, and SPR binding a hundred-fold beyond compound 4 to 0.02 nM. The intention was to push the switch II loop open into an extended pocket. The structure of 5a shows that is not what happened: the loop sits where it always did and the cyanoethyl has bent underneath the core to hydrogen bond the same water as the bicyclic amine.",
+  "rationale_plain": "Adding a small nitrile-tipped arm made the compound a hundred times stronger. The chemists expected it to prise open a loop of the protein. The crystal structure shows it did nothing of the kind: it tucked underneath the molecule and grabbed the same water molecule the other arm was already holding.",
+  "consequences": [
+   {
+    "assay_id": "kras_g12d_exc",
+    "from": 12,
+    "to": 2.9,
+    "fold": 4.1,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "kras_g12d_spr",
+    "from": 3,
+    "to": 0.02,
+    "fold": 150,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "perk",
+    "from": 1300,
+    "to": 127,
+    "fold": 10,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [
+   "A:10",
+   "A:12"
+  ],
+  "evidence": "Fig2"
+ },
+ {
+  "edit_id": "kras-e05",
+  "from_compound": "5",
+  "to_compound": "8",
+  "vector": "core ring atom",
+  "change_type": "ring_change",
+  "headline": "Imidazole to indole, for polarity",
+  "rationale_specialist": "Swapping the imidazole core nitrogen for a C-H gives the indole core, reducing polarity. Potency is essentially unchanged, and cellular translation improves subtly, which was enough to carry the indole forward for all later work.",
+  "rationale_plain": "Changing one nitrogen atom in the core for a carbon made the molecule slightly less polar. It did not change how well it worked, but it moved a little closer to being something that could get into cells, so the chemists kept it.",
+  "consequences": [
+   {
+    "assay_id": "kras_g12d_spr",
+    "from": 0.02,
+    "to": 0.04,
+    "fold": 2,
+    "direction": "loss"
+   },
+   {
+    "assay_id": "perk",
+    "from": 127,
+    "to": 104,
+    "fold": 1.2,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T1"
+ },
+ {
+  "edit_id": "kras-e06",
+  "from_compound": "8",
+  "to_compound": "10",
+  "vector": "solvent front",
+  "change_type": "ring_change",
+  "headline": "The best binder the programme ever made",
+  "rationale_specialist": "Replacing the amino azetidine with a fluorinated bicyclic pyrrolizidine ether, a fragment first reported by Mirati, bottomed out the SPR assay below 1 pM and gave 20 nM in cells with 410 nM in whole blood. It is also the compound that proved the approach could not continue: no measurable Caco-2 flux at all, and clearance above 1.1 L/h/kg.",
+  "rationale_plain": "This was the most potent compound of the whole programme, binding so tightly the instrument could not measure it. It was also a dead end: it could not cross a cell membrane at any measurable rate, and the liver cleared it quickly. Potency was never going to be the problem again.",
+  "consequences": [
+   {
+    "assay_id": "kras_g12d_spr",
+    "from": 0.04,
+    "to": 0.001,
+    "fold": 40,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "perk",
+    "from": 104,
+    "to": 20,
+    "fold": 5.2,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "hwb_perk",
+    "from": 1131,
+    "to": 410,
+    "fold": 2.8,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T1"
+ },
+ {
+  "edit_id": "kras-e07",
+  "from_compound": "10",
+  "to_compound": "11",
+  "vector": "solvent front",
+  "change_type": "polarity_reduction",
+  "headline": "One liability removed: the basic amine",
+  "rationale_specialist": "Replacing the pyrrolidinol with a simple ethoxy costs 200-fold of binding but holds whole blood potency within two-fold. It removes one of the two basic amines, which was the first of two hard requirements the team set itself.",
+  "rationale_plain": "Taking away one of the molecule's two strongly basic groups cost a great deal of raw binding strength but barely changed how well it worked in blood. That trade is the whole strategy of the rest of the paper.",
+  "consequences": [
+   {
+    "assay_id": "kras_g12d_spr",
+    "from": 0.001,
+    "to": 0.26,
+    "fold": 260,
+    "direction": "loss"
+   },
+   {
+    "assay_id": "hwb_perk",
+    "from": 410,
+    "to": 492,
+    "fold": 1.2,
+    "direction": "loss"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "Fig4"
+ },
+ {
+  "edit_id": "kras-e08",
+  "from_compound": "10",
+  "to_compound": "12",
+  "vector": "switch II aryl",
+  "change_type": "polarity_reduction",
+  "headline": "The other liability: the naphthol",
+  "rationale_specialist": "Converting the 3-hydroxynaphthol to 7-fluoronaphthyl removes a metabolic liability and a hydrogen bond donor, again at about 200-fold of binding and about two-fold of whole blood potency.",
+  "rationale_plain": "The molecule carried a chemical group known to be broken down quickly by the body. Removing it cost binding strength but, again, hardly any real-world potency.",
+  "consequences": [
+   {
+    "assay_id": "kras_g12d_spr",
+    "from": 0.001,
+    "to": 0.24,
+    "fold": 240,
+    "direction": "loss"
+   },
+   {
+    "assay_id": "hwb_perk",
+    "from": 410,
+    "to": 1096,
+    "fold": 2.7,
+    "direction": "loss"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "Fig4"
+ },
+ {
+  "edit_id": "kras-e09",
+  "from_compound": "11",
+  "to_compound": "13",
+  "vector": "solvent front and switch II aryl",
+  "change_type": "polarity_reduction",
+  "headline": "Both at once, and it breaks",
+  "rationale_specialist": "Combining the two changes that each cost 200-fold separately loses more than 30-fold beyond that, and improves clearance only moderately with no gain in permeability. Removing both liabilities was necessary, and on this scaffold it was not possible.",
+  "rationale_plain": "Each change on its own was affordable. Doing both to the same molecule was not: it lost far more than the two losses added together, and still would not cross a membrane. Something else had to change.",
+  "consequences": [
+   {
+    "assay_id": "kras_g12d_exc",
+    "from": null,
+    "to": 391,
+    "fold": null,
+    "direction": "loss"
+   },
+   {
+    "assay_id": "h_cl",
+    "from": null,
+    "to": 0.7,
+    "fold": null,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "Fig4"
+ },
+ {
+  "edit_id": "kras-e10",
+  "from_compound": "11",
+  "to_compound": "14",
+  "vector": "amide tail",
+  "change_type": "conformational_lock",
+  "headline": "The lactam a microsecond of simulation asked for",
+  "rationale_specialist": "A 1 us molecular dynamics run on the ground state showed the cyanoethyl already sits mostly in its bioactive conformation, while the ethyl amide samples a wide ensemble of which the bioactive form is a small sliver. Locking that amide into a gamma-lactam improved binding five-fold, to 0.05 nM, at the cost of whole blood potency.",
+  "rationale_plain": "A simulation of how the molecule moves showed one arm was already held in the right shape, while another flailed around and was almost never in the useful position. Tying that arm into a ring made the compound five times stronger at binding, though not yet in blood.",
+  "consequences": [
+   {
+    "assay_id": "kras_g12d_spr",
+    "from": 0.26,
+    "to": 0.05,
+    "fold": 5.2,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "hwb_perk",
+    "from": 492,
+    "to": 2354,
+    "fold": 4.8,
+    "direction": "loss"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T2"
+ },
+ {
+  "edit_id": "kras-e11",
+  "from_compound": "14",
+  "to_compound": "15",
+  "vector": "solvent front",
+  "change_type": "polarity_reduction",
+  "headline": "Methyl restores what the lactam cost",
+  "rationale_specialist": "Switching the ethoxy for a methyl recovers whole blood potency from 2354 nM to 597 nM, a trend the paper reports as consistent throughout the series.",
+  "rationale_plain": "Swapping one small group for an even simpler one restored most of the potency in blood that the previous change had cost.",
+  "consequences": [
+   {
+    "assay_id": "hwb_perk",
+    "from": 2354,
+    "to": 597,
+    "fold": 3.9,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T2"
+ },
+ {
+  "edit_id": "kras-e12",
+  "from_compound": "16",
+  "to_compound": "17",
+  "vector": "mutation site ring",
+  "change_type": "polar_addition",
+  "headline": "One oxygen in the ring",
+  "rationale_specialist": "Replacing the lactam's piperidinone with a morpholinone, one extra oxygen in the ring, improves cellular potency from 39 nM to 7.2 nM and whole blood from 1030 nM to 677 nM, while keeping the permeability that cyclisation first delivered.",
+  "rationale_plain": "Adding a single oxygen atom into one ring made the compound five times better in cells, and it kept the ability to cross membranes that the ring itself had won.",
+  "consequences": [
+   {
+    "assay_id": "perk",
+    "from": 39,
+    "to": 7.2,
+    "fold": 5.4,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "hwb_perk",
+    "from": 1030,
+    "to": 677,
+    "fold": 1.5,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T2"
+ },
+ {
+  "edit_id": "kras-e13",
+  "from_compound": "17",
+  "to_compound": "18",
+  "vector": "solvent heteroaryl",
+  "change_type": "ring_change",
+  "headline": "A pyridine where a basic amine used to be",
+  "rationale_specialist": "With the basic amine requirement gone, the solvent position could take a heteroaryl. 2-Methylpyridin-4-yl more than doubled permeability to 1.6 and brought clearance to 1.0 L/h/kg: the first compound in the programme with both at once.",
+  "rationale_plain": "Freed from needing a strongly basic group, the chemists could put a simple ring there instead. For the first time one compound both crossed membranes and survived the liver.",
+  "consequences": [
+   {
+    "assay_id": "caco2_papp",
+    "from": 0.7,
+    "to": 1.6,
+    "fold": 2.3,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "h_cl",
+    "from": null,
+    "to": 1.0,
+    "fold": null,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T3"
+ },
+ {
+  "edit_id": "kras-e14",
+  "from_compound": "18",
+  "to_compound": "21",
+  "vector": "morpholinone linker",
+  "change_type": "stereochemistry",
+  "headline": "An (R)-methyl worth five-fold in blood",
+  "rationale_specialist": "Adding a single methyl at the linker carbon, in the (R) configuration, restricts the morpholinone further and improves whole blood potency five-fold to 103 nM. Compound 21 binds a thousand times more weakly than compound 10 and is five times more potent in whole blood, which is the clearest statement of this campaign's argument.",
+  "rationale_plain": "One extra methyl group, in one specific three-dimensional orientation, made the compound five times more potent in blood. It binds the protein a thousand times more weakly than the programme's best binder, and works better where it matters.",
+  "consequences": [
+   {
+    "assay_id": "hwb_perk",
+    "from": 565,
+    "to": 103,
+    "fold": 5.5,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "perk",
+    "from": 36,
+    "to": 7.5,
+    "fold": 4.8,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T3"
+ },
+ {
+  "edit_id": "kras-e15",
+  "from_compound": "21",
+  "to_compound": "22",
+  "vector": "solvent heteroaryl",
+  "change_type": "bioisostere",
+  "headline": "Pyridine to pyrazine, less basic again",
+  "rationale_specialist": "A second ring nitrogen lowers basicity: permeability more than doubles to 1.4 and whole blood potency improves again to 55 nM.",
+  "rationale_plain": "Adding one more nitrogen to that ring made it less basic, which helped the compound cross membranes and made it twice as potent in blood.",
+  "consequences": [
+   {
+    "assay_id": "caco2_papp",
+    "from": 0.6,
+    "to": 1.4,
+    "fold": 2.3,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "hwb_perk",
+    "from": 103,
+    "to": 55,
+    "fold": 1.9,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T3"
+ },
+ {
+  "edit_id": "kras-e16",
+  "from_compound": "22",
+  "to_compound": "23",
+  "vector": "switch II aryl",
+  "change_type": "polarity_reduction",
+  "headline": "Trading potency for a drug",
+  "rationale_specialist": "Replacing the 7-fluoronaphthyl with 2-methyl-3-chlorophenyl loses six-fold of whole blood potency, from 55 nM to 331 nM. Permeability rises from 1.4 to 3.6 and clearance to 1.0 L/h/kg, and in non-human primate oral bioavailability goes from 2 per cent to 42 per cent. This is compound 23, INCB159020.",
+  "rationale_plain": "Swapping a large greasy ring for a smaller one made the compound six times less potent and turned it into a drug: given by mouth to a primate, forty-two per cent of the dose reached the bloodstream, against two per cent before.",
+  "consequences": [
+   {
+    "assay_id": "hwb_perk",
+    "from": 55,
+    "to": 331,
+    "fold": 6,
+    "direction": "loss"
+   },
+   {
+    "assay_id": "caco2_papp",
+    "from": 1.4,
+    "to": 3.6,
+    "fold": 2.6,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "nhp_po_f",
+    "from": 2,
+    "to": 42,
+    "fold": 21,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T3"
+ }
+]

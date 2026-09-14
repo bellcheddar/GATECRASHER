@@ -143,14 +143,20 @@ export function initStructure(state) {
     /* Label first: once Mol* mounts it owns the host, and the label is outside it. */
     el.antiLabel.textContent = `${twin.pdb_id} ${twin.contains.protein}`
       + (twin.resolution_a ? ` ${twin.resolution_a} Å` : '');
-    anti = new StructureViewer(el.antiHost);
-    await anti.create({ background: colourToInt(cssToken('--surface-2')) });
+    /* Held locally, because the toggle can be switched off (or the paper changed) during
+     * either await, which disposes the viewer and nulls `anti`. Carrying on regardless
+     * called focusLigand on null. */
+    const viewer = new StructureViewer(el.antiHost);
+    anti = viewer;
+    await viewer.create({ background: colourToInt(cssToken('--surface-2')) });
+    if (anti !== viewer) return;
     el.antiLabel.textContent = `${twin.pdb_id} ${twin.contains.protein}`;
-    await anti.load('anti', structureUrl(twin.pdb_id), {
+    await viewer.load('anti', structureUrl(twin.pdb_id), {
       representation: el.representation.value,
     });
-    anti.focusLigand();
-    if (target) unlock = lockCameras(target, anti);
+    if (anti !== viewer) return;
+    viewer.focusLigand();
+    if (target) unlock = lockCameras(target, viewer);
   }
 
   /* --------------------------------------------------------------- motif chips */
@@ -446,6 +452,51 @@ export function initStructure(state) {
     if (!entry) note.style.color = cssToken('--ink-dim');
   }
 
+  /* PyMOL downloads, from the bundle's own manifest so only what exists is offered.
+   * BUILD_SPEC 7.2: the point is that a structural biologist can take the view away and
+   * carry on in their own tools rather than being stuck inside a web page. */
+  let figures = null;
+
+  async function loadFigures() {
+    if (figures !== null) return figures;
+    try {
+      const response = await fetch(`${bundle.dir}/figures.json`, { cache: 'no-cache' });
+      figures = response.ok ? await response.json() : {};
+    } catch (err) {
+      figures = {};
+    }
+    return figures;
+  }
+
+  async function renderDownloads() {
+    const host = document.getElementById('structure-downloads');
+    if (!host || !bundle) return;
+    const entry = primaryStructure();
+    const available = await loadFigures();
+    const set = entry ? available[entry.pdb_id.toUpperCase()] : null;
+    host.replaceChildren();
+    if (!set) return;
+
+    const kb = (bytes) => (bytes > 1024 * 1024
+      ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.round(bytes / 1024)} kB`);
+
+    for (const [key, label, title] of [
+      ['pml', 'PyMOL script', 'A standalone .pml that fetches this entry and applies the same motif colouring as this page'],
+      ['pse', 'PyMOL session', 'The built session, ready to open'],
+      ['png', 'Still image', 'A rendered still of this view'],
+    ]) {
+      if (!set[key]) continue;
+      const link = document.createElement('a');
+      link.className = 'chip no-dot';
+      link.href = `${bundle.dir}/${set[key]}`;
+      link.download = '';
+      link.title = title;
+      link.textContent = set[`${key}_bytes`]
+        ? `${label} (${kb(set[`${key}_bytes`])})` : label;
+      host.append(link);
+    }
+  }
+
   function renderCaption() {
     if (!bundle) return;
     const entry = primaryStructure();
@@ -509,11 +560,13 @@ export function initStructure(state) {
       anti = null;
       el.antiFrame.hidden = true;
       el.antiToggle.setAttribute('aria-pressed', 'false');
+      figures = null;
       await loadTargetWhenVisible();
       renderChips();
       renderRuler();
       renderContacts();
       renderCaption();
+      renderDownloads();
       await renderSelected();
     },
     render() {

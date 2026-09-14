@@ -1,0 +1,18 @@
+{
+ "4K33": {
+  "png": "figures/4k33.png",
+  "png_bytes": 503042,
+  "pml": "figures/4k33_gatecrasher.pml",
+  "pml_bytes": 2018,
+  "pse": "figures/4k33_gatecrasher.pse",
+  "pse_bytes": 756768
+ },
+ "8E1X": {
+  "png": "figures/8e1x.png",
+  "png_bytes": 306400,
+  "pml": "figures/8e1x_gatecrasher.pml",
+  "pml_bytes": 1998,
+  "pse": "figures/8e1x_gatecrasher.pse",
+  "pse_bytes": 1373445
+ }
+}

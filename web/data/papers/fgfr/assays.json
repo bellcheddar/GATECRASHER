@@ -1,0 +1,180 @@
+{
+  "fgfr3_ic50": {
+    "label": "FGFR3 wild-type IC50",
+    "short": "FGFR3",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true,
+    "is_primary": true,
+    "note": "FGFR3 enzymatic screening drove the SAR, which is why it is the primary axis even though FGFR2 potency mattered equally in the end."
+  },
+  "fgfr1_ic50": {
+    "label": "FGFR1 IC50",
+    "short": "FGFR1",
+    "units": "nM",
+    "category": "potency",
+    "direction": "higher_better",
+    "log": true,
+    "anti_target_of": "fgfr3_ic50",
+    "note": "The isoform to avoid: FGFR1 inhibition is the hypothesised cause of the hyperphosphataemia seen with the approved pan-FGFR drugs. A HIGHER value is the better outcome."
+  },
+  "fgfr1_fold": {
+    "label": "FGFR1 selectivity over FGFR3 (as published)",
+    "short": "R1/R3",
+    "units": "fold",
+    "category": "selectivity",
+    "direction": "higher_better",
+    "log": true,
+    "of_assay": "fgfr1_ic50",
+    "note": "Printed by the paper as R1/R3. Carried across as published, never recomputed."
+  },
+  "fgfr2_ic50": {
+    "label": "FGFR2 IC50",
+    "short": "FGFR2",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true,
+    "note": "Equal FGFR2 potency was desirable but not a formal goal of the campaign."
+  },
+  "fgfr4_ic50": {
+    "label": "FGFR4 IC50",
+    "short": "FGFR4",
+    "units": "nM",
+    "category": "potency",
+    "direction": "higher_better",
+    "log": true,
+    "anti_target_of": "fgfr3_ic50"
+  },
+  "fgfr3_v555l_ic50": {
+    "label": "FGFR3 V555L gatekeeper mutant IC50",
+    "short": "V555L",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true,
+    "note": "A resistance mutant of the target, not an anti-target: potency here is wanted, and losing it is how the approved drugs fail."
+  },
+  "fgfr3_v555m_ic50": {
+    "label": "FGFR3 V555M gatekeeper mutant IC50",
+    "short": "V555M",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true
+  },
+  "baf3_ic50": {
+    "label": "TEL-FGFR3 BA/F3 cellular IC50",
+    "short": "BA/F3",
+    "units": "nM",
+    "category": "cell",
+    "direction": "lower_better",
+    "log": true,
+    "conditions": "HTRF assay measuring phospho-FGFR3"
+  },
+  "wb_ic50": {
+    "label": "Whole blood IC50",
+    "short": "WB",
+    "units": "nM",
+    "category": "cell",
+    "direction": "lower_better",
+    "log": true,
+    "conditions": "FGFR3 RT-112/84 cells in whole blood"
+  },
+  "flt3_ic50": {
+    "label": "FLT3 IC50",
+    "short": "FLT3",
+    "units": "nM",
+    "category": "potency",
+    "direction": "higher_better",
+    "log": true,
+    "anti_target_of": "fgfr3_ic50",
+    "note": "One of four kinases an early analogue hit below 100 nM. Higher is better."
+  },
+  "trka_ic50": {
+    "label": "TRKA IC50",
+    "short": "TRKA",
+    "units": "nM",
+    "category": "potency",
+    "direction": "higher_better",
+    "log": true,
+    "anti_target_of": "fgfr3_ic50"
+  },
+  "kit_ic50": {
+    "label": "KIT IC50",
+    "short": "KIT",
+    "units": "nM",
+    "category": "potency",
+    "direction": "higher_better",
+    "log": true,
+    "anti_target_of": "fgfr3_ic50"
+  },
+  "pdgfrb_ic50": {
+    "label": "PDGFRB IC50",
+    "short": "PDGFRB",
+    "units": "nM",
+    "category": "potency",
+    "direction": "higher_better",
+    "log": true,
+    "anti_target_of": "fgfr3_ic50"
+  },
+  "caco2_papp": {
+    "label": "Caco-2 permeability",
+    "short": "Caco2",
+    "units": "1e-6 cm/s",
+    "category": "adme",
+    "direction": "higher_better",
+    "log": false,
+    "conditions": "Papp x 10^-6 cm/s"
+  },
+  "h_cl": {
+    "label": "Human intrinsic clearance",
+    "short": "h-Cl",
+    "units": "L/h/kg",
+    "category": "adme",
+    "direction": "lower_better",
+    "log": false
+  },
+  "cyp3a4_ic50": {
+    "label": "CYP3A4 inhibition IC50",
+    "short": "CYP3A4",
+    "units": "uM",
+    "category": "adme",
+    "direction": "higher_better",
+    "log": false,
+    "note": "An inhibition IC50 where a HIGHER value is the better result: this is the liability the campaign spent its last three compounds removing."
+  },
+  "fassif_solubility": {
+    "label": "Solubility in fasted-state simulated intestinal fluid",
+    "short": "FaSSIF",
+    "units": "ug/mL",
+    "category": "property",
+    "direction": "higher_better",
+    "log": false,
+    "note": "The paper prints this column as FASSIF in Table 5 and FaSSIF in Table 7. One assay, two spellings: the id is normalised here and both source strings are recorded in ISSUES.md."
+  },
+  "sgf_solubility": {
+    "label": "Solubility in simulated gastric fluid",
+    "short": "SGF",
+    "units": "ug/mL",
+    "category": "property",
+    "direction": "higher_better",
+    "log": false
+  },
+  "rat_po_auc": {
+    "label": "Rat oral AUC",
+    "short": "Rat AUC",
+    "units": "nM.h",
+    "category": "pk",
+    "direction": "higher_better",
+    "log": false,
+    "species": "rat",
+    "note": "Doses differ between compounds: read the source note before comparing."
+  },
+  "rat_po_cmax": { "label": "Rat oral Cmax", "short": "Rat Cmax", "units": "nM", "category": "pk", "direction": "higher_better", "log": false, "species": "rat" },
+  "rat_po_f": { "label": "Rat oral bioavailability", "short": "Rat F", "units": "%", "category": "pk", "direction": "higher_better", "log": false, "species": "rat" },
+  "rat_iv_hbf": { "label": "Rat clearance as hepatic blood flow", "short": "Rat HBF", "units": "%", "category": "pk", "direction": "lower_better", "log": false, "species": "rat" },
+  "rat_iv_t_half": { "label": "Rat IV half-life", "short": "Rat t1/2", "units": "h", "category": "pk", "direction": "higher_better", "log": false, "species": "rat" },
+  "rat_iv_vdss": { "label": "Rat volume of distribution at steady state", "short": "Rat Vdss", "units": "L/kg", "category": "pk", "direction": "neutral", "log": false, "species": "rat" }
+}

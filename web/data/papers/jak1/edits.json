@@ -1,0 +1,355 @@
+[
+ {
+  "edit_id": "jak1-e01",
+  "from_compound": "5",
+  "to_compound": "7",
+  "vector": "capping group",
+  "change_type": "ring_change",
+  "headline": "Urea out, phenyl amide in",
+  "rationale_specialist": "The urea was suspected of the poor ADME. Replacing the azetidine with a phenyl and the urea with an amide doubled enzymatic potency to 3.3 nM, improved cellular potency nearly three-fold and took Caco-2 from 0.3 to 2.1.",
+  "rationale_plain": "The first scaffold had a chemical group that was holding its properties back. Swapping it for a flat ring made the compound both more potent and far better at crossing membranes.",
+  "consequences": [
+   {
+    "assay_id": "jak1_ic50",
+    "from": 6.3,
+    "to": 3.3,
+    "fold": 1.9,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "caco2_papp",
+    "from": 0.3,
+    "to": 2.1,
+    "fold": 7,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "ina6_ic50",
+    "from": 1600,
+    "to": 612,
+    "fold": 2.6,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T1"
+ },
+ {
+  "edit_id": "jak1-e02",
+  "from_compound": "7",
+  "to_compound": "8",
+  "vector": "linker ring",
+  "change_type": "rigidification",
+  "headline": "Piperidine to azetidine",
+  "rationale_specialist": "Exchanging the six-membered piperidine for the more conformationally rigid four-membered azetidine gave about three-fold on enzyme and cell and two-fold in whole blood, with permeability holding.",
+  "rationale_plain": "Shrinking one ring from six atoms to four made the molecule more rigid and three times more potent. Rigidity is a recurring theme: it costs the molecule fewer options and it pays.",
+  "consequences": [
+   {
+    "assay_id": "jak1_ic50",
+    "from": 3.3,
+    "to": 1.3,
+    "fold": 2.5,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "ina6_ic50",
+    "from": 612,
+    "to": 226,
+    "fold": 2.7,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "wb_il6",
+    "from": 736,
+    "to": 321,
+    "fold": 2.3,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T1"
+ },
+ {
+  "edit_id": "jak1-e03",
+  "from_compound": "8",
+  "to_compound": "9",
+  "vector": "capping group",
+  "change_type": "ring_change",
+  "headline": "Breaking the ring to a secondary amide",
+  "rationale_specialist": "Opening the methylpyrrolidine to a simple isopropyl amide introduced the polarity needed to bring projected human clearance down to 0.7 L/h/kg, removed a metabolically vulnerable methyl, held potency, and unexpectedly doubled whole blood isoform selectivity to 12-fold.",
+  "rationale_plain": "Opening one ring into a simpler group did three things at once: it slowed the liver down, removed a spot the body liked to attack, and doubled the margin over the isoform that must be left alone.",
+  "consequences": [
+   {
+    "assay_id": "proj_h_cl",
+    "from": null,
+    "to": 0.7,
+    "fold": null,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "wb_tpo_il6_fold",
+    "from": 5,
+    "to": 12,
+    "fold": 2.4,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "caco2_papp",
+    "from": 2.3,
+    "to": 0.9,
+    "fold": 2.6,
+    "direction": "loss"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T1"
+ },
+ {
+  "edit_id": "jak1-e04",
+  "from_compound": "9",
+  "to_compound": "15",
+  "vector": "phenyl ortho to the amide",
+  "change_type": "halogenation",
+  "headline": "One fluorine, folded into a hydrogen bond",
+  "rationale_specialist": "An ortho-fluorine lets the amide N-H fold back into an intramolecular hydrogen bond, masking the polar surface that was blocking permeability. Caco-2 rises three-fold, rat exposure four-fold and rat bioavailability two-fold. The tactic came from two earlier in-house programmes on entirely different targets.",
+  "rationale_plain": "A single fluorine atom, placed next to the amide, lets the molecule tuck one of its own polar groups against itself. Hidden that way, it slips through membranes far more easily. Four times as much of it reached the bloodstream.",
+  "consequences": [
+   {
+    "assay_id": "caco2_papp",
+    "from": 0.9,
+    "to": 3.1,
+    "fold": 3.4,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "rat_po_auc",
+    "from": 3793,
+    "to": 14954,
+    "fold": 3.9,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "rat_po_f",
+    "from": 31,
+    "to": 61,
+    "fold": 2,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T4"
+ },
+ {
+  "edit_id": "jak1-e05",
+  "from_compound": "15",
+  "to_compound": "16",
+  "vector": "amide alkyl group",
+  "change_type": "halogenation",
+  "headline": "The trifluoromethyl only works with the fluorine",
+  "rationale_specialist": "Adding the trifluoromethyl to the ortho-fluorinated amide gave Caco-2 of 4.7, rat exposure of 28,766 and a 52-fold increase in cynomolgus exposure over compound 9. The same trifluoromethyl without the ortho-fluorine (14 against 9) did almost nothing, which is what makes this a real interaction between two changes rather than two independent gains.",
+  "rationale_plain": "Adding a fluorinated group to the amide worked spectacularly, but only because the other fluorine was already there. On its own it did nothing at all. Two changes that are worthless apart and transformative together.",
+  "consequences": [
+   {
+    "assay_id": "caco2_papp",
+    "from": 3.1,
+    "to": 4.7,
+    "fold": 1.5,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "cyno_po_auc",
+    "from": 2169,
+    "to": 80964,
+    "fold": 37,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "jak1_ic50",
+    "from": 1.7,
+    "to": 0.56,
+    "fold": 3,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T4"
+ },
+ {
+  "edit_id": "jak1-e06",
+  "from_compound": "16",
+  "to_compound": "18",
+  "vector": "phenyl meta to the amide",
+  "change_type": "halogenation",
+  "headline": "A second fluorine for potency",
+  "rationale_specialist": "A meta-fluorine twists the phenyl ring slightly out of plane with the azetidine, which the authors report as a consistent potency trend across related scaffolds. Enzymatic potency doubles to 0.25 nM and Caco-2 nearly doubles to 8.5.",
+  "rationale_plain": "A second fluorine, on the other side of the ring, twists the molecule slightly and doubles its potency. The chemists say they see the same effect across several related series and are writing it up separately.",
+  "consequences": [
+   {
+    "assay_id": "jak1_ic50",
+    "from": 0.56,
+    "to": 0.25,
+    "fold": 2.2,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "caco2_papp",
+    "from": 4.7,
+    "to": 8.5,
+    "fold": 1.8,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T4"
+ },
+ {
+  "edit_id": "jak1-e07",
+  "from_compound": "18",
+  "to_compound": "19",
+  "vector": "phenyl ortho to the amide",
+  "change_type": "halogenation",
+  "headline": "Remove the fluorine and watch it collapse",
+  "rationale_specialist": "Deleting the ortho-fluorine from 18 leaves potency untouched at 0.25 nM and takes Caco-2 from 8.5 to 1.4, rat exposure from 11,884 to 5,606 and rat bioavailability from 54 to 21 per cent. This is the control that proves the intramolecular hydrogen bond, not the fluorine's electronics, is what carries the PK.",
+  "rationale_plain": "The chemists took the key fluorine back off again. The compound was just as potent and far worse at everything else. That is how you show a hypothesis was right: undo it and watch the benefit disappear.",
+  "consequences": [
+   {
+    "assay_id": "caco2_papp",
+    "from": 8.5,
+    "to": 1.4,
+    "fold": 6.1,
+    "direction": "loss"
+   },
+   {
+    "assay_id": "rat_po_auc",
+    "from": 11884,
+    "to": 5606,
+    "fold": 2.1,
+    "direction": "loss"
+   },
+   {
+    "assay_id": "rat_po_f",
+    "from": 54,
+    "to": 21,
+    "fold": 2.6,
+    "direction": "loss"
+   },
+   {
+    "assay_id": "jak1_ic50",
+    "from": 0.25,
+    "to": 0.25,
+    "fold": 1,
+    "direction": "neutral"
+   }
+  ],
+  "structural_basis": [],
+  "evidence": "T4"
+ },
+ {
+  "edit_id": "jak1-e08",
+  "from_compound": "18",
+  "to_compound": "20",
+  "vector": "hinge binder",
+  "change_type": "ring_change",
+  "headline": "Shrinking the hinge binder, and paying for it",
+  "rationale_specialist": "The 7H-pyrrolo[2,3-d]pyrimidine is ubiquitous in kinase inhibitors and, being electron-rich, is prone to CYP-mediated oxidation. A bare pyrazole still binds the hinge, at 314 nM: a 1250-fold loss. The two pyrazole nitrogens make the same contacts, to the main-chain amide of Leu932 and the carbonyl of Glu930, but the smaller ring has poorer geometry and less surface to work with.",
+  "rationale_plain": "The part of the molecule that grips the protein was replaced with something smaller and less vulnerable to being broken down. It still gripped, in the same two places, but a thousand times more weakly. The rest of this work is buying that potency back.",
+  "consequences": [
+   {
+    "assay_id": "jak1_ic50",
+    "from": 0.25,
+    "to": 314,
+    "fold": 1256,
+    "direction": "loss"
+   },
+   {
+    "assay_id": "jak2_jak1_fold",
+    "from": 25,
+    "to": 23,
+    "fold": null,
+    "direction": "neutral"
+   }
+  ],
+  "structural_basis": [
+   "A:930",
+   "A:932"
+  ],
+  "evidence": "T5"
+ },
+ {
+  "edit_id": "jak1-e09",
+  "from_compound": "20",
+  "to_compound": "21",
+  "vector": "pyrazole 3-position",
+  "change_type": "alkylation",
+  "headline": "One methyl, sixteen-fold",
+  "rationale_specialist": "Methylating the pyrazole 3-position recovers 16-fold, to 19 nM, and doubles isoform selectivity to 48-fold.",
+  "rationale_plain": "One methyl group on the small ring recovered sixteen-fold of the lost potency and doubled the selectivity at the same time.",
+  "consequences": [
+   {
+    "assay_id": "jak1_ic50",
+    "from": 314,
+    "to": 19,
+    "fold": 16.5,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "jak2_jak1_fold",
+    "from": 23,
+    "to": 48,
+    "fold": 2.1,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [
+   "A:930",
+   "A:932"
+  ],
+  "evidence": "T5"
+ },
+ {
+  "edit_id": "jak1-e10",
+  "from_compound": "21",
+  "to_compound": "22",
+  "vector": "pyrazole 5-position",
+  "change_type": "alkylation",
+  "headline": "The second methyl, and the drug",
+  "rationale_specialist": "The 3,5-dimethylpyrazole recovers 28-fold overall to 11 nM. Against 18 it is 44-fold weaker on the enzyme and nearly twice as isoform-selective, at 46-fold, with whole blood selectivity up 2.7-fold. The prize is elsewhere: dog clearance falls from 82 to 4 per cent of hepatic blood flow, and dog oral bioavailability rises from 1 per cent to 100 per cent.",
+  "rationale_plain": "The second methyl finished the job. Compared with the compound it replaced it is much weaker against the purified enzyme, more selective, and the difference that matters is in dogs: the previous compound was almost entirely destroyed before reaching the bloodstream, and this one arrives intact.",
+  "consequences": [
+   {
+    "assay_id": "jak1_ic50",
+    "from": 19,
+    "to": 11,
+    "fold": 1.7,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "jak2_jak1_fold",
+    "from": 48,
+    "to": 46,
+    "fold": null,
+    "direction": "neutral"
+   },
+   {
+    "assay_id": "dog_po_f",
+    "from": 1,
+    "to": 100,
+    "fold": 100,
+    "direction": "gain"
+   },
+   {
+    "assay_id": "dog_cl_hbf",
+    "from": 82,
+    "to": 4,
+    "fold": 20,
+    "direction": "gain"
+   }
+  ],
+  "structural_basis": [
+   "A:930",
+   "A:932",
+   "A:885"
+  ],
+  "evidence": "T6"
+ }
+]

@@ -35,6 +35,13 @@
 
     <span class="title-bar-spacer"></span>
 
+    <div class="search">
+      <label class="visually-hidden" for="search-input">Search this project</label>
+      <input type="search" id="search-input" placeholder="Search  /" autocomplete="off"
+             spellcheck="false">
+      <div class="search-results" id="search-results" role="listbox" hidden></div>
+    </div>
+
     <div class="register-toggle">
       <span id="register-label" class="mono">Register</span>
       <button id="register-button" type="button" aria-describedby="register-label"
@@ -148,6 +155,9 @@
           </div>
 
           <div class="sheet-tools" id="motif-chips" aria-label="Motifs"></div>
+
+          <!-- Take the view away: a PyMOL script, the built session and a still. -->
+          <div class="sheet-tools" id="structure-downloads" aria-label="Downloads"></div>
 
           <div class="ruler" id="klifs-ruler" tabindex="0"
                aria-label="Pocket ruler: click a position to select that residue"></div>

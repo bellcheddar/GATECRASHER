@@ -14,7 +14,10 @@ set -uo pipefail
 
 cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-EXCLUDE=(':!web/js/vendor' ':!web/css/molstar.css' ':!papers' ':!docs/screenshots')
+# This script is excluded from its own scan for the reason BUILD_SPEC.md is excluded from the
+# word list: it has to spell out the name, the words and the dash it forbids, so it always
+# matched itself and the gate could never pass.
+EXCLUDE=(':!web/js/vendor' ':!web/css/molstar.css' ':!papers' ':!docs/screenshots' ':!tools/copy_check.sh')
 FAIL=0
 
 say() { printf '%s\n' "$1"; }

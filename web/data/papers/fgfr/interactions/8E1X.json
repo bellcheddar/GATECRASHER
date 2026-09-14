@@ -1,0 +1,112 @@
+{
+ "pdb_id": "8E1X",
+ "ligand_code": "U9P",
+ "ligand_chain": "",
+ "interactions": [
+  {
+   "type": "hbond",
+   "residue": "LEU",
+   "chain": "A",
+   "resnum": 487,
+   "ligand_atom": "152",
+   "protein_atom": null,
+   "distance_a": 3.66,
+   "angle_deg": 110.0,
+   "protein_is_donor": false,
+   "ligand_coords": [
+    14.935,
+    2.239,
+    -30.347
+   ],
+   "protein_coords": [
+    13.211,
+    5.715,
+    -31.664
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "ALA",
+   "chain": "A",
+   "resnum": 567,
+   "ligand_atom": "2248",
+   "protein_atom": null,
+   "distance_a": 2.1,
+   "angle_deg": 157.6,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    19.652,
+    -0.814,
+    -31.152
+   ],
+   "protein_coords": [
+    19.759,
+    -3.606,
+    -32.328
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "ASN",
+   "chain": "A",
+   "resnum": 571,
+   "ligand_atom": "2254",
+   "protein_atom": null,
+   "distance_a": 2.19,
+   "angle_deg": 140.1,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    13.847,
+    2.348,
+    -27.095
+   ],
+   "protein_coords": [
+    12.233,
+    0.722,
+    -25.138
+   ]
+  },
+  {
+   "type": "hydrophobic",
+   "residue": "TYR",
+   "chain": "A",
+   "resnum": 566,
+   "ligand_atom": "2245",
+   "protein_atom": "725",
+   "distance_a": 3.95,
+   "angle_deg": null,
+   "protein_is_donor": null,
+   "ligand_coords": [
+    14.437,
+    -1.266,
+    -32.925
+   ],
+   "protein_coords": [
+    17.514,
+    -1.201,
+    -35.403
+   ]
+  },
+  {
+   "type": "hydrophobic",
+   "residue": "LEU",
+   "chain": "A",
+   "resnum": 633,
+   "ligand_atom": "2244",
+   "protein_atom": "1243",
+   "distance_a": 3.46,
+   "angle_deg": null,
+   "protein_is_donor": null,
+   "ligand_coords": [
+    20.22,
+    2.001,
+    -28.965
+   ],
+   "protein_coords": [
+    19.879,
+    -0.586,
+    -26.689
+   ]
+  }
+ ]
+}

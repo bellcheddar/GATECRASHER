@@ -306,6 +306,17 @@ def main() -> int:
                   const r = rows.find(x => x.textContent.includes('via water'));
                   return r ? r.textContent : 'no water bridge row';})()"""))
 
+        check("the PyMOL downloads are offered",
+              (tab.js("document.querySelectorAll('#structure-downloads a').length") or 0) >= 2,
+              f"{tab.js('document.querySelectorAll(\"#structure-downloads a\").length')} links")
+        check("each download points at a real file in this bundle",
+              tab.js("[...document.querySelectorAll('#structure-downloads a')]"
+                     ".every(a => a.getAttribute('href').includes('figures/'))"))
+        check("the download sizes are stated, so nothing large is a surprise",
+              tab.js("[...document.querySelectorAll('#structure-downloads a')]"
+                     ".some(a => /\\d+\\s*(kB|MB)/.test(a.textContent))"),
+              tab.js("[...document.querySelectorAll('#structure-downloads a')].map(a => a.textContent).join(' | ')"))
+
         # ----------------------------------------------------- cross-links
         print("\ncross-links (BUILD_SPEC section 8)")
         tab.click("#motif-chips .chip.motif-gatekeeper")
@@ -381,6 +392,36 @@ def main() -> int:
               (tab.js("document.querySelectorAll('#klifs-ruler .ruler-cell[aria-selected=\"true\"]').length") or 0) == 2,
               f"{tab.js('document.querySelectorAll(\"#klifs-ruler .ruler-cell[aria-selected=true]\").length')} selected")
         tab.shot(out / "structure-dark.png")
+
+        # --------------------------------------------------------- search
+        print("\nsearch")
+        tab.js("document.getElementById('search-input').focus()")
+        tab.js("""(() => {
+            const i = document.getElementById('search-input');
+            i.value = 'gatekeeper';
+            i.dispatchEvent(new Event('input', {bubbles: true}));
+        })()""")
+        check("searching finds our own writing",
+              tab.wait_for("document.querySelectorAll('#search-results .search-hit').length > 0", 15),
+              f"{tab.js('document.querySelectorAll(\"#search-results .search-hit\").length')} hits")
+        check("each hit says where it came from",
+              (tab.js("document.querySelectorAll('#search-results .search-hit .chip').length") or 0) > 0)
+        # The honest answer has to look like an answer, not like a failure.
+        tab.js("""(() => {
+            const i = document.getElementById('search-input');
+            i.value = 'zzzqqq nonsense term';
+            i.dispatchEvent(new Event('input', {bubbles: true}));
+        })()""")
+        check("an unanswerable question says so plainly",
+              tab.wait_for("!!document.querySelector('#search-results .search-empty')", 10),
+              tab.js("(document.getElementById('search-results')||{}).textContent"))
+        check("the not-stated answer explains that only our own text is searched",
+              "not reproduced here" in (tab.js(
+                  "(document.querySelector('#search-results .search-empty p')||{}).textContent") or ""))
+        tab.js("""(() => {
+            const i = document.getElementById('search-input');
+            i.value = ''; i.dispatchEvent(new Event('input', {bubbles: true}));
+        })()""")
 
         # ---------------------------------------------------------- about
         print("\nabout sheet")

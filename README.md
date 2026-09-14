@@ -16,7 +16,7 @@
 ![bundles](https://img.shields.io/badge/bundles-4%20validating-00d084)
 ![data](https://img.shields.io/badge/data-RCSB%20PDB%20·%20KLIFS%20·%20PubChem-fcb900)
 ![phase](https://img.shields.io/badge/phase-stage%204-ff6900)
-![licence](https://img.shields.io/badge/licence-not%20yet%20chosen-lightgrey)
+![licence](https://img.shields.io/badge/licence-MIT-blue)
 ![author](https://img.shields.io/badge/author-Marc%20C.%20Deller-1C244B)
 
 | | |
@@ -135,21 +135,21 @@ Where a paper's only record of something is a figure we may not copy, the app sa
 
 ## ✅ To Do
 
-- [x] **Harvest pass** — lift the PLIP runner, Mol\* setup, KLIFS layer, Plotly conventions and track rendering from the existing repositories, and record what came from where in `HARVEST.md`
-- [x] **Data contract** — long-format measurements, per-paper assay dictionaries, JSON Schema for every artefact, and a provenance gate that fails the build
-- [x] **CDK2 end to end** — 18 compounds, 251 measurements, 8UV0 with PLIP contacts and the KLIFS ruler
-- [x] **Blueprint shell** — tokens, sheets with live title blocks, the drawing grammar, `AppState` with URL-hash serialisation
-- [x] **Structure, SAR and Properties sheets** — Mol\*, the pocket ruler, motif chips, contact list with measure lines, R-group grid, selectivity matrix, activity cliffs, the three Plotly figures
-- [x] **Story and Edit Log** — five beats per paper in two registers, the graphical abstract re-creation drawn from SMILES, change-type filtering
-- [x] **All four papers** — FGFR, KRAS and JAK1 curated, including the non-KLIFS path and the twin-structure anti-target
-- [x] **Verification** — OPSIN name-to-structure checking, `molzip` fragment assembly, 67 browser checks, the copy gate
-- [x] **About sheet** — the pipeline in six stages, every tool with its version, licence and DOI, the data sources, and the statement of what is rendered rather than reproduced, all rendered from `data/software.json`
-- [x] **Deploy** — nginx and certbot on the droplet, HTTP/2 patched in the form nginx 1.24 wants, asset URLs stamped with their modification times so an immutable cache cannot hide a deploy, and the entry in the mdeller.com launcher
-- [ ] **In-browser search** — chunk, embed once on the Mac, cosine search in the page, with "not stated in this paper" as a first-class answer
-- [ ] **Short molecular dynamics** — an RMSF track on the ruler and a decimated trajectory per primary structure, and no trajectory ships that does not support what the paper claims
-- [ ] **PyMOL downloads** — a `.pml` script and a `.pse` session per structure
-- [ ] **Performance budget** — first meaningful paint under two seconds cold, under 1.5 MB initial transfer excluding Mol\*, lazy-loaded structures
-- [ ] **Licence** — not yet chosen
+- [x] **Harvest pass**: lift the PLIP runner, Mol\* setup, KLIFS layer, Plotly conventions and track rendering from the existing repositories, and record what came from where in `HARVEST.md`
+- [x] **Data contract**: long-format measurements, per-paper assay dictionaries, JSON Schema for every artefact, and a provenance gate that fails the build
+- [x] **CDK2 end to end**: 18 compounds, 251 measurements, 8UV0 with PLIP contacts and the KLIFS ruler
+- [x] **Blueprint shell**: tokens, sheets with live title blocks, the drawing grammar, `AppState` with URL-hash serialisation
+- [x] **Structure, SAR and Properties sheets**: Mol\*, the pocket ruler, motif chips, contact list with measure lines, R-group grid, selectivity matrix, activity cliffs, the three Plotly figures
+- [x] **Story and Edit Log**: five beats per paper in two registers, the graphical abstract re-creation drawn from SMILES, change-type filtering
+- [x] **All four papers**: FGFR, KRAS and JAK1 curated, including the non-KLIFS path and the twin-structure anti-target
+- [x] **Verification**: OPSIN name-to-structure checking, `molzip` fragment assembly, 67 browser checks, the copy gate
+- [x] **About sheet**: the pipeline in six stages, every tool with its version, licence and DOI, the data sources, and the statement of what is rendered rather than reproduced, all rendered from `data/software.json`
+- [x] **Deploy**: nginx and certbot on the droplet, HTTP/2 patched in the form nginx 1.24 wants, asset URLs stamped with their modification times so an immutable cache cannot hide a deploy, and the entry in the mdeller.com launcher
+- [x] **In-browser search**: BM25 over this project's own prose and data, indexed once on the Mac and scored in the page, with "not stated in this project" as a first-class answer. Embeddings were the plan, but a static site cannot embed the query without a server or a model shipped to the page
+- [ ] **Short molecular dynamics**: an RMSF track on the ruler and a decimated trajectory per primary structure, and no trajectory ships that does not support what the paper claims
+- [x] **PyMOL downloads**: a `.pml` script, a `.pse` session and a still image per structure, on the Structure sheet
+- [ ] **Performance budget**: first meaningful paint under two seconds cold, under 1.5 MB initial transfer excluding Mol\*, lazy-loaded structures
+- [x] **Licence**: MIT. The one dependency that would have forced AGPL-3.0, PyMuPDF, is replaced by pypdfium2; the GPL tools run as subprocesses only; the vendored libraries carry their notices. See `THIRD_PARTY.md`
 
 ## 📚 Citations
 
@@ -170,12 +170,17 @@ Where a paper's only record of something is a figure we may not copy, the app sa
 | [gemmi](https://gemmi.readthedocs.io/) | mmCIF handling | MPL-2.0 |
 | [biotite](https://www.biotite-python.org/) | Structure handling | BSD-3-Clause |
 | [DSSP](https://github.com/PDB-REDO/dssp) | Secondary structure | BSD-2-Clause |
+| [Open Babel](https://openbabel.org/) | Chemical perception inside PLIP | GPL-2.0, reached only inside the PLIP subprocess |
+| [PyMOL](https://github.com/schrodinger/pymol-open-source) | The downloadable script, session and still per structure | Open-Source PyMOL licence, invoked as a subprocess |
+| [pypdfium2](https://github.com/pypdfium2-team/pypdfium2) | Text and page images out of the PDFs, on the Mac only | BSD-3-Clause / Apache-2.0 |
 | [Mol\*](https://molstar.org/) | The structure viewer | MIT |
 | [Plotly.js](https://plotly.com/javascript/) | Every figure | MIT |
 | [RDKit.js](https://github.com/rdkit/rdkit-js) | In-browser depiction and highlighting | BSD-3-Clause |
 | [KLIFS](https://klifs.net/) | Kinase pocket numbering | Academic use |
 | [RCSB PDB](https://www.rcsb.org/) | All coordinates | Public domain |
 | [PubChem](https://pubchem.ncbi.nlm.nih.gov/) | Reference drug structures | Public domain |
+
+GATECRASHER is released under the [MIT licence](LICENSE). Versions, roles, references and the licence notices for the vendored libraries are in [`THIRD_PARTY.md`](THIRD_PARTY.md), which is generated from the same `data/software.json` the About sheet renders.
 
 ---
 

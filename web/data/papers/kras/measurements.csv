@@ -1,0 +1,152 @@
+compound_id,assay_id,value,qualifier,units,n,source_table,source_note
+1,kras_g12d_exc,8000.0,=,nM,,Fig2,
+2,kras_g12d_exc,704.0,=,nM,,Fig2,
+3,kras_g12d_exc,671.0,=,nM,,Fig2,
+4,kras_g12d_exc,12.0,=,nM,,Fig2,
+4,kras_g12d_spr,3.0,=,nM,,Fig2,
+4,perk,1300.0,=,nM,,Fig2,
+5,kras_g12d_exc,2.9,=,nM,,Fig2,
+5,kras_g12d_spr,0.02,=,nM,,Fig2,
+5,perk,127.0,=,nM,,Fig2,
+5,kras_g12d_spr,0.02,=,nM,,T1,
+5,kras_g12d_exc,2.9,=,nM,,T1,
+5,perk,127.0,=,nM,,T1,
+5,hwb_perk,977.0,=,nM,,T1,
+6,kras_g12d_spr,0.031,=,nM,,T1,
+6,kras_g12d_exc,2.9,=,nM,,T1,
+6,perk,92.0,=,nM,,T1,
+6,hwb_perk,1241.0,=,nM,,T1,
+7,kras_g12d_exc,15.0,=,nM,,T1,
+7,perk,1242.0,=,nM,,T1,
+8,kras_g12d_spr,0.04,=,nM,,T1,
+8,kras_g12d_exc,3.0,=,nM,,T1,
+8,perk,104.0,=,nM,,T1,
+8,hwb_perk,1131.0,=,nM,,T1,
+9,kras_g12d_spr,0.1,=,nM,,T1,
+9,kras_g12d_exc,3.6,=,nM,,T1,
+9,perk,54.0,=,nM,,T1,
+9,hwb_perk,2625.0,=,nM,,T1,
+10,kras_g12d_spr,0.001,<,nM,,T1,
+10,kras_g12d_exc,2.1,=,nM,,T1,
+10,perk,20.0,=,nM,,T1,
+10,hwb_perk,410.0,=,nM,,T1,
+10,kras_g12d_spr,0.001,<,nM,,Fig4,
+10,perk,20.0,=,nM,,Fig4,
+10,hwb_perk,410.0,=,nM,,Fig4,
+11,kras_g12d_spr,0.26,=,nM,,Fig4,
+11,perk,28.0,=,nM,,Fig4,
+11,hwb_perk,492.0,=,nM,,Fig4,
+12,kras_g12d_spr,0.24,=,nM,,Fig4,
+12,perk,62.0,=,nM,,Fig4,
+12,hwb_perk,1096.0,=,nM,,Fig4,
+13,kras_g12d_exc,391.0,=,nM,,Fig4,
+11,kras_g12d_spr,0.26,=,nM,,T2,
+11,kras_g12d_exc,3.8,=,nM,,T2,
+11,perk,28.0,=,nM,,T2,
+11,hwb_perk,492.0,=,nM,,T2,
+11,caco2_papp,0.2,=,1e-6 cm/s,,T2,
+11,h_cl,1.1,>,L/h/kg,,T2,
+14,kras_g12d_spr,0.05,=,nM,,T2,
+14,kras_g12d_exc,2.6,=,nM,,T2,
+14,perk,21.0,=,nM,,T2,
+14,hwb_perk,2354.0,=,nM,,T2,
+14,caco2_papp,0.2,=,1e-6 cm/s,,T2,
+14,h_cl,1.1,>,L/h/kg,,T2,
+15,kras_g12d_exc,3.5,=,nM,,T2,
+15,perk,45.0,=,nM,,T2,
+15,hwb_perk,597.0,=,nM,,T2,
+16,kras_g12d_exc,6.1,=,nM,,T2,
+16,perk,39.0,=,nM,,T2,
+16,hwb_perk,1030.0,=,nM,,T2,
+16,caco2_papp,0.7,=,1e-6 cm/s,,T2,
+16,h_cl,1.1,>,L/h/kg,,T2,
+17,kras_g12d_exc,2.7,=,nM,,T2,n = 1
+17,perk,7.2,=,nM,,T2,n = 1
+17,hwb_perk,677.0,=,nM,,T2,n = 1
+17,caco2_papp,0.7,=,1e-6 cm/s,,T2,n = 1
+17,h_cl,1.1,>,L/h/kg,,T2,n = 1
+17,kras_g12d_exc,2.7,=,nM,,T3,n = 1
+17,perk,7.2,=,nM,,T3,n = 1
+17,hwb_perk,677.0,=,nM,,T3,n = 1
+17,caco2_papp,0.7,=,1e-6 cm/s,,T3,n = 1
+17,h_cl,1.1,>,L/h/kg,,T3,n = 1
+18,kras_g12d_spr,1.2,=,nM,,T3,
+18,kras_g12d_exc,6.9,=,nM,,T3,
+18,perk,36.0,=,nM,,T3,
+18,hwb_perk,565.0,=,nM,,T3,
+18,caco2_papp,1.6,=,1e-6 cm/s,,T3,
+18,h_cl,1.0,=,L/h/kg,,T3,
+19,kras_g12d_spr,0.84,=,nM,,T3,n = 1
+19,kras_g12d_exc,3.7,=,nM,,T3,n = 1
+19,perk,10.0,=,nM,,T3,n = 1
+19,hwb_perk,519.0,=,nM,,T3,n = 1
+19,caco2_papp,1.7,=,1e-6 cm/s,,T3,n = 1
+19,h_cl,1.1,>,L/h/kg,,T3,n = 1
+20,kras_g12d_exc,3.8,=,nM,,T3,
+20,perk,17.0,=,nM,,T3,
+20,hwb_perk,626.0,=,nM,,T3,
+20,caco2_papp,1.1,=,1e-6 cm/s,,T3,
+20,h_cl,0.7,=,L/h/kg,,T3,
+21,kras_g12d_spr,0.98,=,nM,,T3,
+21,kras_g12d_exc,2.1,=,nM,,T3,
+21,perk,7.5,=,nM,,T3,
+21,hwb_perk,103.0,=,nM,,T3,
+21,caco2_papp,0.6,=,1e-6 cm/s,,T3,
+21,h_cl,1.1,>,L/h/kg,,T3,
+22,kras_g12d_spr,1.5,=,nM,,T3,
+22,kras_g12d_exc,2.8,=,nM,,T3,
+22,perk,6.8,=,nM,,T3,
+22,hwb_perk,55.0,=,nM,,T3,
+22,caco2_papp,1.4,=,1e-6 cm/s,,T3,
+22,h_cl,1.1,>,L/h/kg,,T3,
+23,kras_g12d_spr,22.0,=,nM,,T3,
+23,kras_g12d_exc,4.4,=,nM,,T3,
+23,perk,33.0,=,nM,,T3,
+23,hwb_perk,331.0,=,nM,,T3,
+23,caco2_papp,3.6,=,1e-6 cm/s,,T3,
+23,h_cl,1.0,=,L/h/kg,,T3,
+18,rat_po_cmax,41.5,=,nM,,T4,1.0 mg/kg IV and 3.0 mg/kg PO
+18,rat_po_auc,108.0,=,nM.h,,T4,1.0 mg/kg IV and 3.0 mg/kg PO
+18,rat_po_f,11.0,=,%,,T4,1.0 mg/kg IV and 3.0 mg/kg PO
+18,rat_cl_hbf,100.0,>,%,,T4,1.0 mg/kg IV and 3.0 mg/kg PO
+18,rat_t_half,3.5,=,h,,T4,1.0 mg/kg IV and 3.0 mg/kg PO
+18,nhp_po_cmax,2.5,=,nM,,T4,0.5 mg/kg IV and 2.0 mg/kg PO
+18,nhp_po_f,0.0,=,%,,T4,0.5 mg/kg IV and 2.0 mg/kg PO
+18,nhp_cl_hbf,37.0,=,%,,T4,0.5 mg/kg IV and 2.0 mg/kg PO
+18,nhp_t_half,8.4,=,h,,T4,0.5 mg/kg IV and 2.0 mg/kg PO
+22,rat_po_cmax,24.0,=,nM,,T4,0.1 mg/kg IV (dose limited by solubility) and 3.0 mg/kg PO
+22,rat_po_auc,85.0,=,nM.h,,T4,0.1 mg/kg IV (dose limited by solubility) and 3.0 mg/kg PO
+22,rat_po_f,20.0,=,%,,T4,0.1 mg/kg IV (dose limited by solubility) and 3.0 mg/kg PO
+22,rat_cl_hbf,100.0,>,%,,T4,0.1 mg/kg IV (dose limited by solubility) and 3.0 mg/kg PO
+22,rat_t_half,2.5,=,h,,T4,0.1 mg/kg IV (dose limited by solubility) and 3.0 mg/kg PO
+22,nhp_po_cmax,7.2,=,nM,,T4,1.0 mg/kg IV and 20 mg/kg PO
+22,nhp_po_auc,68.0,=,nM.h,,T4,1.0 mg/kg IV and 20 mg/kg PO
+22,nhp_po_f,2.0,=,%,,T4,1.0 mg/kg IV and 20 mg/kg PO
+22,nhp_cl_hbf,39.0,=,%,,T4,1.0 mg/kg IV and 20 mg/kg PO
+22,nhp_t_half,4.9,=,h,,T4,1.0 mg/kg IV and 20 mg/kg PO
+23,rat_po_cmax,57.0,=,nM,,T4,1.0 mg/kg IV and 3.0 mg/kg PO
+23,rat_po_auc,331.0,=,nM.h,,T4,1.0 mg/kg IV and 3.0 mg/kg PO
+23,rat_po_f,27.0,=,%,,T4,1.0 mg/kg IV and 3.0 mg/kg PO
+23,rat_cl_hbf,100.0,>,%,,T4,1.0 mg/kg IV and 3.0 mg/kg PO
+23,rat_t_half,3.8,=,h,,T4,1.0 mg/kg IV and 3.0 mg/kg PO
+23,nhp_po_cmax,100.0,=,nM,,T4,1.0 mg/kg IV and 1.5 mg/kg PO
+23,nhp_po_auc,952.0,=,nM.h,,T4,1.0 mg/kg IV and 1.5 mg/kg PO
+23,nhp_po_f,42.0,=,%,,T4,1.0 mg/kg IV and 1.5 mg/kg PO
+23,nhp_cl_hbf,37.0,=,%,,T4,1.0 mg/kg IV and 1.5 mg/kg PO
+23,nhp_t_half,6.4,=,h,,T4,1.0 mg/kg IV and 1.5 mg/kg PO
+5a,kras_g12d_spr,0.16,=,nM,,Text p1926,
+5a,kras_wt_spr,8.8,=,nM,,Text p1926,
+23,kras_g12d_exc,4.4,=,nM,,T5,
+23,perk,33.0,=,nM,,T5,
+23,ctg_viability,78.0,=,nM,,T5,
+23,kras_wt_exc,205.0,=,nM,,T5,
+23,wt_perk,2635.0,=,nM,,T5,
+23,wt_ctg_viability,2251.0,=,nM,,T5,
+23,caco2_papp,3.6,=,1e-6 cm/s,,T5,
+23,h_cl,1.0,=,L/h/kg,,T5,
+23,pb_free,1.1,=,%,,T5,
+23,sgf_solubility,900.0,>,ug/mL,,T5,
+23,fassif_solubility,79.0,=,ug/mL,,T5,
+23,cyp3a4_ic50,17.0,=,uM,,T5,
+23,cyp2d6_ic50,7.2,=,uM,,T5,
+23,herg_ic50,11.2,=,uM,,T5,

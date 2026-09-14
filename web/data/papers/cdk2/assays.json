@@ -1,0 +1,201 @@
+{
+  "cdk2_e1_ic50": {
+    "label": "CDK2 / cyclin E1 IC50",
+    "short": "CDK2",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true,
+    "conditions": "1 mM ATP",
+    "is_primary": true
+  },
+  "cdk1_b1_ic50": {
+    "label": "CDK1 / cyclin B1 IC50",
+    "short": "CDK1",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true,
+    "conditions": "1 mM ATP",
+    "anti_target_of": "cdk2_e1_ic50",
+    "note": "The isoform the campaign most needed to avoid: CDK1 is pan-lethal."
+  },
+  "cdk4_d1_ic50": {
+    "label": "CDK4 / cyclin D1 IC50",
+    "short": "CDK4",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true,
+    "conditions": "1 mM ATP",
+    "anti_target_of": "cdk2_e1_ic50"
+  },
+  "cdk6_d3_ic50": {
+    "label": "CDK6 / cyclin D3 IC50",
+    "short": "CDK6",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true,
+    "conditions": "1 mM ATP",
+    "anti_target_of": "cdk2_e1_ic50"
+  },
+  "cdk7_h_ic50": {
+    "label": "CDK7 / cyclin H IC50",
+    "short": "CDK7",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true,
+    "conditions": "1 mM ATP",
+    "anti_target_of": "cdk2_e1_ic50"
+  },
+  "cdk9_t1_ic50": {
+    "label": "CDK9 / cyclin T1 IC50",
+    "short": "CDK9",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true,
+    "conditions": "1 mM ATP",
+    "anti_target_of": "cdk2_e1_ic50"
+  },
+  "jak2_ic50": {
+    "label": "JAK2 IC50",
+    "short": "JAK2",
+    "units": "nM",
+    "category": "potency",
+    "direction": "lower_better",
+    "log": true,
+    "anti_target_of": "cdk2_e1_ic50",
+    "note": "The HTS hit's original target. Reported only in Figure 2."
+  },
+  "cdk1_fold": {
+    "label": "CDK1 selectivity over CDK2 (as published)",
+    "short": "CDK1 fold",
+    "units": "fold",
+    "category": "selectivity",
+    "direction": "higher_better",
+    "log": true,
+    "of_assay": "cdk1_b1_ic50",
+    "note": "Fold values are carried across exactly as printed and are never recomputed from the IC50 columns."
+  },
+  "cdk4_fold": {
+    "label": "CDK4 selectivity over CDK2 (as published)",
+    "short": "CDK4 fold",
+    "units": "fold",
+    "category": "selectivity",
+    "direction": "higher_better",
+    "log": true,
+    "of_assay": "cdk4_d1_ic50"
+  },
+  "cdk6_fold": {
+    "label": "CDK6 selectivity over CDK2 (as published)",
+    "short": "CDK6 fold",
+    "units": "fold",
+    "category": "selectivity",
+    "direction": "higher_better",
+    "log": true,
+    "of_assay": "cdk6_d3_ic50"
+  },
+  "cdk7_fold": {
+    "label": "CDK7 selectivity over CDK2 (as published)",
+    "short": "CDK7 fold",
+    "units": "fold",
+    "category": "selectivity",
+    "direction": "higher_better",
+    "log": true,
+    "of_assay": "cdk7_h_ic50"
+  },
+  "cdk9_fold": {
+    "label": "CDK9 selectivity over CDK2 (as published)",
+    "short": "CDK9 fold",
+    "units": "fold",
+    "category": "selectivity",
+    "direction": "higher_better",
+    "log": true,
+    "of_assay": "cdk9_t1_ic50"
+  },
+  "cov318_pRb": {
+    "label": "COV318 pRb S780 IC50",
+    "short": "COV318",
+    "units": "nM",
+    "category": "cell",
+    "direction": "lower_better",
+    "log": true,
+    "conditions": "CCNE1-amplified ovarian line, Rb S780 phosphorylation"
+  },
+  "ovcar3_pNPM": {
+    "label": "OVCAR3 pNPM T199 IC50",
+    "short": "OVCAR3",
+    "units": "nM",
+    "category": "cell",
+    "direction": "higher_better",
+    "log": true,
+    "conditions": "Nucleophosmin T199 phosphorylation, the cellular readout of CDK1",
+    "note": "This is a CDK1 counter-screen in cells, so a HIGHER value is the better outcome."
+  },
+  "wb_pRb": {
+    "label": "Human whole blood pRb S780 IC50",
+    "short": "WB",
+    "units": "nM",
+    "category": "cell",
+    "direction": "lower_better",
+    "log": true,
+    "conditions": "Human whole blood spiked with COV318, treated overnight"
+  },
+  "sgf_solubility": {
+    "label": "Solubility in simulated gastric fluid",
+    "short": "SGF",
+    "units": "ug/mL",
+    "category": "property",
+    "direction": "higher_better",
+    "log": false
+  },
+  "h_cl": {
+    "label": "Human microsomal intrinsic clearance",
+    "short": "h-Cl",
+    "units": "L/h/kg",
+    "category": "adme",
+    "direction": "lower_better",
+    "log": false
+  },
+  "caco2_pm": {
+    "label": "Caco-2 permeability",
+    "short": "Caco2",
+    "units": "1e-6 cm/s",
+    "category": "adme",
+    "direction": "higher_better",
+    "log": false,
+    "conditions": "Pm x 10^-6 cm/s"
+  },
+  "ff": {
+    "label": "Protein binding free fraction",
+    "short": "FF",
+    "units": "%",
+    "category": "adme",
+    "direction": "higher_better",
+    "log": false
+  },
+  "rat_po_auc": {
+    "label": "Rat oral AUC",
+    "short": "Rat AUC",
+    "units": "nM.h",
+    "category": "pk",
+    "direction": "higher_better",
+    "log": false,
+    "species": "rat",
+    "note": "Doses differ per row: read the source_note before comparing rows."
+  },
+  "rat_po_cmax": { "label": "Rat oral Cmax", "short": "Rat Cmax", "units": "nM", "category": "pk", "direction": "higher_better", "log": false, "species": "rat" },
+  "rat_po_f": { "label": "Rat oral bioavailability", "short": "Rat F", "units": "%", "category": "pk", "direction": "higher_better", "log": false, "species": "rat" },
+  "rat_iv_hbf": { "label": "Rat clearance as hepatic blood flow", "short": "Rat HBF", "units": "%", "category": "pk", "direction": "lower_better", "log": false, "species": "rat" },
+  "rat_iv_t_half": { "label": "Rat IV half-life", "short": "Rat t1/2", "units": "h", "category": "pk", "direction": "higher_better", "log": false, "species": "rat" },
+  "rat_iv_vdss": { "label": "Rat volume of distribution at steady state", "short": "Rat Vdss", "units": "L/kg", "category": "pk", "direction": "neutral", "log": false, "species": "rat" },
+  "cyno_po_auc": { "label": "Cynomolgus oral AUC", "short": "Cyno AUC", "units": "nM.h", "category": "pk", "direction": "higher_better", "log": false, "species": "cynomolgus" },
+  "cyno_po_cmax": { "label": "Cynomolgus oral Cmax", "short": "Cyno Cmax", "units": "nM", "category": "pk", "direction": "higher_better", "log": false, "species": "cynomolgus" },
+  "cyno_po_f": { "label": "Cynomolgus oral bioavailability", "short": "Cyno F", "units": "%", "category": "pk", "direction": "higher_better", "log": false, "species": "cynomolgus" },
+  "cyno_iv_hbf": { "label": "Cynomolgus clearance as hepatic blood flow", "short": "Cyno HBF", "units": "%", "category": "pk", "direction": "lower_better", "log": false, "species": "cynomolgus" },
+  "cyno_iv_t_half": { "label": "Cynomolgus IV half-life", "short": "Cyno t1/2", "units": "h", "category": "pk", "direction": "higher_better", "log": false, "species": "cynomolgus" },
+  "cyno_iv_vdss": { "label": "Cynomolgus volume of distribution at steady state", "short": "Cyno Vdss", "units": "L/kg", "category": "pk", "direction": "neutral", "log": false, "species": "cynomolgus" }
+}

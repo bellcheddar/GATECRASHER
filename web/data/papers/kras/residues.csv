@@ -1,0 +1,340 @@
+pdb_id,chain,resnum,resname,sse,klifs_index,motif,role_note
+9E5F,A,0,GLY,L,NA,other,
+9E5F,A,1,MET,L,NA,other,
+9E5F,A,2,THR,E,NA,other,
+9E5F,A,3,GLU,E,NA,other,
+9E5F,A,4,TYR,E,NA,other,
+9E5F,A,5,LYS,E,NA,other,
+9E5F,A,6,LEU,E,NA,other,
+9E5F,A,7,VAL,E,NA,other,
+9E5F,A,8,VAL,E,NA,other,
+9E5F,A,9,VAL,E,NA,other,
+9E5F,A,10,GLY,L,NA,P_loop,"Gly10. Reached by the azabicyclohexane amine through a bridging water, 2.9 and 3.1 A"
+9E5F,A,11,ALA,L,NA,P_loop,P-loop
+9E5F,A,12,ASP,L,NA,mutation_site,"Asp12. The mutation that defines the target. Compound 5a hydrogen bonds its BACKBONE N-H, never its side chain, and still holds 55-fold selectivity over wild-type KRAS"
+9E5F,A,13,GLY,L,NA,P_loop,"Gly13, another common KRAS mutation site"
+9E5F,A,14,VAL,L,NA,P_loop,P-loop
+9E5F,A,15,GLY,L,NA,P_loop,P-loop
+9E5F,A,16,LYS,H,NA,P_loop,P-loop
+9E5F,A,17,SER,H,NA,P_loop,"Ser17, end of the P-loop"
+9E5F,A,18,ALA,H,NA,other,
+9E5F,A,19,LEU,H,NA,other,
+9E5F,A,20,THR,H,NA,other,
+9E5F,A,21,ILE,H,NA,other,
+9E5F,A,22,GLN,H,NA,other,
+9E5F,A,23,LEU,H,NA,other,
+9E5F,A,24,ILE,H,NA,other,
+9E5F,A,25,GLN,H,NA,other,
+9E5F,A,26,ASN,L,NA,other,
+9E5F,A,27,HIS,L,NA,other,
+9E5F,A,28,PHE,L,NA,other,
+9E5F,A,29,VAL,L,NA,other,
+9E5F,A,30,ASP,L,NA,switch_I,Switch I begins
+9E5F,A,31,GLU,L,NA,switch_I,Switch I
+9E5F,A,32,TYR,L,NA,switch_I,Switch I
+9E5F,A,33,ASP,L,NA,switch_I,Switch I
+9E5F,A,34,PRO,L,NA,switch_I,Switch I
+9E5F,A,35,THR,L,NA,switch_I,"Thr35, switch I, the residue whose nucleotide contact defines the active state"
+9E5F,A,36,ILE,L,NA,switch_I,Switch I
+9E5F,A,37,GLU,L,NA,switch_I,Switch I
+9E5F,A,38,ASP,E,NA,switch_I,Switch I
+9E5F,A,39,SER,E,NA,switch_I,Switch I
+9E5F,A,40,TYR,E,NA,switch_I,Switch I ends
+9E5F,A,41,ARG,E,NA,other,
+9E5F,A,42,LYS,E,NA,other,
+9E5F,A,43,GLN,E,NA,other,
+9E5F,A,44,VAL,E,NA,other,
+9E5F,A,45,VAL,E,NA,other,
+9E5F,A,46,ILE,E,NA,other,
+9E5F,A,47,ASP,L,NA,other,
+9E5F,A,48,GLY,L,NA,other,
+9E5F,A,49,GLU,E,NA,other,
+9E5F,A,50,THR,E,NA,other,
+9E5F,A,51,CYS,E,NA,other,
+9E5F,A,52,LEU,E,NA,other,
+9E5F,A,53,LEU,E,NA,other,
+9E5F,A,54,ASP,E,NA,other,
+9E5F,A,55,ILE,E,NA,other,
+9E5F,A,56,LEU,E,NA,other,
+9E5F,A,57,ASP,E,NA,other,
+9E5F,A,58,THR,L,NA,other,
+9E5F,A,59,ALA,L,NA,other,
+9E5F,A,60,GLY,L,NA,switch_II,"Switch II begins. The loop the campaign hoped to open into an extended pocket, and which stayed shut"
+9E5F,A,61,GLN,L,NA,switch_II,"Gln61, the third common KRAS mutation site"
+9E5F,A,62,GLU,L,NA,switch_II,Switch II
+9E5F,A,63,GLU,L,NA,switch_II,Switch II
+9E5F,A,64,TYR,L,NA,switch_II,Switch II
+9E5F,A,65,SER,L,NA,switch_II,Switch II
+9E5F,A,66,ALA,H,NA,switch_II,Switch II
+9E5F,A,67,MET,H,NA,switch_II,Switch II
+9E5F,A,68,ARG,H,NA,switch_II,Switch II
+9E5F,A,69,ASP,H,NA,switch_II,Switch II
+9E5F,A,70,GLN,H,NA,switch_II,Switch II
+9E5F,A,71,TYR,H,NA,switch_II,Switch II
+9E5F,A,72,MET,H,NA,switch_II,Switch II
+9E5F,A,73,ARG,H,NA,switch_II,Switch II
+9E5F,A,74,THR,L,NA,switch_II,Switch II
+9E5F,A,75,GLY,L,NA,switch_II,Switch II
+9E5F,A,76,GLU,L,NA,switch_II,Switch II ends
+9E5F,A,77,GLY,E,NA,other,
+9E5F,A,78,PHE,E,NA,other,
+9E5F,A,79,LEU,E,NA,other,
+9E5F,A,80,CYS,E,NA,other,
+9E5F,A,81,VAL,E,NA,other,
+9E5F,A,82,PHE,E,NA,other,
+9E5F,A,83,ALA,E,NA,other,
+9E5F,A,84,ILE,L,NA,other,
+9E5F,A,85,ASN,L,NA,other,
+9E5F,A,86,ASN,L,NA,other,
+9E5F,A,87,THR,H,NA,other,
+9E5F,A,88,LYS,H,NA,other,
+9E5F,A,89,SER,H,NA,other,
+9E5F,A,90,PHE,H,NA,other,
+9E5F,A,91,GLU,H,NA,other,
+9E5F,A,92,ASP,L,NA,other,
+9E5F,A,93,ILE,H,NA,other,
+9E5F,A,94,HIS,H,NA,other,
+9E5F,A,95,HIS,H,NA,back_pocket,"His95, lines the switch II pocket"
+9E5F,A,96,TYR,H,NA,back_pocket,Tyr96. Direct hydrogen bond to the protonated bicyclic amine at 2.8 A: the contact that makes the rigid cage worth its synthetic trouble
+9E5F,A,97,ARG,H,NA,other,
+9E5F,A,98,GLU,H,NA,other,
+9E5F,A,99,GLN,H,NA,back_pocket,"Gln99, lines the switch II pocket"
+9E5F,A,100,ILE,H,NA,other,
+9E5F,A,101,LYS,H,NA,other,
+9E5F,A,102,ARG,H,NA,other,
+9E5F,A,103,VAL,H,NA,other,
+9E5F,A,104,LYS,H,NA,other,
+9E5F,A,105,ASP,L,NA,other,
+9E5F,A,106,SER,L,NA,other,
+9E5F,A,107,GLU,L,NA,other,
+9E5F,A,108,ASP,L,NA,other,
+9E5F,A,109,VAL,L,NA,other,
+9E5F,A,110,PRO,L,NA,other,
+9E5F,A,111,MET,E,NA,other,
+9E5F,A,112,VAL,E,NA,other,
+9E5F,A,113,LEU,E,NA,other,
+9E5F,A,114,VAL,E,NA,other,
+9E5F,A,115,GLY,E,NA,other,
+9E5F,A,116,ASN,E,NA,other,
+9E5F,A,117,LYS,L,NA,other,
+9E5F,A,118,CYS,L,NA,other,
+9E5F,A,119,ASP,L,NA,other,
+9E5F,A,120,LEU,L,NA,other,
+9E5F,A,121,PRO,L,NA,other,
+9E5F,A,122,SER,L,NA,other,
+9E5F,A,123,ARG,L,NA,other,
+9E5F,A,124,THR,L,NA,other,
+9E5F,A,125,VAL,L,NA,other,
+9E5F,A,126,ASP,L,NA,other,
+9E5F,A,127,THR,H,NA,other,
+9E5F,A,128,LYS,H,NA,other,
+9E5F,A,129,GLN,H,NA,other,
+9E5F,A,130,ALA,H,NA,other,
+9E5F,A,131,GLN,H,NA,other,
+9E5F,A,132,ASP,H,NA,other,
+9E5F,A,133,LEU,H,NA,other,
+9E5F,A,134,ALA,H,NA,other,
+9E5F,A,135,ARG,H,NA,other,
+9E5F,A,136,SER,H,NA,other,
+9E5F,A,137,TYR,H,NA,other,
+9E5F,A,138,GLY,L,NA,other,
+9E5F,A,139,ILE,L,NA,other,
+9E5F,A,140,PRO,L,NA,other,
+9E5F,A,141,PHE,E,NA,other,
+9E5F,A,142,ILE,E,NA,other,
+9E5F,A,143,GLU,E,NA,other,
+9E5F,A,144,THR,L,NA,other,
+9E5F,A,145,SER,L,NA,other,
+9E5F,A,146,ALA,L,NA,other,
+9E5F,A,147,LYS,L,NA,other,
+9E5F,A,148,THR,L,NA,other,
+9E5F,A,149,ARG,L,NA,other,
+9E5F,A,150,GLN,L,NA,other,
+9E5F,A,151,GLY,L,NA,other,
+9E5F,A,152,VAL,H,NA,other,
+9E5F,A,153,ASP,H,NA,other,
+9E5F,A,154,ASP,H,NA,other,
+9E5F,A,155,ALA,H,NA,other,
+9E5F,A,156,PHE,H,NA,other,
+9E5F,A,157,TYR,H,NA,other,
+9E5F,A,158,THR,H,NA,other,
+9E5F,A,159,LEU,H,NA,other,
+9E5F,A,160,VAL,H,NA,other,
+9E5F,A,161,ARG,H,NA,other,
+9E5F,A,162,GLU,H,NA,other,
+9E5F,A,163,ILE,H,NA,other,
+9E5F,A,164,ARG,H,NA,other,
+9E5F,A,165,LYS,H,NA,other,
+9E5F,A,166,HIS,H,NA,other,
+9E5F,A,167,LYS,H,NA,other,
+9E5F,A,168,GLU,H,NA,other,
+9E5F,A,169,LYS,L,NA,other,
+9E5D,A,1,MET,L,NA,other,
+9E5D,A,2,THR,E,NA,other,
+9E5D,A,3,GLU,E,NA,other,
+9E5D,A,4,TYR,E,NA,other,
+9E5D,A,5,LYS,E,NA,other,
+9E5D,A,6,LEU,E,NA,other,
+9E5D,A,7,VAL,E,NA,other,
+9E5D,A,8,VAL,E,NA,other,
+9E5D,A,9,VAL,E,NA,other,
+9E5D,A,10,GLY,L,NA,P_loop,"Gly10. Reached by the azabicyclohexane amine through a bridging water, 2.9 and 3.1 A"
+9E5D,A,11,ALA,L,NA,P_loop,P-loop
+9E5D,A,12,ASP,L,NA,mutation_site,"Asp12. The mutation that defines the target. Compound 5a hydrogen bonds its BACKBONE N-H, never its side chain, and still holds 55-fold selectivity over wild-type KRAS"
+9E5D,A,13,GLY,L,NA,P_loop,"Gly13, another common KRAS mutation site"
+9E5D,A,14,VAL,L,NA,P_loop,P-loop
+9E5D,A,15,GLY,L,NA,P_loop,P-loop
+9E5D,A,16,LYS,H,NA,P_loop,P-loop
+9E5D,A,17,SER,H,NA,P_loop,"Ser17, end of the P-loop"
+9E5D,A,18,ALA,H,NA,other,
+9E5D,A,19,LEU,H,NA,other,
+9E5D,A,20,THR,H,NA,other,
+9E5D,A,21,ILE,H,NA,other,
+9E5D,A,22,GLN,H,NA,other,
+9E5D,A,23,LEU,H,NA,other,
+9E5D,A,24,ILE,H,NA,other,
+9E5D,A,25,GLN,H,NA,other,
+9E5D,A,26,ASN,L,NA,other,
+9E5D,A,27,HIS,L,NA,other,
+9E5D,A,28,PHE,L,NA,other,
+9E5D,A,29,VAL,L,NA,other,
+9E5D,A,30,ASP,L,NA,switch_I,Switch I begins
+9E5D,A,31,GLU,L,NA,switch_I,Switch I
+9E5D,A,32,TYR,L,NA,switch_I,Switch I
+9E5D,A,33,ASP,L,NA,switch_I,Switch I
+9E5D,A,34,PRO,L,NA,switch_I,Switch I
+9E5D,A,35,THR,L,NA,switch_I,"Thr35, switch I, the residue whose nucleotide contact defines the active state"
+9E5D,A,36,ILE,L,NA,switch_I,Switch I
+9E5D,A,37,GLU,L,NA,switch_I,Switch I
+9E5D,A,38,ASP,E,NA,switch_I,Switch I
+9E5D,A,39,SER,E,NA,switch_I,Switch I
+9E5D,A,40,TYR,E,NA,switch_I,Switch I ends
+9E5D,A,41,ARG,E,NA,other,
+9E5D,A,42,LYS,E,NA,other,
+9E5D,A,43,GLN,E,NA,other,
+9E5D,A,44,VAL,E,NA,other,
+9E5D,A,45,VAL,E,NA,other,
+9E5D,A,46,ILE,E,NA,other,
+9E5D,A,47,ASP,L,NA,other,
+9E5D,A,48,GLY,L,NA,other,
+9E5D,A,49,GLU,E,NA,other,
+9E5D,A,50,THR,E,NA,other,
+9E5D,A,51,CYS,E,NA,other,
+9E5D,A,52,LEU,E,NA,other,
+9E5D,A,53,LEU,E,NA,other,
+9E5D,A,54,ASP,E,NA,other,
+9E5D,A,55,ILE,E,NA,other,
+9E5D,A,56,LEU,E,NA,other,
+9E5D,A,57,ASP,E,NA,other,
+9E5D,A,58,THR,L,NA,other,
+9E5D,A,59,ALA,L,NA,other,
+9E5D,A,60,GLY,L,NA,switch_II,"Switch II begins. The loop the campaign hoped to open into an extended pocket, and which stayed shut"
+9E5D,A,61,GLN,L,NA,switch_II,"Gln61, the third common KRAS mutation site"
+9E5D,A,62,GLU,L,NA,switch_II,Switch II
+9E5D,A,63,GLU,L,NA,switch_II,Switch II
+9E5D,A,64,TYR,L,NA,switch_II,Switch II
+9E5D,A,65,SER,L,NA,switch_II,Switch II
+9E5D,A,66,ALA,H,NA,switch_II,Switch II
+9E5D,A,67,MET,H,NA,switch_II,Switch II
+9E5D,A,68,ARG,H,NA,switch_II,Switch II
+9E5D,A,69,ASP,H,NA,switch_II,Switch II
+9E5D,A,70,GLN,H,NA,switch_II,Switch II
+9E5D,A,71,TYR,H,NA,switch_II,Switch II
+9E5D,A,72,MET,H,NA,switch_II,Switch II
+9E5D,A,73,ARG,H,NA,switch_II,Switch II
+9E5D,A,74,THR,L,NA,switch_II,Switch II
+9E5D,A,75,GLY,L,NA,switch_II,Switch II
+9E5D,A,76,GLU,L,NA,switch_II,Switch II ends
+9E5D,A,77,GLY,E,NA,other,
+9E5D,A,78,PHE,E,NA,other,
+9E5D,A,79,LEU,E,NA,other,
+9E5D,A,80,CYS,E,NA,other,
+9E5D,A,81,VAL,E,NA,other,
+9E5D,A,82,PHE,E,NA,other,
+9E5D,A,83,ALA,E,NA,other,
+9E5D,A,84,ILE,L,NA,other,
+9E5D,A,85,ASN,L,NA,other,
+9E5D,A,86,ASN,L,NA,other,
+9E5D,A,87,THR,H,NA,other,
+9E5D,A,88,LYS,H,NA,other,
+9E5D,A,89,SER,H,NA,other,
+9E5D,A,90,PHE,H,NA,other,
+9E5D,A,91,GLU,H,NA,other,
+9E5D,A,92,ASP,L,NA,other,
+9E5D,A,93,ILE,H,NA,other,
+9E5D,A,94,HIS,H,NA,other,
+9E5D,A,95,HIS,H,NA,back_pocket,"His95, lines the switch II pocket"
+9E5D,A,96,TYR,H,NA,back_pocket,Tyr96. Direct hydrogen bond to the protonated bicyclic amine at 2.8 A: the contact that makes the rigid cage worth its synthetic trouble
+9E5D,A,97,ARG,H,NA,other,
+9E5D,A,98,GLU,H,NA,other,
+9E5D,A,99,GLN,H,NA,back_pocket,"Gln99, lines the switch II pocket"
+9E5D,A,100,ILE,H,NA,other,
+9E5D,A,101,LYS,H,NA,other,
+9E5D,A,102,ARG,H,NA,other,
+9E5D,A,103,VAL,H,NA,other,
+9E5D,A,104,LYS,H,NA,other,
+9E5D,A,105,ASP,L,NA,other,
+9E5D,A,106,SER,L,NA,other,
+9E5D,A,107,GLU,L,NA,other,
+9E5D,A,108,ASP,L,NA,other,
+9E5D,A,109,VAL,L,NA,other,
+9E5D,A,110,PRO,L,NA,other,
+9E5D,A,111,MET,E,NA,other,
+9E5D,A,112,VAL,E,NA,other,
+9E5D,A,113,LEU,E,NA,other,
+9E5D,A,114,VAL,E,NA,other,
+9E5D,A,115,GLY,E,NA,other,
+9E5D,A,116,ASN,E,NA,other,
+9E5D,A,117,LYS,L,NA,other,
+9E5D,A,118,CYS,L,NA,other,
+9E5D,A,119,ASP,L,NA,other,
+9E5D,A,120,LEU,L,NA,other,
+9E5D,A,121,PRO,L,NA,other,
+9E5D,A,122,SER,L,NA,other,
+9E5D,A,123,ARG,L,NA,other,
+9E5D,A,124,THR,L,NA,other,
+9E5D,A,125,VAL,L,NA,other,
+9E5D,A,126,ASP,L,NA,other,
+9E5D,A,127,THR,H,NA,other,
+9E5D,A,128,LYS,H,NA,other,
+9E5D,A,129,GLN,H,NA,other,
+9E5D,A,130,ALA,H,NA,other,
+9E5D,A,131,GLN,H,NA,other,
+9E5D,A,132,ASP,H,NA,other,
+9E5D,A,133,LEU,H,NA,other,
+9E5D,A,134,ALA,H,NA,other,
+9E5D,A,135,ARG,H,NA,other,
+9E5D,A,136,SER,H,NA,other,
+9E5D,A,137,TYR,H,NA,other,
+9E5D,A,138,GLY,L,NA,other,
+9E5D,A,139,ILE,L,NA,other,
+9E5D,A,140,PRO,L,NA,other,
+9E5D,A,141,PHE,E,NA,other,
+9E5D,A,142,ILE,E,NA,other,
+9E5D,A,143,GLU,E,NA,other,
+9E5D,A,144,THR,L,NA,other,
+9E5D,A,145,SER,L,NA,other,
+9E5D,A,146,ALA,L,NA,other,
+9E5D,A,147,LYS,L,NA,other,
+9E5D,A,148,THR,L,NA,other,
+9E5D,A,149,ARG,L,NA,other,
+9E5D,A,150,GLN,L,NA,other,
+9E5D,A,151,GLY,L,NA,other,
+9E5D,A,152,VAL,H,NA,other,
+9E5D,A,153,ASP,H,NA,other,
+9E5D,A,154,ASP,H,NA,other,
+9E5D,A,155,ALA,H,NA,other,
+9E5D,A,156,PHE,H,NA,other,
+9E5D,A,157,TYR,H,NA,other,
+9E5D,A,158,THR,H,NA,other,
+9E5D,A,159,LEU,H,NA,other,
+9E5D,A,160,VAL,H,NA,other,
+9E5D,A,161,ARG,H,NA,other,
+9E5D,A,162,GLU,H,NA,other,
+9E5D,A,163,ILE,H,NA,other,
+9E5D,A,164,ARG,H,NA,other,
+9E5D,A,165,LYS,H,NA,other,
+9E5D,A,166,HIS,H,NA,other,
+9E5D,A,167,LYS,H,NA,other,
+9E5D,A,168,GLU,H,NA,other,
+9E5D,A,169,LYS,L,NA,other,

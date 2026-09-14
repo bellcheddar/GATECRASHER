@@ -1,0 +1,36 @@
+[
+  {
+    "pdb_id": "9E5F",
+    "role": "primary",
+    "contains": {
+      "protein": "KRAS G12D",
+      "ligand_compound_id": "3",
+      "ligand_code": "A1BEJ"
+    },
+    "resolution_a": 1.35,
+    "chain": "A",
+    "klifs": false,
+    "uniprot": "P01116",
+    "caption_specialist": "Compound 3 bound to KRAS G12D at 1.35 A. The protonated amine of the azabicyclo[2.1.1]hexane makes two contacts: a direct hydrogen bond to Tyr96 at 2.8 A, and a water-mediated interaction reaching Gly10 at 2.9 and 3.1 A. The rigid bicycle holds that amine directly below the plane of the imidazole core, a conformation that is otherwise hard to reach, and that is why nearly every replacement for it lost potency. Note what is absent: no contact is made with Asp12, contrary to the hypothesis the compound was designed on.",
+    "caption_plain": "An early compound in the pocket. A small rigid cage holds one part of the molecule in a position it would not otherwise adopt, and from there it grips the protein in two places. What the picture also shows is a missed opportunity: the molecule never reaches the mutated residue itself, which is what the chemists went after next.",
+    "source": "deposited",
+    "evidence": "Fig3A"
+  },
+  {
+    "pdb_id": "9E5D",
+    "role": "reference",
+    "contains": {
+      "protein": "KRAS G12D",
+      "ligand_compound_id": "5a",
+      "ligand_code": "A1BEI"
+    },
+    "resolution_a": 1.36,
+    "chain": "A",
+    "klifs": false,
+    "uniprot": "P01116",
+    "caption_specialist": "Compound 5a, the methyl ester analogue of compound 5, bound to KRAS G12D at 1.36 A. Two hypotheses are tested here and one survives. The switch II loop did not open into an extended pocket: it sits in virtually the same conformation as in the structure of 3, and the cyanoethyl group has instead bent underneath the core to hydrogen bond the same water as the bicyclic amine. Growing from the imidazole 2-position did work: the carbonyl hydrogen bonds the backbone N-H of Asp12, and this compound holds 55-fold selectivity over wild-type KRAS without ever touching the Asp12 side chain.",
+    "caption_plain": "A later compound in the same pocket. The chemists expected a loop of the protein to swing open and make room; it did not. What did work was reaching towards the mutated residue: the molecule grips the protein's backbone right beside it. That grip is enough to tell the mutant apart from the healthy version fifty-five times over, without ever touching the mutated part itself.",
+    "source": "deposited",
+    "evidence": "Fig3B"
+  }
+]

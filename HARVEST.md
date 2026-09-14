@@ -73,7 +73,33 @@ the provenance of the data.
 
 9. **`marcs-vibe-icon` and `marcs-page-icon` do not exist on this machine.** BUILD_SPEC
    section 10 Stage 4 calls for both. Per-project `make_icon.py` scripts exist in ALPHABETTI,
-   PfamIE, HAWKER and PUNT; Stage 4 will follow one of those instead.
+   PfamIE, HAWKER and PUNT; the app's `web/icon.svg` was drawn directly instead, in the
+   Blueprint palette, and doubles as the launcher's hit beacon.
+
+10. **The search index covers this project's own prose, not the papers.** BUILD_SPEC 5.7
+    describes chunking the papers themselves, including tables and captions. An index
+    shipped to the browser is published: anyone can read it straight out of the JSON, so
+    chunking the publishers' text would breach ground rule 3 however it is framed. The
+    corpus is therefore the prose this project wrote (story beats in both registers, edit
+    rationales, structure captions, the issues notes) plus the measured data rendered as
+    sentences: about 12,700 words over roughly 200 units. A reader searching for a contact
+    or a compound gets our sentence about it with a link into the app, which is what the
+    feature was for.
+
+11. **The search is lexical, because the spec's own retrieval design cannot hold here.**
+    BUILD_SPEC 5.7 asks for a precomputed embedding index searched by cosine in the
+    browser, and in the same paragraph says the browser embeds nothing and runs no model.
+    Both cannot be true: a cosine search has to embed the QUERY, and with no server
+    (ground rule 2) and no runtime model there is nowhere to do it. chatMCD, which this
+    was to be harvested from, embeds queries in a server process that this app does not
+    have.
+
+    So the index is BM25 over our own text, with the term statistics precomputed by
+    `gc retrieval` and the scoring done in the page. For ~200 documents that is instant,
+    needs no model, ships a few hundred kilobytes, and is explainable, which matters when
+    the honest answer is often "not stated in this paper". If embedding search is ever
+    wanted, it needs either a small runtime model (against the spec) or a server (against
+    ground rule 2), and that is a decision rather than an oversight.
 
 ## Added here, not harvested
 

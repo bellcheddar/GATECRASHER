@@ -1,0 +1,374 @@
+{
+ "pdb_id": "4K33",
+ "ligand_code": "ACP",
+ "ligand_chain": "",
+ "interactions": [
+  {
+   "type": "hbond",
+   "residue": "ALA",
+   "chain": "A",
+   "resnum": 482,
+   "ligand_atom": "2326",
+   "protein_atom": null,
+   "distance_a": 2.83,
+   "angle_deg": 143.7,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    25.696,
+    6.102,
+    29.096
+   ],
+   "protein_coords": [
+    28.618,
+    6.515,
+    26.915
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "PHE",
+   "chain": "A",
+   "resnum": 483,
+   "ligand_atom": "2328",
+   "protein_atom": null,
+   "distance_a": 1.74,
+   "angle_deg": 155.8,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    27.345,
+    7.963,
+    29.355
+   ],
+   "protein_coords": [
+    28.753,
+    9.283,
+    27.512
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "GLY",
+   "chain": "A",
+   "resnum": 484,
+   "ligand_atom": "2328",
+   "protein_atom": null,
+   "distance_a": 1.8,
+   "angle_deg": 146.4,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    27.345,
+    7.963,
+    29.355
+   ],
+   "protein_coords": [
+    29.221,
+    9.671,
+    30.203
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "LYS",
+   "chain": "A",
+   "resnum": 508,
+   "ligand_atom": "2330",
+   "protein_atom": null,
+   "distance_a": 1.87,
+   "angle_deg": 147.9,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    24.637,
+    7.058,
+    32.959
+   ],
+   "protein_coords": [
+    25.01,
+    8.014,
+    35.553
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "GLU",
+   "chain": "A",
+   "resnum": 556,
+   "ligand_atom": "730",
+   "protein_atom": null,
+   "distance_a": 1.75,
+   "angle_deg": 156.9,
+   "protein_is_donor": false,
+   "ligand_coords": [
+    28.193,
+    2.798,
+    42.546
+   ],
+   "protein_coords": [
+    27.942,
+    2.736,
+    45.218
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "ALA",
+   "chain": "A",
+   "resnum": 558,
+   "ligand_atom": "2352",
+   "protein_atom": null,
+   "distance_a": 1.97,
+   "angle_deg": 167.2,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    29.758,
+    1.048,
+    42.048
+   ],
+   "protein_coords": [
+    29.474,
+    -0.378,
+    44.604
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "ASN",
+   "chain": "A",
+   "resnum": 562,
+   "ligand_atom": "2342",
+   "protein_atom": null,
+   "distance_a": 2.05,
+   "angle_deg": 151.3,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    27.178,
+    -0.133,
+    34.602
+   ],
+   "protein_coords": [
+    27.453,
+    -2.963,
+    33.814
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "ASN",
+   "chain": "A",
+   "resnum": 562,
+   "ligand_atom": "2344",
+   "protein_atom": null,
+   "distance_a": 3.35,
+   "angle_deg": 121.5,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    29.476,
+    -0.894,
+    35.657
+   ],
+   "protein_coords": [
+    27.786,
+    -4.062,
+    37.313
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "ARG",
+   "chain": "A",
+   "resnum": 621,
+   "ligand_atom": "1226",
+   "protein_atom": null,
+   "distance_a": 2.91,
+   "angle_deg": 110.5,
+   "protein_is_donor": false,
+   "ligand_coords": [
+    27.178,
+    -0.133,
+    34.602
+   ],
+   "protein_coords": [
+    23.844,
+    -0.603,
+    34.365
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "ARG",
+   "chain": "A",
+   "resnum": 655,
+   "ligand_atom": "2326",
+   "protein_atom": null,
+   "distance_a": 2.37,
+   "angle_deg": 136.6,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    25.696,
+    6.102,
+    29.096
+   ],
+   "protein_coords": [
+    23.913,
+    6.995,
+    26.648
+   ]
+  },
+  {
+   "type": "hbond",
+   "residue": "ARG",
+   "chain": "A",
+   "resnum": 655,
+   "ligand_atom": "2326",
+   "protein_atom": null,
+   "distance_a": 1.99,
+   "angle_deg": 149.2,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    25.696,
+    6.102,
+    29.096
+   ],
+   "protein_coords": [
+    22.966,
+    6.954,
+    28.751
+   ]
+  },
+  {
+   "type": "salt_bridge",
+   "residue": "LYS",
+   "chain": "A",
+   "resnum": 508,
+   "ligand_atom": null,
+   "protein_atom": null,
+   "distance_a": 3.64,
+   "angle_deg": null,
+   "protein_is_donor": null,
+   "ligand_coords": [
+    25.914,
+    4.517,
+    35.119
+   ],
+   "protein_coords": [
+    25.01,
+    8.014,
+    35.553
+   ]
+  },
+  {
+   "type": "water_bridge",
+   "residue": "ASN",
+   "chain": "A",
+   "resnum": 622,
+   "ligand_atom": null,
+   "protein_atom": null,
+   "distance_a": 2.82,
+   "angle_deg": 133.5,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    24.726,
+    4.638,
+    32.318
+   ],
+   "protein_coords": [
+    20.225,
+    2.52,
+    33.184
+   ],
+   "distance_donor_water_a": 3.3,
+   "water_idx": 2401
+  },
+  {
+   "type": "water_bridge",
+   "residue": "ASN",
+   "chain": "A",
+   "resnum": 622,
+   "ligand_atom": null,
+   "protein_atom": null,
+   "distance_a": 4.07,
+   "angle_deg": 133.5,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    24.67,
+    3.785,
+    34.589
+   ],
+   "protein_coords": [
+    20.225,
+    2.52,
+    33.184
+   ],
+   "distance_donor_water_a": 3.3,
+   "water_idx": 2401
+  },
+  {
+   "type": "water_bridge",
+   "residue": "ASP",
+   "chain": "A",
+   "resnum": 635,
+   "ligand_atom": null,
+   "protein_atom": null,
+   "distance_a": 3.53,
+   "angle_deg": 148.7,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    28.009,
+    2.987,
+    39.45
+   ],
+   "protein_coords": [
+    21.638,
+    4.63,
+    38.286
+   ],
+   "distance_donor_water_a": 4.0,
+   "water_idx": 2390
+  },
+  {
+   "type": "water_bridge",
+   "residue": "ASP",
+   "chain": "A",
+   "resnum": 635,
+   "ligand_atom": null,
+   "protein_atom": null,
+   "distance_a": 2.62,
+   "angle_deg": 148.7,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    25.593,
+    5.225,
+    36.418
+   ],
+   "protein_coords": [
+    21.638,
+    4.63,
+    38.286
+   ],
+   "distance_donor_water_a": 4.0,
+   "water_idx": 2390
+  },
+  {
+   "type": "water_bridge",
+   "residue": "GLY",
+   "chain": "A",
+   "resnum": 637,
+   "ligand_atom": null,
+   "protein_atom": null,
+   "distance_a": 2.81,
+   "angle_deg": 105.4,
+   "protein_is_donor": true,
+   "ligand_coords": [
+    24.637,
+    7.058,
+    32.959
+   ],
+   "protein_coords": [
+    19.441,
+    8.911,
+    35.632
+   ],
+   "distance_donor_water_a": 3.6,
+   "water_idx": 2396
+  }
+ ]
+}

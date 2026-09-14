@@ -1,0 +1,364 @@
+<h1>🧬 GATECRASHER</h1>
+<blockquote>
+<p><strong>Four drug discovery campaigns, opened up: the pocket, the structure-activity relationships, the chemical edits, and the structural basis of selectivity.</strong></p>
+</blockquote>
+<p><a href="https://gatecrasher.mdeller.com"><img alt="live" src="https://img.shields.io/badge/live-gatecrasher.mdeller.com-00d084?logo=icloud&amp;logoColor=white"></a> <img alt="python" src="https://img.shields.io/badge/python-3.12.13-3776AB?logo=python&amp;logoColor=white"> <img alt="rdkit" src="https://img.shields.io/badge/rdkit-2026.3.6-8B0000"> <img alt="gemmi" src="https://img.shields.io/badge/gemmi-0.7.5-2E8B57"> <img alt="biotite" src="https://img.shields.io/badge/biotite-1.7.1-4B8BBE"> <img alt="plip" src="https://img.shields.io/badge/plip-3.0.1-6A5ACD"> <img alt="opsin" src="https://img.shields.io/badge/opsin-1.2.0-C71585"> <img alt="molstar" src="https://img.shields.io/badge/mol*-5.11.0-1B6FA8"> <img alt="plotly" src="https://img.shields.io/badge/plotly-2.35.2-3F4F75?logo=plotly&amp;logoColor=white"> <img alt="rdkit.js" src="https://img.shields.io/badge/rdkit.js-2025.3.4-8B0000"> <img alt="browser checks" src="https://img.shields.io/badge/browser%20checks-73%20passing-00d084"> <img alt="bundles" src="https://img.shields.io/badge/bundles-4%20validating-00d084"> <img alt="data" src="https://img.shields.io/badge/data-RCSB%20PDB%20·%20KLIFS%20·%20PubChem-fcb900"> <img alt="phase" src="https://img.shields.io/badge/phase-stage%204-ff6900"> <img alt="licence" src="https://img.shields.io/badge/licence-not%20yet%20chosen-lightgrey"> <img alt="author" src="https://img.shields.io/badge/author-Marc%20C.%20Deller-1C244B"></p>
+<div class="emd-table-wrap"><table class="emd-data-table">
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="">🌐 <strong>App</strong></td>
+<td data-label=""><a href="https://gatecrasher.mdeller.com">gatecrasher.mdeller.com</a></td>
+</tr>
+<tr>
+<td data-label="">✉️ <strong>Contact</strong></td>
+<td data-label=""><a href="mailto:marc@marcdeller.com">marc@marcdeller.com</a></td>
+</tr>
+<tr>
+<td data-label="">📦 <strong>Repository</strong></td>
+<td data-label=""><a href="https://github.com/bellcheddar/GATECRASHER">github.com/bellcheddar/GATECRASHER</a></td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="The Structure sheet: compound 17 in the CDK2 ATP site at 1.55 Å, with the PLIP contact list, the KLIFS pocket ruler and the edit log" src="docs/screenshots/structure-dark.png"></p>
+<p><strong>Why it matters:</strong> a published medicinal chemistry paper tells you what was made and what it did, but the reasoning that connects one compound to the next is spread across tables, figures and a supporting information file, and the structural basis for it sits in a database somewhere else. GATECRASHER puts them in one place and makes them click through to each other: select a residue in three dimensions and the compound table filters to the molecules whose edits cite it; select a compound and its ligand appears in the pocket, its point lights up on every plot, and the edit log scrolls to the changes that made it. Every number on screen carries the table or figure it came from, and the build fails if one does not. It is useful for anyone who wants to see how a drug was actually designed: structural biologists and medicinal chemists who want the contacts and the R-group tables, and everyone else who wants to understand in thirty seconds what the molecule does and why it was hard.</p>
+<h2>🔬 The four campaigns</h2>
+<p>Each is a selectivity problem solved at a pocket, then carried over the line by property work.</p>
+<div class="emd-table-wrap"><table class="emd-data-table">
+<thead>
+<tr>
+<th>Campaign</th>
+<th>Target, and what had to be spared</th>
+<th>Structures</th>
+<th>The move it turns on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Campaign"><strong>CDK2</strong> (Hummel <em>et al.</em> 2024)</td>
+<td data-label="Target, and what had to be spared">CDK2/cyclin E1, sparing CDK1, 4, 6, 7, 9</td>
+<td data-label="Structures"><a href="https://www.rcsb.org/structure/8UV0">8UV0</a></td>
+<td data-label="The move it turns on">A screening hit that was really a JAK2 inhibitor: an sp3 aminopiperidine erased JAK2 and found CDK2</td>
+</tr>
+<tr>
+<td data-label="Campaign"><strong>FGFR2/3</strong> (Shvartsbart <em>et al.</em> 2022)</td>
+<td data-label="Target, and what had to be spared">FGFR2 and FGFR3 including gatekeeper mutants, sparing FGFR1</td>
+<td data-label="Structures"><a href="https://www.rcsb.org/structure/8E1X">8E1X</a>, <a href="https://www.rcsb.org/structure/4K33">4K33</a></td>
+<td data-label="The move it turns on">A hydrogen bond designed on a docking model, then confirmed and partly contradicted by the crystal structure</td>
+</tr>
+<tr>
+<td data-label="Campaign"><strong>KRAS G12D</strong> (Ye <em>et al.</em> 2025)</td>
+<td data-label="Target, and what had to be spared">KRAS G12D, sparing wild-type KRAS</td>
+<td data-label="Structures"><a href="https://www.rcsb.org/structure/9E5F">9E5F</a>, <a href="https://www.rcsb.org/structure/9E5D">9E5D</a></td>
+<td data-label="The move it turns on">A thousand-fold of binding potency given away on purpose, for oral exposure</td>
+</tr>
+<tr>
+<td data-label="Campaign"><strong>JAK1</strong> (Zhuo <em>et al.</em> 2026)</td>
+<td data-label="Target, and what had to be spared">JAK1, sparing JAK2</td>
+<td data-label="Structures"><a href="https://www.rcsb.org/structure/10PI">10PI</a>, <a href="https://www.rcsb.org/structure/10PJ">10PJ</a></td>
+<td data-label="The move it turns on">One ligand crystallised in both the target and the anti-target: the only true twin in the set</td>
+</tr>
+</tbody>
+</table></div>
+<p>Marc C. Deller is a co-author on all four papers, contributing the protein crystallography.</p>
+<h2>📊 What is in the bundles</h2>
+<div class="emd-table-wrap"><table class="emd-data-table">
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="">Compounds</td>
+<td data-label="">91, every one with a verified structure</td>
+</tr>
+<tr>
+<td data-label="">Measurements</td>
+<td data-label="">859, each carrying the table or figure it was printed in</td>
+</tr>
+<tr>
+<td data-label="">Structures</td>
+<td data-label="">7 deposited entries</td>
+</tr>
+<tr>
+<td data-label="">Residues</td>
+<td data-label="">1,786 annotated with secondary structure and motif</td>
+</tr>
+<tr>
+<td data-label="">Edits</td>
+<td data-label="">56 designed changes, with their consequences and structural basis</td>
+</tr>
+<tr>
+<td data-label="">Story beats</td>
+<td data-label="">20, in a specialist and a plain register</td>
+</tr>
+</tbody>
+</table></div>
+<h2>🧪 How a structure gets into this app</h2>
+<p>No compound structure in this repository was drawn by hand and trusted. Each one is verified, and the notes column of every <code>compounds.tsv</code> records <strong>how strongly</strong>:</p>
+<div class="emd-table-wrap"><table class="emd-data-table">
+<thead>
+<tr>
+<th>Strength</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Strength"><code>ligand-verified</code></td>
+<td data-label="Meaning">Matches the chemical component deposited in the PDB, atom for atom</td>
+</tr>
+<tr>
+<td data-label="Strength"><code>name-verified</code></td>
+<td data-label="Meaning">The paper's own IUPAC name, parsed with OPSIN, agrees atom for atom</td>
+</tr>
+<tr>
+<td data-label="Strength"><code>source-verified</code></td>
+<td data-label="Meaning">Fetched from PubChem and checked against the published formula</td>
+</tr>
+<tr>
+<td data-label="Strength"><code>anchor-derived</code></td>
+<td data-label="Meaning">Built with RDKit <code>molzip</code> from a verified core by one documented substitution</td>
+</tr>
+<tr>
+<td data-label="Strength"><code>figure-derived</code></td>
+<td data-label="Meaning">Read from a drawing, with no name and no coordinates to check it against. The weakest, and flagged as such wherever it appears</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>A molecular formula check is not enough, and this is not a theoretical concern.</strong> While curating the FGFR bundle, a hand-built scaffold reproduced the paper's published formula exactly while having the wrong connectivity: in a SMILES prefix fragment the bond to the next atom comes from the fragment's <em>last</em> atom, so every cyclic ether had attached through a ring carbon with its oxygen left dangling. Same atoms, wrong molecule, identical formula. Only comparing against the structure parsed from the published name caught it. Fragments are now joined with <code>molzip</code> at labelled attachment points, and the scheme is proved by rebuilding each verified anchor exactly.</p>
+<h2>🏗️ How it is built</h2>
+<p>Two halves, and the boundary between them is the point:</p>
+<ul>
+<li><strong><code>pipeline/</code></strong> runs on the Mac and never ships. It fetches coordinates, runs DSSP, asks KLIFS for pocket numbering, runs PLIP for contacts, computes descriptors and core-aligned depictions with RDKit, and writes validated JSON and CSV.</li>
+<li><strong><code>web/</code></strong> is what gets deployed: vanilla ES modules, no build step, no framework, no server. Mol*, Plotly and RDKit.js are vendored and served from the app's own origin.</li>
+</ul>
+<pre><code class="language-text">gc extract &lt;slug&gt; --pdf &lt;file&gt; --pages 1-10   # text and page images, for hand transcription
+gc chem    &lt;slug&gt;                             # descriptors, scaffold, core-aligned depictions
+gc struct  &lt;slug&gt;                             # mmCIF, DSSP, KLIFS, PLIP contacts
+gc bundle  &lt;slug&gt;                             # melt the published tables into web/data/
+gc validate [slug]                            # schema, provenance, chemistry, cross-references
+gc all     &lt;slug&gt;                             # the four above, in order
+</code></pre>
+<pre><code class="language-bash">bash tools/copy_check.sh                                  # the company is never named, no em dashes
+python3 tools/browser_check.py --base http://127.0.0.1:8099   # 67 checks in a real browser
+</code></pre>
+<h3>The validation gate</h3>
+<p><code>gc validate</code> fails the build, not a warning, when: a measurement has no <code>source_table</code>; an InChIKey does not match its SMILES; two compounds are the same molecule; an R-group fragment is not actually present in its parent; a residue cited by an edit or a story beat does not exist in the structure it is cited against; or an assay, compound or edit id is referenced but not defined.</p>
+<h2>🗂️ Repository layout</h2>
+<div class="emd-table-wrap"><table class="emd-data-table">
+<thead>
+<tr>
+<th>Path</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Path"><code>pipeline/raw/&lt;slug&gt;/</code></td>
+<td data-label="What it is">Hand-curated source of truth: one file per published table, plus <code>ISSUES.md</code></td>
+</tr>
+<tr>
+<td data-label="Path"><code>pipeline/schemas/</code></td>
+<td data-label="What it is">JSON Schema for every published artefact</td>
+</tr>
+<tr>
+<td data-label="Path"><code>pipeline/gcrash/</code></td>
+<td data-label="What it is">The <code>gc</code> command. Named <code>gcrash</code> because <code>gc</code> is a Python built-in module name and built-ins always win an import</td>
+</tr>
+<tr>
+<td data-label="Path"><code>web/data/papers/&lt;slug&gt;/</code></td>
+<td data-label="What it is">The deployed bundles</td>
+</tr>
+<tr>
+<td data-label="Path"><code>tools/</code></td>
+<td data-label="What it is">The browser check and the copy gate</td>
+</tr>
+<tr>
+<td data-label="Path"><code>deploy/</code></td>
+<td data-label="What it is">nginx site and the rsync deployment</td>
+</tr>
+</tbody>
+</table></div>
+<h2>📐 Reading the drawing</h2>
+<p>The app is laid out as a technical drawing, and the colours carry meaning rather than decoration:</p>
+<div class="emd-table-wrap"><table class="emd-data-table">
+<thead>
+<tr>
+<th>Colour</th>
+<th>Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Colour">Amber</td>
+<td data-label="Means">A measured value or distance, always drawn from the PLIP measurement and never hand-placed</td>
+</tr>
+<tr>
+<td data-label="Colour">Cyan</td>
+<td data-label="Means">The protein you want to hit, and annotation leader lines</td>
+</tr>
+<tr>
+<td data-label="Colour">Rose</td>
+<td data-label="Means">The protein you must not hit</td>
+</tr>
+<tr>
+<td data-label="Colour">Green</td>
+<td data-label="Means">An edit that improved something</td>
+</tr>
+<tr>
+<td data-label="Colour">Coral</td>
+<td data-label="Means">A clash, a liability, or an edit that failed</td>
+</tr>
+</tbody>
+</table></div>
+<p>Dark is the default and light is a first-class citizen, not an afterthought. Both are contrast-checked in the browser test.</p>
+<h2>🔍 What the papers disagree with themselves about</h2>
+<p>Each bundle carries an <code>ISSUES.md</code> recording every place a paper contradicts itself, with both readings kept and neither averaged. Some of what is in there:</p>
+<ul>
+<li><strong>KRAS</strong>: the graphical abstract gives compound 10 at 451 nM and compound 23 at 2.2 nM where the tables give 410 nM and 22 nM. Both are shown, labelled by source.</li>
+<li><strong>JAK1</strong>: the PDB codes are printed two ways, and one spelling points at two real but unrelated entries (an RNA recognition motif and auto-inhibited c-Abl). Resolved against RCSB before anything was built.</li>
+<li><strong>JAK1</strong>: the abstract says the arthritis model was murine; the methods describe rats. The app says rats.</li>
+<li><strong>FGFR</strong>: the RCSB entry title for 8E1X names compound 29, while the paper names compound 30. The deposited ligand's formula settles it: it is compound 30.</li>
+<li><strong>CDK2</strong>: Table 1 puts two isoform values in one cell, which reads like a value and a fold and is not.</li>
+</ul>
+<h2>⚖️ What this app does not reproduce</h2>
+<p>No publisher figure, graphical abstract or full text is reproduced here. Every molecule is drawn from SMILES with RDKit, every structure is rendered from coordinates fetched from the RCSB PDB, and the narrative is written fresh. Abstracts are quoted verbatim in a marked quotation block with their citation and DOI, which is ordinary scholarly quotation. The paper PDFs themselves are not in this repository and never will be.</p>
+<p>Where a paper's only record of something is a figure we may not copy, the app says so plainly rather than inventing a substitute: the KRAS paper's model of its final compound is described and not shown, because no coordinates exist for it.</p>
+<h2>✅ To Do</h2>
+<ul class="emd-tasklist">
+<li><span class="emd-check">&#9989;</span> <strong>Harvest pass</strong>: lift the PLIP runner, Mol* setup, KLIFS layer, Plotly conventions and track rendering from the existing repositories, and record what came from where in <code>HARVEST.md</code></li>
+<li><span class="emd-check">&#9989;</span> <strong>Data contract</strong>: long-format measurements, per-paper assay dictionaries, JSON Schema for every artefact, and a provenance gate that fails the build</li>
+<li><span class="emd-check">&#9989;</span> <strong>CDK2 end to end</strong>: 18 compounds, 251 measurements, 8UV0 with PLIP contacts and the KLIFS ruler</li>
+<li><span class="emd-check">&#9989;</span> <strong>Blueprint shell</strong>: tokens, sheets with live title blocks, the drawing grammar, <code>AppState</code> with URL-hash serialisation</li>
+<li><span class="emd-check">&#9989;</span> <strong>Structure, SAR and Properties sheets</strong>: Mol*, the pocket ruler, motif chips, contact list with measure lines, R-group grid, selectivity matrix, activity cliffs, the three Plotly figures</li>
+<li><span class="emd-check">&#9989;</span> <strong>Story and Edit Log</strong>: five beats per paper in two registers, the graphical abstract re-creation drawn from SMILES, change-type filtering</li>
+<li><span class="emd-check">&#9989;</span> <strong>All four papers</strong>: FGFR, KRAS and JAK1 curated, including the non-KLIFS path and the twin-structure anti-target</li>
+<li><span class="emd-check">&#9989;</span> <strong>Verification</strong>: OPSIN name-to-structure checking, <code>molzip</code> fragment assembly, 67 browser checks, the copy gate</li>
+<li><span class="emd-check">&#9989;</span> <strong>About sheet</strong>: the pipeline in six stages, every tool with its version, licence and DOI, the data sources, and the statement of what is rendered rather than reproduced, all rendered from <code>data/software.json</code></li>
+<li><span class="emd-check">&#9989;</span> <strong>Deploy</strong>: nginx and certbot on the droplet, HTTP/2 patched in the form nginx 1.24 wants, asset URLs stamped with their modification times so an immutable cache cannot hide a deploy, and the entry in the mdeller.com launcher</li>
+<li><span class="emd-check">&#11036;</span> <strong>In-browser search</strong>: chunk, embed once on the Mac, cosine search in the page, with "not stated in this paper" as a first-class answer</li>
+<li><span class="emd-check">&#11036;</span> <strong>Short molecular dynamics</strong>: an RMSF track on the ruler and a decimated trajectory per primary structure, and no trajectory ships that does not support what the paper claims</li>
+<li><span class="emd-check">&#11036;</span> <strong>PyMOL downloads</strong>: a <code>.pml</code> script and a <code>.pse</code> session per structure</li>
+<li><span class="emd-check">&#11036;</span> <strong>Performance budget</strong>: first meaningful paint under two seconds cold, under 1.5 MB initial transfer excluding Mol*, lazy-loaded structures</li>
+<li><span class="emd-check">&#11036;</span> <strong>Licence</strong>: not yet chosen</li>
+</ul>
+<h2>📚 Citations</h2>
+<div class="emd-table-wrap"><table class="emd-data-table">
+<thead>
+<tr>
+<th>Campaign</th>
+<th>Citation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Campaign">CDK2</td>
+<td data-label="Citation">Hummel J. R., Xiao K.-J., Yang J. C., Epling L. B., Mukai K., Ye Q., Xu M., Qian D., Huo L., Weber M., Roman V., Lo Y., Drake K., Stump K., Covington M., Kapilashrami K., Zhang G., Ye M., Diamond S., Yeleswaram S., Macarron R., <strong>Deller M. C.</strong>, Wee S., Kim S., Wang X., Wu L., Yao W. <em>J. Med. Chem.</em> <strong>2024</strong>, 67, 3112-3126. <a href="https://doi.org/10.1021/acs.jmedchem.3c02287">10.1021/acs.jmedchem.3c02287</a></td>
+</tr>
+<tr>
+<td data-label="Campaign">FGFR2/3</td>
+<td data-label="Citation">Shvartsbart A., Roach J. J., Witten M. R., Koblish H., Harris J. J., Covington M., Hess R., Lin L., Frascella M., Truong L., Leffet L., Conlen P., Beshad E., Klabe R., Katiyar K., Kaldon L., Young-Sciame R., He X., Petusky S., Chen K.-J., Horsey A., Lei H.-T., Epling L. B., <strong>Deller M. C.</strong>, Vechorkin O., Yao W. <em>J. Med. Chem.</em> <strong>2022</strong>, 65, 15433-15442. <a href="https://doi.org/10.1021/acs.jmedchem.2c01366">10.1021/acs.jmedchem.2c01366</a></td>
+</tr>
+<tr>
+<td data-label="Campaign">KRAS G12D</td>
+<td data-label="Citation">Ye Q., Shvartsbart A., Li Z., Gan P., Policarpo R. L., Qi C., Roach J. J., Zhu W., McCammant M. S., Hu B., Li G., Yin H., Carlsen P., Hoang G., Zhao L., Susick R., Zhang F., Lai C.-T., Allali Hassani A., Epling L. B., Gallion A., Kurzeja-Lipinski K., Gallagher K., Roman V., Farren M. R., Kong W., <strong>Deller M. C.</strong>, Zhang G., Covington M., Diamond S., Kim S., Yao W., Sokolsky A., Wang X. <em>J. Med. Chem.</em> <strong>2025</strong>, 68, 1924-1939. <a href="https://doi.org/10.1021/acs.jmedchem.4c02662">10.1021/acs.jmedchem.4c02662</a></td>
+</tr>
+<tr>
+<td data-label="Campaign">JAK1</td>
+<td data-label="Citation">Zhuo J., Li Y.-L., Qian D.-Q., Burns D. M., Mei S., Rafalski M., Xu M., Cao G., Pan Y., Jia Z., Jalluri R., Epling L. B., Fenalti G., <strong>Deller M. C.</strong>, Procak J., Covington M., He X., Collins R., Stubbs M., Burke K., Oliver J., Margulis A., Boer J., Wynn R., Scherle P., Diamond S., Newton R., Zhang Y., Metcalf B., Yao W. <em>J. Med. Chem.</em> <strong>2026</strong>. <a href="https://doi.org/10.1021/acs.jmedchem.5c03753">10.1021/acs.jmedchem.5c03753</a></td>
+</tr>
+</tbody>
+</table></div>
+<h2>🛠️ Software this stands on</h2>
+<div class="emd-table-wrap"><table class="emd-data-table">
+<thead>
+<tr>
+<th>Tool</th>
+<th>Used for</th>
+<th>Licence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="Tool"><a href="https://www.rdkit.org/">RDKit</a></td>
+<td data-label="Used for">Descriptors, MCS, core-aligned depictions, fragment assembly</td>
+<td data-label="Licence">BSD-3-Clause</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://github.com/dan2097/opsin">OPSIN</a></td>
+<td data-label="Used for">Turning the papers' IUPAC names into structures, for verification</td>
+<td data-label="Licence">MIT</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://github.com/pharmai/plip">PLIP</a></td>
+<td data-label="Used for">Protein-ligand interaction profiling</td>
+<td data-label="Licence">GPL-2.0, invoked as a subprocess and never imported</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://gemmi.readthedocs.io/">gemmi</a></td>
+<td data-label="Used for">mmCIF handling</td>
+<td data-label="Licence">MPL-2.0</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://www.biotite-python.org/">biotite</a></td>
+<td data-label="Used for">Structure handling</td>
+<td data-label="Licence">BSD-3-Clause</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://github.com/PDB-REDO/dssp">DSSP</a></td>
+<td data-label="Used for">Secondary structure</td>
+<td data-label="Licence">BSD-2-Clause</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://molstar.org/">Mol*</a></td>
+<td data-label="Used for">The structure viewer</td>
+<td data-label="Licence">MIT</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://plotly.com/javascript/">Plotly.js</a></td>
+<td data-label="Used for">Every figure</td>
+<td data-label="Licence">MIT</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://github.com/rdkit/rdkit-js">RDKit.js</a></td>
+<td data-label="Used for">In-browser depiction and highlighting</td>
+<td data-label="Licence">BSD-3-Clause</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://klifs.net/">KLIFS</a></td>
+<td data-label="Used for">Kinase pocket numbering</td>
+<td data-label="Licence">Academic use</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://www.rcsb.org/">RCSB PDB</a></td>
+<td data-label="Used for">All coordinates</td>
+<td data-label="Licence">Public domain</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://pubchem.ncbi.nlm.nih.gov/">PubChem</a></td>
+<td data-label="Used for">Reference drug structures</td>
+<td data-label="Licence">Public domain</td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<p>Built by <a href="https://marcdeller.com">Marc C. Deller, D.Phil.</a> · <a href="mailto:marc@marcdeller.com">marc@marcdeller.com</a></p>
+<hr>
+<h2>👤 Author</h2>
+<p><strong>Marc C. Deller, D.Phil.</strong><br>
+Structural biologist &amp; drug discovery scientist  </p>
+<table class="emd-info-table">
+<tr>
+<td>🌐</td><td><a href="https://marcdeller.com" target="_blank" rel="noopener noreferrer">marcdeller.com</a></td>
+<td>✉️</td><td><a href="mailto:marc@marcdeller.com">marc@marcdeller.com</a></td>
+<td>🐙</td><td><a href="https://github.com/bellcheddar/GATECRASHER" target="_blank" rel="noopener noreferrer">github.com/bellcheddar/GATECRASHER</a></td>
+</tr>
+</table>

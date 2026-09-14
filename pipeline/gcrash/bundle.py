@@ -153,6 +153,25 @@ def build(slug: str) -> dict:
     for src in (build_d / "depictions").glob("*.svg"):
         shutil.copy2(src, dep_out / src.name)
 
+    # PyMOL deliverables, where gc figures has produced them. A .pse is several megabytes,
+    # so it is published as a download rather than anything the page loads.
+    if (build_d / "figures").is_dir():
+        fig_out = out / "figures"
+        fig_out.mkdir(exist_ok=True)
+        manifest: dict[str, dict] = {}
+        for src in sorted((build_d / "figures").iterdir()):
+            if not src.is_file():
+                continue
+            shutil.copy2(src, fig_out / src.name)
+            # Files are named <pdbid>_gatecrasher.pml / .pse and <pdbid>.png, so the entry
+            # they belong to is the leading token. A manifest means the page can offer only
+            # the downloads that exist, rather than linking at a URL and hoping.
+            pdb_id = src.stem.split("_")[0].upper()
+            entry = manifest.setdefault(pdb_id, {})
+            entry[src.suffix.lstrip(".")] = f"figures/{src.name}"
+            entry[f"{src.suffix.lstrip('.')}_bytes"] = src.stat().st_size
+        (out / "figures.json").write_text(json.dumps(manifest, indent=1))
+
     # activity cliffs, from the primary potency only
     cliff_rows = chem.cliffs(chem.read_compounds(slug), primary_values(assays, rows))
     (out / "cliffs.json").write_text(json.dumps(cliff_rows[:40], indent=1))

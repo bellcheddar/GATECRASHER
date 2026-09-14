@@ -14,6 +14,7 @@ import { initSar } from './panels/sar.js';
 import { initProperties } from './panels/properties.js';
 import { initStory } from './panels/story.js';
 import { initAbout } from './panels/about.js';
+import { initSearch } from './search.js';
 import { initRdkit } from './viewers/rdkit.js';
 import { redrawAll } from './viewers/plotly.js';
 
@@ -45,6 +46,13 @@ async function boot() {
   /* The About sheet is the same for every paper, so it takes no bundle and renders once,
    * the first time it is opened. */
   panels.about = initAbout(state);
+  panels.search = initSearch(state);
+
+  /* A search hit in another paper: switch bundles first, then apply the hit's focus. */
+  window.addEventListener('gatecrasher:open', (event) => {
+    const { slug, patch } = event.detail || {};
+    if (slug) selectPaper(slug, patch || {});
+  });
 
   const index = await loadIndex();
   papers = index.papers;

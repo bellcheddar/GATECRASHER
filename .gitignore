@@ -1,6 +1,12 @@
-# Publisher PDFs and anything derived verbatim from them never enter the repo (spec §1.3)
-papers/
+# Publisher PDFs and anything derived verbatim from them never enter the repo (spec §1.3).
+# Anchored to the root: an unanchored "papers/" also matched web/data/papers/, so every
+# data bundle the app serves was silently kept out of this public repository.
+/papers/
 pipeline/cache/
+# PyMOL sessions and stills: several megabytes of binaries that `gc figures` regenerates.
+# The deploy ships them from the local build; the small .pml scripts are tracked.
+web/data/papers/*/figures/*.pse
+web/data/papers/*/figures/*.png
 # Python
 __pycache__/
 *.pyc

@@ -66,6 +66,67 @@
 
 .title-bar-spacer { flex: 1 1 auto; }
 
+/* ---------------------------------------------------------------------- search */
+
+.search { position: relative; }
+
+.search input {
+  width: 190px;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 5px 10px;
+  background: var(--surface);
+}
+
+.search input:focus { width: 260px; }
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 40;
+  width: min(460px, 78vw);
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border: var(--rule) solid var(--line-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px var(--shadow);
+}
+
+.search-hit {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  background: none;
+  border: 0;
+  border-bottom: var(--rule) solid var(--line);
+  border-radius: 0;
+}
+
+.search-hit:hover { background: var(--surface-2); }
+
+.search-hit-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--unit);
+}
+
+.search-hit-title { font-weight: 600; font-size: 13px; }
+.search-hit-text { margin: 4px 0 0; font-size: 12px; color: var(--ink-dim); line-height: 1.45; }
+.search-hit-source { font-size: 10px; color: var(--measure); }
+
+/* Nothing found is information, not an error. */
+.search-empty { padding: var(--unit) calc(var(--unit) * 1.5); }
+.search-empty strong { display: block; color: var(--ink); margin-bottom: 4px; }
+.search-empty p { margin: 0; font-size: 12px; color: var(--ink-dim); line-height: 1.5; }
+
+@media (max-width: 900px) {
+  .search input, .search input:focus { width: 130px; }
+}
+
 .tab-strip {
   display: flex;
   gap: 0;
