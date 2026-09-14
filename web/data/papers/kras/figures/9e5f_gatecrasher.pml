@@ -16,6 +16,13 @@ set cartoon_transparency, 0.15
 set ray_shadows, 0
 set antialias, 2
 
+# One copy only. A deposited entry holds whatever the crystal packed into its
+# asymmetric unit, which here is often two copies of the same kinase: a dimer of
+# crystallisation rather than of biology. The second copy is removed outright, not
+# just hidden, so a ligand selection cannot pick up its twin and `within` cannot
+# measure to it. A real hetero partner would be a different chain and kept.
+remove not (chain A)
+
 select protein_chain, 9E5F and polymer and chain A
 show cartoon, protein_chain
 color grey80, protein_chain

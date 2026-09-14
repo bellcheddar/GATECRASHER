@@ -10,6 +10,67 @@
 
 import { loadLibrary } from '../loader.js';
 
+/* Cut an mmCIF down to one copy of the molecule: the chain this bundle describes, plus any
+ * polymer chain of a DIFFERENT entity, so a real hetero dimer survives while a second copy
+ * of the same protein does not. Filtering the text beats filtering inside Mol*: the viewer
+ * then measures, focuses and highlights exactly what it draws, and nothing downstream has to
+ * know about the discarded copy.
+ *
+ * Only the _atom_site loop is touched. Everything else in the file is left alone, and if the
+ * loop cannot be understood the original text is returned rather than a half-filtered one. */
+export function oneCopy(text, chain) {
+  const lines = text.split('\n');
+  const headerStart = lines.findIndex((line) => line.startsWith('_atom_site.'));
+  if (headerStart < 0) return text;
+
+  const columns = [];
+  let index = headerStart;
+  while (index < lines.length && lines[index].startsWith('_atom_site.')) {
+    columns.push(lines[index].trim().slice('_atom_site.'.length));
+    index += 1;
+  }
+  const authColumn = columns.indexOf('auth_asym_id');
+  const entityColumn = columns.indexOf('label_entity_id');
+  const groupColumn = columns.indexOf('group_PDB');
+  if (authColumn < 0) return text;
+
+  const rowStart = index;
+  let rowEnd = rowStart;
+  while (rowEnd < lines.length) {
+    const line = lines[rowEnd];
+    if (!line.trim() || line.startsWith('#') || line.startsWith('loop_') || line.startsWith('_')) break;
+    rowEnd += 1;
+  }
+
+  /* Values can be quoted, and an atom name such as "C1'" carries a quote of its own. */
+  const cells = (line) => line.match(/'[^']*'|"[^"]*"|\S+/g) || [];
+  const rows = lines.slice(rowStart, rowEnd).map((line) => ({ line, parts: cells(line) }));
+  const isPolymer = (parts) => groupColumn < 0 || parts[groupColumn] === 'ATOM';
+
+  let ownEntity = null;
+  const polymerEntities = new Set();
+  for (const row of rows) {
+    if (!isPolymer(row.parts)) continue;
+    const entity = entityColumn >= 0 ? row.parts[entityColumn] : null;
+    if (entity !== null) polymerEntities.add(entity);
+    if (ownEntity === null && row.parts[authColumn] === chain) ownEntity = entity;
+  }
+
+  const keep = new Set([chain]);
+  if (ownEntity !== null && entityColumn >= 0) {
+    for (const row of rows) {
+      if (!isPolymer(row.parts)) continue;
+      const entity = row.parts[entityColumn];
+      if (polymerEntities.has(entity) && entity !== ownEntity) keep.add(row.parts[authColumn]);
+    }
+  }
+
+  const kept = rows.filter((row) => keep.has(row.parts[authColumn]));
+  if (!kept.length || kept.length === rows.length) return text;
+  return [...lines.slice(0, rowStart), ...kept.map((row) => row.line), ...lines.slice(rowEnd)]
+    .join('\n');
+}
+
 const OPTIONS = {
   extensions: [],
   layoutIsExpanded: false,
@@ -98,12 +159,15 @@ export class StructureViewer {
   }
 
   /* Load a structure by URL. The format is decided from the URL and the payload, not
-   * assumed: an mmCIF served without an extension still has to load. */
-  async load(name, url, { representation = 'cartoon', colour = null } = {}) {
+   * assumed: an mmCIF served without an extension still has to load.
+   *
+   * `chain` keeps one copy of the protein: see oneCopy below. */
+  async load(name, url, { representation = 'cartoon', colour = null, chain = null } = {}) {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`${url}: ${response.status}`);
-    const text = await response.text();
-    const format = /\.cif|\.bcif/i.test(url) || text.startsWith('data_') ? 'mmcif' : 'pdb';
+    const raw = await response.text();
+    const format = /\.cif|\.bcif/i.test(url) || raw.startsWith('data_') ? 'mmcif' : 'pdb';
+    const text = format === 'mmcif' && chain ? oneCopy(raw, chain) : raw;
 
     if (this.loaded.has(name)) await this.clear(name);
     const data = await this.plugin.builders.data.rawData({ data: text });

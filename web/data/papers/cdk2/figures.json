@@ -1,9 +1,9 @@
 {
  "8UV0": {
   "png": "figures/8uv0.png",
-  "png_bytes": 551701,
+  "png_bytes": 551569,
   "pml": "figures/8uv0_gatecrasher.pml",
-  "pml_bytes": 1987,
+  "pml_bytes": 2409,
   "pse": "figures/8uv0_gatecrasher.pse",
   "pse_bytes": 1323226
  }

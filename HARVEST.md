@@ -109,6 +109,16 @@ the provenance of the data.
    instead of a second one, and old `#paper/story` links still land, with the story drawer
    out.
 
+13. **The viewers show one copy of the protein, not the asymmetric unit.** BUILD_SPEC does not
+   say which copy of a deposited entry to draw, and Mol\* draws whatever the file contains:
+   for 8E1X, 10PI and 10PJ that is two copies of the same kinase, a dimer of crystallisation
+   rather than of biology. Marc's call on 2026-09-14: show monomers, keep hetero dimers. The
+   mmCIF is filtered before Mol\* parses it (`oneCopy` in `web/js/viewers/molstar.js`), which
+   keeps the chain the bundle describes plus any polymer chain of a DIFFERENT entity, so a
+   real hetero partner survives the same rule. The PyMOL downloads remove the other copy
+   outright rather than hiding it, so a ligand selection cannot pick up its twin and `within`
+   cannot measure to it.
+
 ## Added here, not harvested
 
 - **OPSIN (`py2opsin`) for name-to-structure verification.** Nothing in the portfolio does

@@ -1,17 +1,17 @@
 {
  "9E5D": {
   "png": "figures/9e5d.png",
-  "png_bytes": 415763,
+  "png_bytes": 415696,
   "pml": "figures/9e5d_gatecrasher.pml",
-  "pml_bytes": 1747,
+  "pml_bytes": 2169,
   "pse": "figures/9e5d_gatecrasher.pse",
   "pse_bytes": 467988
  },
  "9E5F": {
   "png": "figures/9e5f.png",
-  "png_bytes": 411594,
+  "png_bytes": 411607,
   "pml": "figures/9e5f_gatecrasher.pml",
-  "pml_bytes": 1747,
+  "pml_bytes": 2169,
   "pse": "figures/9e5f_gatecrasher.pse",
   "pse_bytes": 483535
  }

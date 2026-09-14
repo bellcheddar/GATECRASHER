@@ -1,0 +1,81 @@
+{
+  "_comment": [
+    "What `gc dynamics` runs for this paper, and what the trajectory has to show before it",
+    "ships. BUILD_SPEC Stage 4: if a trajectory does not support what the paper claims, do",
+    "not ship that trajectory, and say so in ISSUES.md.",
+    "",
+    "PROVISIONAL, awaiting Marc: the production length, the ligand protonation, and the two",
+    "occupancy thresholds are scientific defaults, not implementation details. They are set",
+    "here so the pipeline can be built and tested end to end on short runs; nothing is",
+    "published from them until they are signed off.",
+    "",
+    "Every claim is a sentence from this bundle's own caption, measured against the",
+    "deposited contact it rests on. `ligand_from_plip` resolves the ligand atoms from the",
+    "PLIP contact with that residue, so the atoms measured are the atoms PLIP measured.",
+    "`expect: absent` is a real answer: a claim that a contact is NOT made is testable."
+  ],
+  "provisional": true,
+  "timestep_fs": 2.0,
+  "minimise_steps": 5000,
+  "equilibration_ps": 200,
+  "production_ps": 5000,
+  "frame_interval_ps": 20,
+  "ligand_forcefield": "openff-2.1.0",
+  "platform": "auto",
+  "seed": 20260914,
+  "thresholds": {
+    "present_min_occupancy": 0.5,
+    "absent_max_occupancy": 0.2,
+    "ligand_rmsd_median_max_a": 2.0
+  },
+  "structures": [
+    {
+      "pdb_id": "8UV0",
+      "chain": "A",
+      "ligand_code": "XKU",
+      "ligand_compound_id": "17",
+      "ligand_smiles_md": "CC(C)(Cn1cc(cn1)c2c(cnc(n2)NC3CCN(CC3)S(=O)(=O)C4CC4)C(F)(F)F)O",
+      "protonation_note": "Neutral. The piperidine nitrogen is a sulfonamide rather than a basic amine, and the 2-aminopyrimidine is not protonated at pH 7.4.",
+      "cofactors": [],
+      "ions": [],
+      "keep_crystal_waters": true,
+      "model_gaps_max": 6,
+      "gaps_note": "8UV0 chain A has internal gaps of 6, 2 and 10 residues. The 10-residue gap is in the activation loop and is left open at this setting: a modelled ten-residue loop is a prediction, not a structure.",
+      "claims": [
+        {
+          "id": "hinge-leu83",
+          "label": "The 2-aminopyrimidine makes the hinge contact to Leu83",
+          "residue": "A:83",
+          "protein_atoms": ["N", "O"],
+          "ligand_from_plip": { "resnum": 83, "types": ["hbond"] },
+          "cutoff_a": 3.5,
+          "expect": "present",
+          "source": "structures.json caption; PLIP hbonds to LEU83 at 1.85 and 2.35 A"
+        },
+        {
+          "id": "asp86-backbone",
+          "label": "A sulfonamide oxygen accepts from the Asp86 backbone amide",
+          "residue": "A:86",
+          "protein_atoms": ["N"],
+          "ligand_smarts": "[OX1]=[SX4]",
+          "cutoff_a": 3.5,
+          "expect": "present",
+          "source": "structures.json caption; PLIP hbond to ASP86 at 2.17 A"
+        },
+        {
+          "id": "gatekeeper-phe80",
+          "label": "The C5 trifluoromethyl points at the Phe80 gatekeeper",
+          "residue": "A:80",
+          "protein_atoms": ["CB", "CG", "CD1", "CD2", "CE1", "CE2", "CZ"],
+          "ligand_smarts": "FC(F)F",
+          "cutoff_a": 4.5,
+          "expect": "present",
+          "source": "structures.json caption"
+        }
+      ],
+      "not_assessed": [
+        "The water-mediated contact to Lys89 and Gln85. The analysed trajectory carries the crystal waters but a bridge can be handed on between exchanging waters, and a solute-only trajectory cannot follow that."
+      ]
+    }
+  ]
+}

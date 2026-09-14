@@ -353,6 +353,39 @@ def main() -> int:
         check("Mol* loaded coordinates into a canvas",
               tab.wait_for("!!document.querySelector('#viewer-target canvas')", 40),
               "no canvas in the viewer host")
+        # A deposited entry holds whatever the crystal packed into its asymmetric unit, which
+        # for 10PI is two copies of the same kinase. The viewers show the copy the bundle
+        # describes. Tested on the real entry, through the module's own exported filter.
+        copies = tab.js("""(async () => {
+            const module = await import('./js/viewers/molstar.js');
+            const text = await (await fetch('https://files.rcsb.org/download/10PI.cif')).text();
+            const before = new Set(), after = new Set();
+            const chains = (body, into) => {
+              const lines = body.split('\\n');
+              const start = lines.findIndex((l) => l.startsWith('_atom_site.'));
+              const columns = [];
+              let i = start;
+              // '_atom_site.' is ELEVEN characters. Slicing 12 loses the first letter of
+              // every column name, indexOf('auth_asym_id') returns -1, and every row reads
+              // as undefined: the check then compares [null] with [null] and calls it a pass.
+              while (lines[i].startsWith('_atom_site.')) { columns.push(lines[i].trim().slice(11)); i += 1; }
+              const auth = columns.indexOf('auth_asym_id');
+              for (; i < lines.length; i += 1) {
+                if (!lines[i].trim() || lines[i].startsWith('#')) break;
+                into.add((lines[i].match(/'[^']*'|"[^"]*"|\\S+/g) || [])[auth]);
+              }
+            };
+            chains(text, before);
+            const filtered = module.oneCopy(text, 'A');
+            chains(filtered, after);
+            return {before: [...before].sort(), after: [...after].sort(),
+                    keptHeader: filtered.includes('_entry.id'), shorter: filtered.length < text.length};
+        })()""")
+        check("the viewer shows one copy of the protein, not the crystal dimer",
+              isinstance(copies, dict) and copies.get("after") == ["A"]
+              and len(copies.get("before") or []) > 1 and copies.get("keptHeader"),
+              str(copies)[:160])
+
         check("the pocket ruler drew its cells",
               (tab.js("document.querySelectorAll('#klifs-ruler .ruler-cell').length") or 0) >= 80,
               f"{tab.js('document.querySelectorAll(\"#klifs-ruler .ruler-cell\").length')} cells")

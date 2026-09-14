@@ -101,6 +101,7 @@ export function initStructure(state) {
       + (entry.resolution_a ? ` ${entry.resolution_a} Å` : '');
     await viewer.load('target', structureUrl(entry.pdb_id), {
       representation: el.representation.value,
+      chain: entry.chain,
     });
     /* A beat, a search hit or a copied link can arrive carrying residues along with the
      * structure. Zooming to the ligand regardless threw that focus away as soon as the
@@ -162,6 +163,7 @@ export function initStructure(state) {
     el.antiLabel.textContent = `${twin.pdb_id} ${twin.contains.protein}`;
     await viewer.load('anti', structureUrl(twin.pdb_id), {
       representation: el.representation.value,
+      chain: twin.chain,
     });
     if (anti !== viewer) return;
     viewer.focusLigand();
