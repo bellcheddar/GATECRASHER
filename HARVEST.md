@@ -133,6 +133,22 @@ the provenance of the data.
    This is the PANTS pattern (superposed structures, pre-superposed at write) rather than an
    invention.
 
+15. **The MD stage borrows FlexAppeal's environment at runtime.** BUILD_SPEC section 3 says to
+   lift FlexAppeal's OpenMM setup, minimisation and short-MD runner, which is what
+   `pipeline/md/run_md.py` does in spirit (system generation and the restraint ramp also owe
+   GOBSMACKED's `md.py`). It does not say where OpenMM should live. Installing it into this
+   project's own environment would mean a second copy of OpenMM, OpenFF, openmmforcefields,
+   PDBFixer and their CUDA-less toolchain, all awkward on Apple silicon and all pinned
+   twice. So `gc dynamics` invokes `run_md.py` with FlexAppeal's pixi interpreter as a
+   SUBPROCESS, exactly as the PLIP stage shells out rather than imports, and nothing in
+   `gcrash` imports OpenMM or MDTraj. `GATECRASHER_MD_PYTHON` overrides the path, and the
+   stage fails loudly rather than silently falling back if that interpreter is missing.
+
+   Two traps found the hard way and guarded in the code: the environment's `bin` must be on
+   `PATH` or the OpenFF toolkit does not register AmberTools and quietly swaps AM1-BCC for a
+   graph-network charge model; and production runs one chunk per process because OpenMM on
+   Apple's OpenCL leaks about 3 kB per step.
+
 ## Added here, not harvested
 
 - **OPSIN (`py2opsin`) for name-to-structure verification.** Nothing in the portfolio does
