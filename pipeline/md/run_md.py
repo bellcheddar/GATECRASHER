@@ -183,7 +183,62 @@ def fix_receptor(out: Path, model_gaps_max: int) -> dict:
             "nonstandard_replaced": replaced, "missing_heavy_atoms_added": added}
 
 
-def molecule_from_crystal(smiles: str, atoms: list[dict], residue_name: str):
+def _receptor_acceptors(receptor_pdb: Path, ligand_xyz: list, margin: float = 6.0) -> list:
+    """Receptor hydrogen-bond ACCEPTORS near the ligand.
+
+    Not simply every nitrogen and oxygen. A backbone amide nitrogen already carries a
+    hydrogen: it donates, and cannot accept. Counting it as a partner is what made the first
+    version of this tie-break nearly blind. With the pyrazole NH on the wrong ring nitrogen
+    the ligand still sat 2.93 A from Leu959's amide nitrogen, against 2.81 A from Glu957's
+    carbonyl oxygen, so the two tautomers scored 0.12 A apart and the correct one won by a
+    margin thinner than the coordinate error it was being judged on.
+
+    fix_receptor has already added hydrogens at pH 7.4, so donors can be recognised instead
+    of assumed: every oxygen accepts, and a nitrogen accepts only if nothing is bonded to it.
+    Read straight from the PDB text, because this runs inside prepare, before any force field
+    or topology exists. Fixed-column PDB written by PDBFixer, so the columns are trustworthy
+    here in a way an mmCIF's would not be.
+    """
+    import math
+
+    centre = [sum(p[i] for p in ligand_xyz) / len(ligand_xyz) for i in range(3)]
+    reach = margin + max(math.dist(centre, p) for p in ligand_xyz)
+    polar, hydrogens = [], []
+    for line in receptor_pdb.read_text().splitlines():
+        if not line.startswith(("ATOM  ", "HETATM")):
+            continue
+        element = (line[76:78].strip() or line[12:16].strip()[:1]).upper()
+        try:
+            point = (float(line[30:38]), float(line[38:46]), float(line[46:54]))
+        except ValueError:
+            continue
+        if element == "H":
+            if math.dist(centre, point) <= reach + 1.5:
+                hydrogens.append(point)
+        elif element in ("N", "O") and math.dist(centre, point) <= reach:
+            polar.append((element, point))
+
+    acceptors = []
+    for element, point in polar:
+        if element == "O" or not any(math.dist(point, h) <= 1.3 for h in hydrogens):
+            acceptors.append(point)
+    return acceptors
+
+
+def _donor_fit(match, donors, crystal_positions, acceptors) -> float:
+    """Total distance from each donor heavy atom to its nearest receptor acceptor. Lower is better."""
+    import math
+
+    total = 0.0
+    for template_index in donors:
+        point = crystal_positions.GetAtomPosition(match[template_index])
+        here = (point.x, point.y, point.z)
+        total += min((math.dist(here, a) for a in acceptors), default=99.0)
+    return total
+
+
+def molecule_from_crystal(smiles: str, atoms: list[dict], residue_name: str,
+                          receptor_pdb: Path | None = None):
     """Our verified SMILES, wearing the crystal ligand's coordinates.
 
     Not bond perception from the coordinates: a deposited file has no bond orders, and
@@ -191,6 +246,18 @@ def molecule_from_crystal(smiles: str, atoms: list[dict], residue_name: str):
     simulated. The SMILES is the one in compounds.tsv, already verified against the
     deposited chemical component or through OPSIN, and it carries the protonation the run is
     meant to test. The crystal supplies coordinates only, matched onto that graph.
+
+    Where the graph is SYMMETRIC the match is ambiguous, and the ambiguity is chemistry, not
+    bookkeeping. A 3,5-dimethyl-4-aryl pyrazole's two tautomers are the same molecule: moving
+    the [nH] across the ring gives an identical canonical SMILES, so the spec cannot say which
+    nitrogen donates, and RDKit returns two equivalent mappings. Taking the first is
+    reproducible and, for JAK1's povorcitinib, was reproducibly wrong: it put the NH on the
+    nitrogen that must ACCEPT from Leu959, leaving nothing to donate to Glu957, and the run
+    then reported that hinge bond absent in every one of 250 frames.
+
+    So where several mappings survive, the receptor breaks the tie: the one seating this
+    molecule's donors closest to receptor hydrogen-bond acceptors wins. The crystal already
+    knows the answer, and this asks it rather than guessing.
     """
     from openff.toolkit import Molecule
     from rdkit import Chem
@@ -250,11 +317,38 @@ def molecule_from_crystal(smiles: str, atoms: list[dict], residue_name: str):
     params = Chem.AdjustQueryParameters()
     params.makeBondsGeneric = True      # the crystal carries no bond orders to match against
     params.aromatizeIfPossible = False
-    match = crystal.GetSubstructMatch(Chem.AdjustQueryProperties(skeleton, params))
-    if not match:
+    matches = crystal.GetSubstructMatches(Chem.AdjustQueryProperties(skeleton, params),
+                                          uniquify=False, maxMatches=64)
+    if not matches:
         raise SystemExit(
             f"{residue_name}: the SMILES ({heavy.GetNumAtoms()} heavy atoms) does not match "
             f"the deposited ligand ({crystal.GetNumAtoms()} heavy atoms)")
+
+    # Donors are this molecule's own polar hydrogens, taken from the verified SMILES rather
+    # than from the coordinates: a deposited ligand has no hydrogens to read.
+    donors = [a.GetIdx() for a in heavy.GetAtoms()
+              if a.GetSymbol() in ("N", "O") and a.GetTotalNumHs() > 0]
+    tautomer = {"equivalent_matches": len(matches), "donor_heavy_atoms": len(donors)}
+    if len(matches) == 1:
+        match, tautomer["resolved_by"] = matches[0], "one match, nothing to choose"
+    elif not donors:
+        match, tautomer["resolved_by"] = matches[0], "several matches, no polar hydrogens at stake"
+    elif receptor_pdb is None or not Path(receptor_pdb).exists():
+        match, tautomer["resolved_by"] = matches[0], "several matches, NO RECEPTOR SUPPLIED"
+    else:
+        acceptors = _receptor_acceptors(Path(receptor_pdb), [a["xyz"] for a in atoms])
+        positions = crystal.GetConformer()
+        # Sorting on (fit, mapping) keeps the choice deterministic when two mappings really
+        # are indistinguishable, rather than leaving it to set or hash ordering.
+        scored = sorted(((_donor_fit(m, donors, positions, acceptors), tuple(m)) for m in matches))
+        match = list(scored[0][1])
+        tautomer.update(
+            resolved_by="receptor geometry",
+            receptor_acceptors_considered=len(acceptors),
+            best_donor_fit_a=round(scored[0][0], 2),
+            worst_donor_fit_a=round(scored[-1][0], 2),
+            margin_a=round(scored[-1][0] - scored[0][0], 2),
+        )
 
     mol = Chem.RWMol(heavy)
     conformer = Chem.Conformer(mol.GetNumAtoms())
@@ -277,7 +371,8 @@ def molecule_from_crystal(smiles: str, atoms: list[dict], residue_name: str):
     return offmol, {"heavy_atoms": int(heavy.GetNumAtoms()),
                     "deuteriums_simulated_as_hydrogen": deuteriums,
                     "formal_charge": int(Chem.GetFormalCharge(with_hydrogens)),
-                    "smiles": Chem.MolToSmiles(mol)}
+                    "smiles": Chem.MolToSmiles(mol),
+                    "match": tautomer}
 
 
 def prepare(args) -> None:
@@ -310,7 +405,8 @@ def prepare(args) -> None:
     details = {}
     for code, entry in json.loads((out / "small_molecules.json").read_text()).items():
         name = LIGAND_RESIDUE_NAME if entry["role"] == "ligand" else code[:3].upper()
-        offmol, detail = molecule_from_crystal(smiles_by_code[code], entry["atoms"], name)
+        offmol, detail = molecule_from_crystal(smiles_by_code[code], entry["atoms"], name,
+                                               receptor_pdb=out / "receptor.pdb")
         offmol.to_file(str(out / f"{code}.sdf"), file_format="sdf")
         details[code] = {**detail, "role": entry["role"], "residue_name": name,
                          "sdf": f"{code}.sdf"}

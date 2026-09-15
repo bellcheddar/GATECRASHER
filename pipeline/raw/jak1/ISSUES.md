@@ -123,19 +123,30 @@ Zhuo et al., *J. Med. Chem.* 2026, drug annotation. DOI 10.1021/acs.jmedchem.5c0
     the main text and no coordinates. They are flagged as such in `compounds.tsv`, and they
     are the least certain identities in this bundle.
 
-## Short molecular dynamics: the trajectory is withheld
+## Short molecular dynamics: the first run measured our mistakes, the second measures the paper
 
-13. **The 5 ns run does not support two of the three claims made of it, and the trajectory is
-    therefore not published.** Recorded here because `gc dynamics` asks for it, and because a
-    withheld trajectory is a result rather than an absence. Measured 2026-09-15 over 5000 ps
-    at 300 K, 250 frames, ligand heavy-atom RMSD 0.79 A median against the crystal pose, so
-    the ligand is stable and the run did not come apart.
+13. **The corrected 5 ns run supports all three claims, and the trajectory is published.** The
+    first run supported one of three and was withheld. Both are recorded, because the gap
+    between them is the whole point: neither failure was a finding about the paper, and it took
+    measuring to prove that rather than assuming it.
 
-    | Claim | Expected | Occupancy | Median distance | Cutoff |
-    |---|---|---|---|---|
-    | `hinge-leu959` | present | 96% | 3.14 A | 3.5 A |
-    | `hinge-glu957` | present | 0% | 5.67 A | 3.5 A |
-    | `ploop-groove-cf3` | present | 0% | 8.27 A | 5.0 A |
+    | Claim | Expected | First run | Corrected run | Crystal | Cutoff |
+    |---|---|---|---|---|---|
+    | `hinge-leu959` | present | 96%, 3.14 A | 100%, 3.05 A | 2.93 A | 3.5 A |
+    | `hinge-glu957` | present | 0%, 5.67 A | 100%, 2.83 A | 2.81 A | 3.5 A |
+    | `ploop-groove-cf3` | present | 0%, 8.27 A | 98%, 3.22 A | 3.05 A | 4.5 A |
+
+    The glutamate row is the one that settles it. With the NH on the nitrogen that faces
+    Glu957 the bond forms in every frame and lands at 2.83 A against 2.81 A in the deposited
+    coordinates, agreement to 0.02 A. With the proton on the other nitrogen the bond cannot
+    form at all, which is exactly what the first run reported. The leucine contact tightening
+    from 96 to 100 per cent is a consequence rather than a coincidence: held against the hinge
+    by a real pair of hydrogen bonds, the ligand keeps its partner contact better too.
+
+    Ligand heavy-atom RMSD rose from 0.79 to 1.10 A median. That is noted rather than explained
+    away. It sits between FGFR's 0.80 A and the 2.0 A threshold, the two distributions overlap
+    heavily, and a different seed with a different tautomer moving 0.3 A is unremarkable at this
+    scale. Measured over 5000 ps at 300 K, 250 frames, decimated to 200 for shipping.
 
     **Neither failure is a finding about the paper. Both are ours, and they are different
     kinds of fault**, which took measuring to separate. An earlier draft of this item blamed
@@ -158,11 +169,27 @@ Zhuo et al., *J. Med. Chem.* 2026, drug annotation. DOI 10.1021/acs.jmedchem.5c0
     reproducibly wrong rather than intermittently wrong. Only this ligand is exposed, since the
     other three bundles have no aromatic NH at all.
 
-    The durable fix is a tie-break in `molecule_from_crystal` that resolves equivalent matches
-    by geometry, preferring the mapping that puts the NH nearest a receptor hydrogen-bond
-    acceptor. Until that lands, the correction is a hand-placed proton in
-    `pipeline/cache/md/10PI/A1C68.sdf`, and `pipeline/cache/` is not tracked, so running
-    `gc dynamics jak1 --stage prepare` would silently restore the inverted tautomer.
+    **The durable fix has landed.** `molecule_from_crystal` now asks for every equivalent
+    mapping rather than the first one, and where more than one survives it lets the receptor
+    decide: the mapping that seats this molecule's donors closest to receptor hydrogen-bond
+    acceptors wins. For povorcitinib there are 24 equivalent mappings, most of them harmless
+    permutations of the trifluoromethyl fluorines, and two that matter. The chosen one puts
+    the NH 2.81 A from the Glu957 carbonyl oxygen and leaves the other ring nitrogen, carrying
+    no hydrogen, 2.93 A from the Leu959 amide. Both reproduce the deposited distances exactly,
+    and the proton is now derived rather than placed by hand.
+
+    The first version of that tie-break was nearly useless and is worth recording. It counted
+    every receptor nitrogen and oxygen as a partner, which includes backbone amide nitrogens:
+    those already carry a hydrogen, so they donate and cannot accept. Scoring against them put
+    the two tautomers 0.12 A apart, which is thinner than the coordinate error being used to
+    judge them, so the correct answer won by luck rather than by evidence. Because
+    `fix_receptor` has already added hydrogens at pH 7.4, donors can be recognised instead of
+    assumed: an oxygen always accepts, a nitrogen accepts only when nothing is bonded to it.
+    That drops the partner count from 247 to 155 and widens the margin to 0.80 A.
+
+    The hand-placed proton in `pipeline/cache/md/10PI/A1C68.sdf` is therefore no longer
+    load-bearing, and `gc dynamics jak1 --stage prepare` can be run again without quietly
+    restoring the inverted tautomer.
 
     **13b. The CF3 claim named the wrong residue.** It tested His885 at 5.0 A and scored 0% at
     a 8.27 A median while the ligand held a 0.79 A RMSD, and a stationary ligand cannot drift
@@ -173,9 +200,15 @@ Zhuo et al., *J. Med. Chem.* 2026, drug annotation. DOI 10.1021/acs.jmedchem.5c0
     about the distance and wrong about what the distance meant. The claim now names Phe886's
     phenyl ring at 4.5 A.
 
-    **Status: a corrected run is in progress**, started 2026-09-15 08:08 with the tautomer
-    fixed and the CF3 claim respecified. The `does_not_support` verdict above is the record of
-    what the first run measured, kept because a withheld trajectory is a result rather than an
-    absence, and superseded by whatever the corrected run reports. The falsification machinery
-    itself is sound in both directions: the KRAS bundle reproduced that paper's own assertion
-    of no contact with Asp12 at 0% occupancy.
+    **Status: the corrected run finished 2026-09-15 10:26 and the bundle publishes it.** The
+    verdict is `supports`, the trajectory ships, and all four bundles validate with no failures
+    and no warnings. The `does_not_support` result is kept above rather than deleted, because
+    the record of having been wrong is worth more than a tidy file: it is what distinguishes a
+    pipeline that can be checked from one that merely agrees with its sources.
+
+    The falsification machinery is sound in both directions and neither direction is decorative.
+    It returned `does_not_support` here when the input was broken, and it did not soften that
+    verdict to fit the paper. Separately, the KRAS bundle reproduced that paper's own assertion
+    of no contact with Asp12 at 0% occupancy. A test that can only ever agree proves nothing;
+    this one disagreed, loudly, and was right to, about our own ligand rather than their
+    chemistry.
