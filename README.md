@@ -15,7 +15,7 @@
 ![molstar](https://img.shields.io/badge/mol*-5.11.0-1B6FA8)
 ![plotly](https://img.shields.io/badge/plotly-2.35.2-3F4F75?logo=plotly&logoColor=white)
 ![rdkit.js](https://img.shields.io/badge/rdkit.js-2025.3.4-8B0000)
-![browser checks](https://img.shields.io/badge/browser%20checks-102%20passing-00d084)
+![browser checks](https://img.shields.io/badge/browser%20checks-110%20passing-00d084)
 ![bundles](https://img.shields.io/badge/bundles-4%20validating-00d084)
 ![data](https://img.shields.io/badge/data-RCSB%20PDB%20·%20KLIFS%20·%20PubChem-fcb900)
 ![licence](https://img.shields.io/badge/licence-MIT-blue)
@@ -127,6 +127,7 @@ Roadmap, roughly in dependency order.
 - [x] **In-browser search.** BM25 over this project's own prose and data, indexed once on the Mac and scored in the page, with "not stated in this project" as a first-class answer. Embeddings were the plan, but a static site cannot embed a query without a server or a model shipped to the page
 - [x] **Take the view away.** A PyMOL script, session and still image per structure, so the pocket leaves the browser
 - [x] **Gates in CI.** The schema, provenance, chemistry and cross-reference checks run on every push, along with the copy gate, so a bundle that contradicts itself cannot reach the branch. Proved by breaking one on purpose: a blanked `source_table` fails the build rather than warning, which is the behaviour the gate exists for
+- [x] **Every cross-link asserted.** Each row of the interaction matrix is now tested for the state change it causes rather than for the element being drawn: a plot point, an R-group cell, a substituent, a cliff pair and an edit card all have to move the selection, not merely exist. Writing them found the last unimplemented row, so a substituent now filters the table to the compounds carrying it
 - [ ] **Short molecular dynamics.** A 5 ns run per primary structure with an RMSF track on the pocket ruler and a playable trajectory, and no trajectory ships that does not support what the paper claims. The verdict logic is proved in both directions; the production runs are in progress
 - [ ] **Per-residue dynamics on the anti-target.** The twin view compares two crystal poses; comparing their flexibility is the obvious next question and is not answered yet
 

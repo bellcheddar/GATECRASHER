@@ -471,6 +471,53 @@ def main() -> int:
         check("the SAR table rendered", (rows or 0) >= 1, f"{rows} rows")
         check("the R-group grid marks combinations that were never made",
               (tab.js("document.querySelectorAll('#rgroup-grid .rgroup-cell.is-empty').length") or 0) >= 1)
+
+        # BUILD_SPEC section 8 says implement every row of the cross-link matrix, and section
+        # 11 says walk every row in a test. These five were asserted only for rendering, which
+        # proves a thing is drawn and nothing about whether clicking it does anything.
+        tab.click("#rgroup-grid .rgroup-cell:not(.is-empty)")
+        check("an R-group cell selects its compound",
+              "cmpd=" in (tab.js("window.location.hash") or ""),
+              tab.js("window.location.hash"))
+
+        # The substituent row header is a lens on the table rather than shared state, so it
+        # is asserted on the rows it hides, not on the hash.
+        before = tab.js("document.querySelectorAll('#compound-table tbody tr').length")
+        tab.click("#rgroup-grid th.is-substituent")
+        after = tab.js("document.querySelectorAll('#compound-table tbody tr').length")
+        check("a substituent filters the table to the compounds carrying it",
+              isinstance(before, int) and isinstance(after, int) and 0 < after < before,
+              f"{before} rows before, {after} after")
+        check("the filtering substituent says it is pressed",
+              tab.js("""document.querySelector('#rgroup-grid th.is-substituent[aria-pressed="true"]') !== null"""))
+        # Clicking the same one again is the way back: a filter with no visible off switch
+        # strands the reader on a partial table.
+        tab.click("#rgroup-grid th.is-substituent[aria-pressed='true']")
+        restored = tab.js("document.querySelectorAll('#compound-table tbody tr').length")
+        check("clicking the same substituent again clears the filter",
+              restored == before, f"{restored} rows, expected {before}")
+
+        # Only 4 of cdk2's 40 cliffs have an edit linking the pair, and none of them is the
+        # first row: a cliff is a potency jump, and the paper does not always document the
+        # change that made it. Asserting edit= on whatever row came first tested the data's
+        # luck rather than the wiring, so the row is chosen by the pair it names.
+        cliffs = tab.js("document.querySelectorAll('#cliffs-table tbody tr').length")
+        clicked = tab.js("""(() => {
+            const want = ['6 \\u2192 7', '2 \\u2192 3', '8 \\u2192 9', '8 \\u2192 13'];
+            for (const tr of document.querySelectorAll('#cliffs-table tbody tr')) {
+                const text = (tr.textContent || '').replace(/\\s+/g, ' ');
+                if (want.some((w) => text.includes(w))) { tr.click(); return text.slice(0, 40); }
+            }
+            return null;
+        })()""")
+        if cliffs and clicked:
+            cliff_hash = tab.js("window.location.hash") or ""
+            check("a cliff pair selects its compound and the edit between them",
+                  "cmpd=" in cliff_hash and "edit=" in cliff_hash,
+                  f"clicked {clicked!r}, hash {cliff_hash}")
+        else:
+            check("a cliff pair selects its compound and the edit between them", False,
+                  f"{cliffs} cliff rows, none matching a documented pair")
         check("the selectivity matrix rendered folds",
               (tab.js("document.querySelectorAll('#selectivity-matrix .fold').length") or 0) >= 5)
         check("a bound value is marked as a bound, not a number",
@@ -497,6 +544,34 @@ def main() -> int:
         check("property deltas are coloured by gain or loss",
               (tab.js("document.querySelectorAll('#edit-cards-inline .edit-delta.gain, #edit-cards-inline .edit-delta.loss').length") or 0) >= 1)
 
+        # Matrix row: an edit card puts both compounds into a comparison state, highlights the
+        # cited residues, and makes the consequence assays the plot axes.
+        tab.click("#edit-cards-inline .edit-card")
+        card_hash = tab.js("window.location.hash") or ""
+        check("an edit card selects the edit and its compound",
+              "edit=" in card_hash and "cmpd=" in card_hash, card_hash)
+
+        # Only 5 of cdk2's 17 edits cite a structural basis, and both of the clearest ones are
+        # filtered out of the default isostere view, so the first visible card has no residues
+        # to highlight and correctly produces no res=. Show every change type, then pick a card
+        # that actually carries residue chips.
+        tab.js("""(() => {
+            const chip = [...document.querySelectorAll('#change-type-filter .chip')]
+                .find((c) => (c.textContent || '').startsWith('all'));
+            if (chip) chip.click();
+        })()""")
+        time.sleep(0.4)
+        cited = tab.js("""(() => {
+            for (const card of document.querySelectorAll('#edit-cards-inline .edit-card')) {
+                if (card.querySelector('.sheet-tools .chip')) { card.click(); return true; }
+            }
+            return false;
+        })()""")
+        basis_hash = tab.js("window.location.hash") or ""
+        check("an edit card highlights the residues it cites",
+              bool(cited) and "res=" in basis_hash,
+              f"card citing residues found: {bool(cited)}, hash {basis_hash}")
+
         # ------------------------------------------------------ properties
         print("\nproperties sheet")
         tab.click("#tab-strip button[data-tab='properties']")
@@ -509,6 +584,49 @@ def main() -> int:
         check("the PK sheet states that doses differ per row",
               "dose" in (tab.js("document.getElementById('pk-note').textContent") or "").lower(),
               tab.js("document.getElementById('pk-note').textContent"))
+
+        # Matrix row: a point on any plot selects its compound. Clicked as a real element
+        # rather than by calling the handler, because what is being tested is the wiring
+        # between Plotly's event and AppState, and calling onPointClick directly would pass
+        # even if plotly_click were never bound.
+        # The assertion is that the selection CHANGES, not that a cmpd= appears. Clearing the
+        # hash first with replaceState looked tidier and was wrong twice over: it does not
+        # clear AppState, so the app still held a compound, and clicking the point that was
+        # already selected is a no-op that writes no hash at all. Which point that is had come
+        # to depend on the edit-card test above, so the result turned on test order.
+        # Reached by an explicit URL rather than by whatever the tests above left behind. The
+        # edit-card test sets assayX and assayY from that edit's consequences, which re-points
+        # this plot at assays most compounds do not carry (compound 2 has 3 measurements,
+        # compound 17 has 30), so it can legitimately draw no points at all. Five clicks then
+        # land on nothing and the failure reads exactly like broken wiring.
+        tab.goto(args.base + "/#cdk2/properties?cmpd=2")
+        tab.wait_for("!!document.querySelector('#plot-property .main-svg')", 20)
+        time.sleep(1.0)
+        points = tab.js("document.querySelectorAll('#plot-property .points path').length")
+        selected = "(new URLSearchParams((location.hash.split('?')[1] || ''))).get('cmpd')"
+        before = tab.js(selected)
+        after, changed = before, False
+        for index in range(5):
+            box = tab.js(f"""(() => {{
+                const p = document.querySelectorAll('#plot-property .points path')[{index}];
+                if (!p) return null;
+                const r = p.getBoundingClientRect();
+                return {{x: Math.round(r.x + r.width / 2), y: Math.round(r.y + r.height / 2)}};
+            }})()""")
+            if not box:
+                continue
+            for kind in ("mousePressed", "mouseReleased"):
+                tab.send("Input.dispatchMouseEvent", type=kind, x=box["x"], y=box["y"],
+                         button="left", clickCount=1)
+            time.sleep(0.5)
+            after = tab.js(selected)
+            if after and after != before:
+                changed = True
+                break
+        # The point count is in the message on purpose: "no points to click" and "clicked and
+        # nothing happened" are different faults and looked identical in the first version.
+        check("a point on a plot selects its compound",
+              changed, f"{points} points drawn, compound {before} -> {after}")
 
         # ---------------------------------------------------- linkability
         print("\na copied URL restores the view")

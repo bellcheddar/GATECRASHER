@@ -12,6 +12,7 @@ export function initSar(state) {
   let bundle = null;
   let sort = { key: null, dir: 1 };
   let filterCompounds = null;      // Set of ids, set by cross-links from other panels
+  let substituentFilter = null;    // R-group label currently used as a lens on the table
 
   const el = {
     grid: document.getElementById('rgroup-grid'),
@@ -69,6 +70,39 @@ export function initSar(state) {
         const svgText = depictFragment(firstSpec.smiles);
         if (svgText) holder.innerHTML = svgText;
       }
+
+      /* Section 8: clicking a substituent filters the table to the compounds carrying it.
+       * This reuses filterCompounds, the same module-local set a residue or motif selection
+       * drives, which is why the matrix specifies this row without a state key of its own:
+       * the substituent is a lens on the table, not a selection the whole app shares, and it
+       * does not belong in a URL that is meant to restore a view. */
+      header.classList.add('is-substituent');
+      header.tabIndex = 0;
+      header.setAttribute('role', 'button');
+      header.title = `Show only the compounds carrying ${label}`;
+      const activateSubstituent = () => {
+        const ids = new Set();
+        for (const perLabel of positions.values()) {
+          for (const id of perLabel.get(label)?.compounds || []) ids.add(id);
+        }
+        /* Clicking the same one again clears it, so the filter can always be undone from
+         * the control that applied it. */
+        const same = substituentFilter === label;
+        substituentFilter = same ? null : label;
+        filterCompounds = same || !ids.size ? null : ids;
+        for (const th of el.grid.querySelectorAll('th.is-substituent')) {
+          th.setAttribute('aria-pressed', String(th === header && !same));
+        }
+        renderTable();
+      };
+      header.setAttribute('aria-pressed', String(substituentFilter === label));
+      header.addEventListener('click', activateSubstituent);
+      header.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          activateSubstituent();
+        }
+      });
 
       for (const position of positionKeys) {
         const entry = positions.get(position).get(label);
@@ -351,13 +385,16 @@ export function initSar(state) {
     return cell;
   }
 
-  /* A residue or motif selection filters the table to the compounds whose edits cite it. */
+  /* A residue or motif selection filters the table to the compounds whose edits cite it.
+   * It wins over a substituent filter rather than intersecting with it: two filters narrowing
+   * at once is how a table silently goes empty and the reader blames the data. */
   function applyResidueFilter() {
     const residues = state.get('residues');
     if (!residues.length) {
       filterCompounds = null;
       return;
     }
+    substituentFilter = null;
     const ids = new Set();
     for (const key of residues) {
       for (const editId of bundle.index.editsByResidue[key] || []) {

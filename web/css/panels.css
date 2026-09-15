@@ -432,6 +432,20 @@ html[data-booting] main { visibility: hidden; }
 
 .rgroup-grid th .depiction { width: 88px; }
 
+/* A row header that filters the table is a control, and has to look like one. Focus is
+ * already covered by the global :focus-visible in blueprint.css; this is the hover and the
+ * pressed state, so a reader can see both that it can be clicked and that it currently is. */
+.rgroup-grid th.is-substituent { cursor: pointer; }
+
+.rgroup-grid th.is-substituent:hover {
+  background: color-mix(in srgb, var(--target) 12%, transparent);
+}
+
+.rgroup-grid th.is-substituent[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--target) 18%, transparent);
+  box-shadow: inset 2px 0 0 var(--target);
+}
+
 .rgroup-cell {
   width: 76px;
   height: 46px;
