@@ -7,6 +7,13 @@ pipeline/cache/
 # The deploy ships them from the local build; the small .pml scripts are tracked.
 web/data/papers/*/figures/*.pse
 web/data/papers/*/figures/*.png
+
+# Those two are the only bundle artefacts kept out, and the rule is what the page does with
+# them: a .pse and a still are download links, fetched only if a reader asks, and several
+# megabytes each. Everything the page LOADS is tracked, including the MD trajectories under
+# web/data/papers/*/dynamics/, which are 1 to 2 MB apiece. deploy.sh rsyncs the working tree,
+# so an untracked file deploys happily from this machine and then vanishes on a fresh clone,
+# which is the failure this repository has already had once with an unanchored papers/ rule.
 # Python
 __pycache__/
 *.pyc

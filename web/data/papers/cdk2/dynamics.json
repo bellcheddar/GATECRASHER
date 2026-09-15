@@ -1,0 +1,1765 @@
+{
+ "8UV0": {
+  "report": "dynamics/8UV0.json",
+  "verdict": "supports",
+  "production_ps": 5000.0,
+  "ligand_rmsd_median_a": 0.53,
+  "claims": [
+   {
+    "id": "hinge-leu83",
+    "label": "The 2-aminopyrimidine makes the hinge contact to Leu83",
+    "expect": "present",
+    "occupancy": 1.0,
+    "pass": true
+   },
+   {
+    "id": "asp86-backbone",
+    "label": "A sulfonamide oxygen accepts from the Asp86 backbone amide",
+    "expect": "present",
+    "occupancy": 0.928,
+    "pass": true
+   },
+   {
+    "id": "gatekeeper-phe80",
+    "label": "The C5 trifluoromethyl points at the Phe80 gatekeeper",
+    "expect": "present",
+    "occupancy": 1.0,
+    "pass": true
+   }
+  ],
+  "rmsf": [
+   {
+    "chain": "A",
+    "resnum": 2,
+    "resname": "GLU",
+    "rmsf_a": 2.36
+   },
+   {
+    "chain": "A",
+    "resnum": 3,
+    "resname": "ASN",
+    "rmsf_a": 2.39
+   },
+   {
+    "chain": "A",
+    "resnum": 4,
+    "resname": "PHE",
+    "rmsf_a": 1.02
+   },
+   {
+    "chain": "A",
+    "resnum": 5,
+    "resname": "GLN",
+    "rmsf_a": 0.95
+   },
+   {
+    "chain": "A",
+    "resnum": 6,
+    "resname": "LYS",
+    "rmsf_a": 0.86
+   },
+   {
+    "chain": "A",
+    "resnum": 7,
+    "resname": "VAL",
+    "rmsf_a": 0.9
+   },
+   {
+    "chain": "A",
+    "resnum": 8,
+    "resname": "GLU",
+    "rmsf_a": 0.82
+   },
+   {
+    "chain": "A",
+    "resnum": 9,
+    "resname": "LYS",
+    "rmsf_a": 0.7
+   },
+   {
+    "chain": "A",
+    "resnum": 10,
+    "resname": "ILE",
+    "rmsf_a": 0.7
+   },
+   {
+    "chain": "A",
+    "resnum": 11,
+    "resname": "GLY",
+    "rmsf_a": 0.78
+   },
+   {
+    "chain": "A",
+    "resnum": 12,
+    "resname": "GLU",
+    "rmsf_a": 0.92
+   },
+   {
+    "chain": "A",
+    "resnum": 13,
+    "resname": "GLY",
+    "rmsf_a": 1.12
+   },
+   {
+    "chain": "A",
+    "resnum": 14,
+    "resname": "THR",
+    "rmsf_a": 0.88
+   },
+   {
+    "chain": "A",
+    "resnum": 15,
+    "resname": "TYR",
+    "rmsf_a": 0.73
+   },
+   {
+    "chain": "A",
+    "resnum": 16,
+    "resname": "GLY",
+    "rmsf_a": 0.77
+   },
+   {
+    "chain": "A",
+    "resnum": 17,
+    "resname": "VAL",
+    "rmsf_a": 0.67
+   },
+   {
+    "chain": "A",
+    "resnum": 18,
+    "resname": "VAL",
+    "rmsf_a": 0.54
+   },
+   {
+    "chain": "A",
+    "resnum": 19,
+    "resname": "TYR",
+    "rmsf_a": 0.56
+   },
+   {
+    "chain": "A",
+    "resnum": 20,
+    "resname": "LYS",
+    "rmsf_a": 0.58
+   },
+   {
+    "chain": "A",
+    "resnum": 21,
+    "resname": "ALA",
+    "rmsf_a": 0.62
+   },
+   {
+    "chain": "A",
+    "resnum": 22,
+    "resname": "ARG",
+    "rmsf_a": 0.74
+   },
+   {
+    "chain": "A",
+    "resnum": 23,
+    "resname": "ASN",
+    "rmsf_a": 0.98
+   },
+   {
+    "chain": "A",
+    "resnum": 24,
+    "resname": "LYS",
+    "rmsf_a": 1.22
+   },
+   {
+    "chain": "A",
+    "resnum": 25,
+    "resname": "LEU",
+    "rmsf_a": 1.66
+   },
+   {
+    "chain": "A",
+    "resnum": 26,
+    "resname": "THR",
+    "rmsf_a": 1.49
+   },
+   {
+    "chain": "A",
+    "resnum": 27,
+    "resname": "GLY",
+    "rmsf_a": 1.14
+   },
+   {
+    "chain": "A",
+    "resnum": 28,
+    "resname": "GLU",
+    "rmsf_a": 1.01
+   },
+   {
+    "chain": "A",
+    "resnum": 29,
+    "resname": "VAL",
+    "rmsf_a": 0.78
+   },
+   {
+    "chain": "A",
+    "resnum": 30,
+    "resname": "VAL",
+    "rmsf_a": 0.6
+   },
+   {
+    "chain": "A",
+    "resnum": 31,
+    "resname": "ALA",
+    "rmsf_a": 0.52
+   },
+   {
+    "chain": "A",
+    "resnum": 32,
+    "resname": "LEU",
+    "rmsf_a": 0.48
+   },
+   {
+    "chain": "A",
+    "resnum": 33,
+    "resname": "LYS",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 34,
+    "resname": "LYS",
+    "rmsf_a": 0.75
+   },
+   {
+    "chain": "A",
+    "resnum": 35,
+    "resname": "ILE",
+    "rmsf_a": 0.86
+   },
+   {
+    "chain": "A",
+    "resnum": 36,
+    "resname": "ARG",
+    "rmsf_a": 1.0
+   },
+   {
+    "chain": "A",
+    "resnum": 37,
+    "resname": "LEU",
+    "rmsf_a": 2.01
+   },
+   {
+    "chain": "A",
+    "resnum": 38,
+    "resname": "ASP",
+    "rmsf_a": 2.44
+   },
+   {
+    "chain": "A",
+    "resnum": 39,
+    "resname": "THR",
+    "rmsf_a": 2.96
+   },
+   {
+    "chain": "A",
+    "resnum": 40,
+    "resname": "GLU",
+    "rmsf_a": 2.76
+   },
+   {
+    "chain": "A",
+    "resnum": 41,
+    "resname": "THR",
+    "rmsf_a": 2.4
+   },
+   {
+    "chain": "A",
+    "resnum": 42,
+    "resname": "GLU",
+    "rmsf_a": 2.58
+   },
+   {
+    "chain": "A",
+    "resnum": 43,
+    "resname": "GLY",
+    "rmsf_a": 2.28
+   },
+   {
+    "chain": "A",
+    "resnum": 44,
+    "resname": "VAL",
+    "rmsf_a": 1.96
+   },
+   {
+    "chain": "A",
+    "resnum": 45,
+    "resname": "PRO",
+    "rmsf_a": 1.76
+   },
+   {
+    "chain": "A",
+    "resnum": 46,
+    "resname": "SER",
+    "rmsf_a": 1.66
+   },
+   {
+    "chain": "A",
+    "resnum": 47,
+    "resname": "THR",
+    "rmsf_a": 1.54
+   },
+   {
+    "chain": "A",
+    "resnum": 48,
+    "resname": "ALA",
+    "rmsf_a": 1.2
+   },
+   {
+    "chain": "A",
+    "resnum": 49,
+    "resname": "ILE",
+    "rmsf_a": 1.07
+   },
+   {
+    "chain": "A",
+    "resnum": 50,
+    "resname": "ARG",
+    "rmsf_a": 1.16
+   },
+   {
+    "chain": "A",
+    "resnum": 51,
+    "resname": "GLU",
+    "rmsf_a": 0.93
+   },
+   {
+    "chain": "A",
+    "resnum": 52,
+    "resname": "ILE",
+    "rmsf_a": 0.63
+   },
+   {
+    "chain": "A",
+    "resnum": 53,
+    "resname": "SER",
+    "rmsf_a": 0.81
+   },
+   {
+    "chain": "A",
+    "resnum": 54,
+    "resname": "LEU",
+    "rmsf_a": 0.9
+   },
+   {
+    "chain": "A",
+    "resnum": 55,
+    "resname": "LEU",
+    "rmsf_a": 0.8
+   },
+   {
+    "chain": "A",
+    "resnum": 56,
+    "resname": "LYS",
+    "rmsf_a": 0.81
+   },
+   {
+    "chain": "A",
+    "resnum": 57,
+    "resname": "GLU",
+    "rmsf_a": 0.96
+   },
+   {
+    "chain": "A",
+    "resnum": 58,
+    "resname": "LEU",
+    "rmsf_a": 0.75
+   },
+   {
+    "chain": "A",
+    "resnum": 59,
+    "resname": "ASN",
+    "rmsf_a": 0.73
+   },
+   {
+    "chain": "A",
+    "resnum": 60,
+    "resname": "HIS",
+    "rmsf_a": 0.65
+   },
+   {
+    "chain": "A",
+    "resnum": 61,
+    "resname": "PRO",
+    "rmsf_a": 0.65
+   },
+   {
+    "chain": "A",
+    "resnum": 62,
+    "resname": "ASN",
+    "rmsf_a": 0.55
+   },
+   {
+    "chain": "A",
+    "resnum": 63,
+    "resname": "ILE",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 64,
+    "resname": "VAL",
+    "rmsf_a": 0.47
+   },
+   {
+    "chain": "A",
+    "resnum": 65,
+    "resname": "LYS",
+    "rmsf_a": 0.49
+   },
+   {
+    "chain": "A",
+    "resnum": 66,
+    "resname": "LEU",
+    "rmsf_a": 0.49
+   },
+   {
+    "chain": "A",
+    "resnum": 67,
+    "resname": "LEU",
+    "rmsf_a": 0.54
+   },
+   {
+    "chain": "A",
+    "resnum": 68,
+    "resname": "ASP",
+    "rmsf_a": 0.6
+   },
+   {
+    "chain": "A",
+    "resnum": 69,
+    "resname": "VAL",
+    "rmsf_a": 0.66
+   },
+   {
+    "chain": "A",
+    "resnum": 70,
+    "resname": "ILE",
+    "rmsf_a": 0.93
+   },
+   {
+    "chain": "A",
+    "resnum": 71,
+    "resname": "HIS",
+    "rmsf_a": 1.45
+   },
+   {
+    "chain": "A",
+    "resnum": 72,
+    "resname": "THR",
+    "rmsf_a": 1.95
+   },
+   {
+    "chain": "A",
+    "resnum": 73,
+    "resname": "GLU",
+    "rmsf_a": 2.26
+   },
+   {
+    "chain": "A",
+    "resnum": 74,
+    "resname": "ASN",
+    "rmsf_a": 2.24
+   },
+   {
+    "chain": "A",
+    "resnum": 75,
+    "resname": "LYS",
+    "rmsf_a": 1.25
+   },
+   {
+    "chain": "A",
+    "resnum": 76,
+    "resname": "LEU",
+    "rmsf_a": 1.02
+   },
+   {
+    "chain": "A",
+    "resnum": 77,
+    "resname": "TYR",
+    "rmsf_a": 0.8
+   },
+   {
+    "chain": "A",
+    "resnum": 78,
+    "resname": "LEU",
+    "rmsf_a": 0.51
+   },
+   {
+    "chain": "A",
+    "resnum": 79,
+    "resname": "VAL",
+    "rmsf_a": 0.51
+   },
+   {
+    "chain": "A",
+    "resnum": 80,
+    "resname": "PHE",
+    "rmsf_a": 0.49
+   },
+   {
+    "chain": "A",
+    "resnum": 81,
+    "resname": "GLU",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 82,
+    "resname": "PHE",
+    "rmsf_a": 0.51
+   },
+   {
+    "chain": "A",
+    "resnum": 83,
+    "resname": "LEU",
+    "rmsf_a": 0.48
+   },
+   {
+    "chain": "A",
+    "resnum": 84,
+    "resname": "HIS",
+    "rmsf_a": 0.54
+   },
+   {
+    "chain": "A",
+    "resnum": 85,
+    "resname": "GLN",
+    "rmsf_a": 0.47
+   },
+   {
+    "chain": "A",
+    "resnum": 86,
+    "resname": "ASP",
+    "rmsf_a": 0.48
+   },
+   {
+    "chain": "A",
+    "resnum": 87,
+    "resname": "LEU",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 88,
+    "resname": "LYS",
+    "rmsf_a": 0.56
+   },
+   {
+    "chain": "A",
+    "resnum": 89,
+    "resname": "LYS",
+    "rmsf_a": 0.52
+   },
+   {
+    "chain": "A",
+    "resnum": 90,
+    "resname": "PHE",
+    "rmsf_a": 0.51
+   },
+   {
+    "chain": "A",
+    "resnum": 91,
+    "resname": "MET",
+    "rmsf_a": 0.56
+   },
+   {
+    "chain": "A",
+    "resnum": 92,
+    "resname": "ASP",
+    "rmsf_a": 0.71
+   },
+   {
+    "chain": "A",
+    "resnum": 93,
+    "resname": "ALA",
+    "rmsf_a": 0.75
+   },
+   {
+    "chain": "A",
+    "resnum": 94,
+    "resname": "SER",
+    "rmsf_a": 0.73
+   },
+   {
+    "chain": "A",
+    "resnum": 95,
+    "resname": "ALA",
+    "rmsf_a": 1.24
+   },
+   {
+    "chain": "A",
+    "resnum": 96,
+    "resname": "LEU",
+    "rmsf_a": 1.42
+   },
+   {
+    "chain": "A",
+    "resnum": 97,
+    "resname": "THR",
+    "rmsf_a": 1.06
+   },
+   {
+    "chain": "A",
+    "resnum": 98,
+    "resname": "GLY",
+    "rmsf_a": 0.73
+   },
+   {
+    "chain": "A",
+    "resnum": 99,
+    "resname": "ILE",
+    "rmsf_a": 0.6
+   },
+   {
+    "chain": "A",
+    "resnum": 100,
+    "resname": "PRO",
+    "rmsf_a": 0.59
+   },
+   {
+    "chain": "A",
+    "resnum": 101,
+    "resname": "LEU",
+    "rmsf_a": 0.55
+   },
+   {
+    "chain": "A",
+    "resnum": 102,
+    "resname": "PRO",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 103,
+    "resname": "LEU",
+    "rmsf_a": 0.41
+   },
+   {
+    "chain": "A",
+    "resnum": 104,
+    "resname": "ILE",
+    "rmsf_a": 0.42
+   },
+   {
+    "chain": "A",
+    "resnum": 105,
+    "resname": "LYS",
+    "rmsf_a": 0.4
+   },
+   {
+    "chain": "A",
+    "resnum": 106,
+    "resname": "SER",
+    "rmsf_a": 0.41
+   },
+   {
+    "chain": "A",
+    "resnum": 107,
+    "resname": "TYR",
+    "rmsf_a": 0.38
+   },
+   {
+    "chain": "A",
+    "resnum": 108,
+    "resname": "LEU",
+    "rmsf_a": 0.38
+   },
+   {
+    "chain": "A",
+    "resnum": 109,
+    "resname": "PHE",
+    "rmsf_a": 0.4
+   },
+   {
+    "chain": "A",
+    "resnum": 110,
+    "resname": "GLN",
+    "rmsf_a": 0.43
+   },
+   {
+    "chain": "A",
+    "resnum": 111,
+    "resname": "LEU",
+    "rmsf_a": 0.43
+   },
+   {
+    "chain": "A",
+    "resnum": 112,
+    "resname": "LEU",
+    "rmsf_a": 0.42
+   },
+   {
+    "chain": "A",
+    "resnum": 113,
+    "resname": "GLN",
+    "rmsf_a": 0.51
+   },
+   {
+    "chain": "A",
+    "resnum": 114,
+    "resname": "GLY",
+    "rmsf_a": 0.54
+   },
+   {
+    "chain": "A",
+    "resnum": 115,
+    "resname": "LEU",
+    "rmsf_a": 0.49
+   },
+   {
+    "chain": "A",
+    "resnum": 116,
+    "resname": "ALA",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 117,
+    "resname": "PHE",
+    "rmsf_a": 0.47
+   },
+   {
+    "chain": "A",
+    "resnum": 118,
+    "resname": "CYS",
+    "rmsf_a": 0.47
+   },
+   {
+    "chain": "A",
+    "resnum": 119,
+    "resname": "HIS",
+    "rmsf_a": 0.51
+   },
+   {
+    "chain": "A",
+    "resnum": 120,
+    "resname": "SER",
+    "rmsf_a": 0.6
+   },
+   {
+    "chain": "A",
+    "resnum": 121,
+    "resname": "HIS",
+    "rmsf_a": 0.68
+   },
+   {
+    "chain": "A",
+    "resnum": 122,
+    "resname": "ARG",
+    "rmsf_a": 0.72
+   },
+   {
+    "chain": "A",
+    "resnum": 123,
+    "resname": "VAL",
+    "rmsf_a": 0.56
+   },
+   {
+    "chain": "A",
+    "resnum": 124,
+    "resname": "LEU",
+    "rmsf_a": 0.55
+   },
+   {
+    "chain": "A",
+    "resnum": 125,
+    "resname": "HIS",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 126,
+    "resname": "ARG",
+    "rmsf_a": 0.62
+   },
+   {
+    "chain": "A",
+    "resnum": 127,
+    "resname": "ASP",
+    "rmsf_a": 0.51
+   },
+   {
+    "chain": "A",
+    "resnum": 128,
+    "resname": "LEU",
+    "rmsf_a": 0.47
+   },
+   {
+    "chain": "A",
+    "resnum": 129,
+    "resname": "LYS",
+    "rmsf_a": 0.45
+   },
+   {
+    "chain": "A",
+    "resnum": 130,
+    "resname": "PRO",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 131,
+    "resname": "GLN",
+    "rmsf_a": 0.47
+   },
+   {
+    "chain": "A",
+    "resnum": 132,
+    "resname": "ASN",
+    "rmsf_a": 0.43
+   },
+   {
+    "chain": "A",
+    "resnum": 133,
+    "resname": "LEU",
+    "rmsf_a": 0.41
+   },
+   {
+    "chain": "A",
+    "resnum": 134,
+    "resname": "LEU",
+    "rmsf_a": 0.42
+   },
+   {
+    "chain": "A",
+    "resnum": 135,
+    "resname": "ILE",
+    "rmsf_a": 0.45
+   },
+   {
+    "chain": "A",
+    "resnum": 136,
+    "resname": "ASN",
+    "rmsf_a": 0.74
+   },
+   {
+    "chain": "A",
+    "resnum": 137,
+    "resname": "THR",
+    "rmsf_a": 0.78
+   },
+   {
+    "chain": "A",
+    "resnum": 138,
+    "resname": "GLU",
+    "rmsf_a": 0.75
+   },
+   {
+    "chain": "A",
+    "resnum": 139,
+    "resname": "GLY",
+    "rmsf_a": 0.6
+   },
+   {
+    "chain": "A",
+    "resnum": 140,
+    "resname": "ALA",
+    "rmsf_a": 0.54
+   },
+   {
+    "chain": "A",
+    "resnum": 141,
+    "resname": "ILE",
+    "rmsf_a": 0.44
+   },
+   {
+    "chain": "A",
+    "resnum": 142,
+    "resname": "LYS",
+    "rmsf_a": 0.45
+   },
+   {
+    "chain": "A",
+    "resnum": 143,
+    "resname": "LEU",
+    "rmsf_a": 0.46
+   },
+   {
+    "chain": "A",
+    "resnum": 144,
+    "resname": "ALA",
+    "rmsf_a": 0.47
+   },
+   {
+    "chain": "A",
+    "resnum": 145,
+    "resname": "ASP",
+    "rmsf_a": 0.52
+   },
+   {
+    "chain": "A",
+    "resnum": 146,
+    "resname": "PHE",
+    "rmsf_a": 0.52
+   },
+   {
+    "chain": "A",
+    "resnum": 147,
+    "resname": "GLY",
+    "rmsf_a": 0.6
+   },
+   {
+    "chain": "A",
+    "resnum": 148,
+    "resname": "LEU",
+    "rmsf_a": 0.66
+   },
+   {
+    "chain": "A",
+    "resnum": 149,
+    "resname": "ALA",
+    "rmsf_a": 0.75
+   },
+   {
+    "chain": "A",
+    "resnum": 150,
+    "resname": "ARG",
+    "rmsf_a": 1.05
+   },
+   {
+    "chain": "A",
+    "resnum": 151,
+    "resname": "ALA",
+    "rmsf_a": 1.21
+   },
+   {
+    "chain": "A",
+    "resnum": 152,
+    "resname": "PHE",
+    "rmsf_a": 0.79
+   },
+   {
+    "chain": "A",
+    "resnum": 153,
+    "resname": "GLY",
+    "rmsf_a": 0.94
+   },
+   {
+    "chain": "A",
+    "resnum": 164,
+    "resname": "VAL",
+    "rmsf_a": 0.91
+   },
+   {
+    "chain": "A",
+    "resnum": 165,
+    "resname": "THR",
+    "rmsf_a": 0.83
+   },
+   {
+    "chain": "A",
+    "resnum": 166,
+    "resname": "LEU",
+    "rmsf_a": 0.57
+   },
+   {
+    "chain": "A",
+    "resnum": 167,
+    "resname": "TRP",
+    "rmsf_a": 0.52
+   },
+   {
+    "chain": "A",
+    "resnum": 168,
+    "resname": "TYR",
+    "rmsf_a": 0.49
+   },
+   {
+    "chain": "A",
+    "resnum": 169,
+    "resname": "ARG",
+    "rmsf_a": 0.53
+   },
+   {
+    "chain": "A",
+    "resnum": 170,
+    "resname": "ALA",
+    "rmsf_a": 0.47
+   },
+   {
+    "chain": "A",
+    "resnum": 171,
+    "resname": "PRO",
+    "rmsf_a": 0.52
+   },
+   {
+    "chain": "A",
+    "resnum": 172,
+    "resname": "GLU",
+    "rmsf_a": 0.57
+   },
+   {
+    "chain": "A",
+    "resnum": 173,
+    "resname": "ILE",
+    "rmsf_a": 0.62
+   },
+   {
+    "chain": "A",
+    "resnum": 174,
+    "resname": "LEU",
+    "rmsf_a": 0.61
+   },
+   {
+    "chain": "A",
+    "resnum": 175,
+    "resname": "LEU",
+    "rmsf_a": 0.61
+   },
+   {
+    "chain": "A",
+    "resnum": 176,
+    "resname": "GLY",
+    "rmsf_a": 0.84
+   },
+   {
+    "chain": "A",
+    "resnum": 177,
+    "resname": "CYS",
+    "rmsf_a": 1.09
+   },
+   {
+    "chain": "A",
+    "resnum": 178,
+    "resname": "LYS",
+    "rmsf_a": 1.9
+   },
+   {
+    "chain": "A",
+    "resnum": 179,
+    "resname": "TYR",
+    "rmsf_a": 1.5
+   },
+   {
+    "chain": "A",
+    "resnum": 180,
+    "resname": "TYR",
+    "rmsf_a": 0.89
+   },
+   {
+    "chain": "A",
+    "resnum": 181,
+    "resname": "SER",
+    "rmsf_a": 0.93
+   },
+   {
+    "chain": "A",
+    "resnum": 182,
+    "resname": "THR",
+    "rmsf_a": 0.75
+   },
+   {
+    "chain": "A",
+    "resnum": 183,
+    "resname": "ALA",
+    "rmsf_a": 0.56
+   },
+   {
+    "chain": "A",
+    "resnum": 184,
+    "resname": "VAL",
+    "rmsf_a": 0.52
+   },
+   {
+    "chain": "A",
+    "resnum": 185,
+    "resname": "ASP",
+    "rmsf_a": 0.48
+   },
+   {
+    "chain": "A",
+    "resnum": 186,
+    "resname": "ILE",
+    "rmsf_a": 0.44
+   },
+   {
+    "chain": "A",
+    "resnum": 187,
+    "resname": "TRP",
+    "rmsf_a": 0.4
+   },
+   {
+    "chain": "A",
+    "resnum": 188,
+    "resname": "SER",
+    "rmsf_a": 0.42
+   },
+   {
+    "chain": "A",
+    "resnum": 189,
+    "resname": "LEU",
+    "rmsf_a": 0.42
+   },
+   {
+    "chain": "A",
+    "resnum": 190,
+    "resname": "GLY",
+    "rmsf_a": 0.41
+   },
+   {
+    "chain": "A",
+    "resnum": 191,
+    "resname": "CYS",
+    "rmsf_a": 0.39
+   },
+   {
+    "chain": "A",
+    "resnum": 192,
+    "resname": "ILE",
+    "rmsf_a": 0.44
+   },
+   {
+    "chain": "A",
+    "resnum": 193,
+    "resname": "PHE",
+    "rmsf_a": 0.41
+   },
+   {
+    "chain": "A",
+    "resnum": 194,
+    "resname": "ALA",
+    "rmsf_a": 0.39
+   },
+   {
+    "chain": "A",
+    "resnum": 195,
+    "resname": "GLU",
+    "rmsf_a": 0.49
+   },
+   {
+    "chain": "A",
+    "resnum": 196,
+    "resname": "MET",
+    "rmsf_a": 0.65
+   },
+   {
+    "chain": "A",
+    "resnum": 197,
+    "resname": "VAL",
+    "rmsf_a": 0.63
+   },
+   {
+    "chain": "A",
+    "resnum": 198,
+    "resname": "THR",
+    "rmsf_a": 0.76
+   },
+   {
+    "chain": "A",
+    "resnum": 199,
+    "resname": "ARG",
+    "rmsf_a": 0.93
+   },
+   {
+    "chain": "A",
+    "resnum": 200,
+    "resname": "ARG",
+    "rmsf_a": 0.81
+   },
+   {
+    "chain": "A",
+    "resnum": 201,
+    "resname": "ALA",
+    "rmsf_a": 0.61
+   },
+   {
+    "chain": "A",
+    "resnum": 202,
+    "resname": "LEU",
+    "rmsf_a": 0.49
+   },
+   {
+    "chain": "A",
+    "resnum": 203,
+    "resname": "PHE",
+    "rmsf_a": 0.52
+   },
+   {
+    "chain": "A",
+    "resnum": 204,
+    "resname": "PRO",
+    "rmsf_a": 0.64
+   },
+   {
+    "chain": "A",
+    "resnum": 205,
+    "resname": "GLY",
+    "rmsf_a": 0.66
+   },
+   {
+    "chain": "A",
+    "resnum": 206,
+    "resname": "ASP",
+    "rmsf_a": 0.84
+   },
+   {
+    "chain": "A",
+    "resnum": 207,
+    "resname": "SER",
+    "rmsf_a": 0.71
+   },
+   {
+    "chain": "A",
+    "resnum": 208,
+    "resname": "GLU",
+    "rmsf_a": 0.71
+   },
+   {
+    "chain": "A",
+    "resnum": 209,
+    "resname": "ILE",
+    "rmsf_a": 0.7
+   },
+   {
+    "chain": "A",
+    "resnum": 210,
+    "resname": "ASP",
+    "rmsf_a": 0.6
+   },
+   {
+    "chain": "A",
+    "resnum": 211,
+    "resname": "GLN",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 212,
+    "resname": "LEU",
+    "rmsf_a": 0.47
+   },
+   {
+    "chain": "A",
+    "resnum": 213,
+    "resname": "PHE",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 214,
+    "resname": "ARG",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 215,
+    "resname": "ILE",
+    "rmsf_a": 0.44
+   },
+   {
+    "chain": "A",
+    "resnum": 216,
+    "resname": "PHE",
+    "rmsf_a": 0.47
+   },
+   {
+    "chain": "A",
+    "resnum": 217,
+    "resname": "ARG",
+    "rmsf_a": 0.56
+   },
+   {
+    "chain": "A",
+    "resnum": 218,
+    "resname": "THR",
+    "rmsf_a": 0.53
+   },
+   {
+    "chain": "A",
+    "resnum": 219,
+    "resname": "LEU",
+    "rmsf_a": 0.54
+   },
+   {
+    "chain": "A",
+    "resnum": 220,
+    "resname": "GLY",
+    "rmsf_a": 0.6
+   },
+   {
+    "chain": "A",
+    "resnum": 221,
+    "resname": "THR",
+    "rmsf_a": 0.59
+   },
+   {
+    "chain": "A",
+    "resnum": 222,
+    "resname": "PRO",
+    "rmsf_a": 0.6
+   },
+   {
+    "chain": "A",
+    "resnum": 223,
+    "resname": "ASP",
+    "rmsf_a": 0.69
+   },
+   {
+    "chain": "A",
+    "resnum": 224,
+    "resname": "GLU",
+    "rmsf_a": 0.76
+   },
+   {
+    "chain": "A",
+    "resnum": 225,
+    "resname": "VAL",
+    "rmsf_a": 0.93
+   },
+   {
+    "chain": "A",
+    "resnum": 226,
+    "resname": "VAL",
+    "rmsf_a": 0.79
+   },
+   {
+    "chain": "A",
+    "resnum": 227,
+    "resname": "TRP",
+    "rmsf_a": 0.68
+   },
+   {
+    "chain": "A",
+    "resnum": 228,
+    "resname": "PRO",
+    "rmsf_a": 0.82
+   },
+   {
+    "chain": "A",
+    "resnum": 229,
+    "resname": "GLY",
+    "rmsf_a": 0.9
+   },
+   {
+    "chain": "A",
+    "resnum": 230,
+    "resname": "VAL",
+    "rmsf_a": 0.7
+   },
+   {
+    "chain": "A",
+    "resnum": 231,
+    "resname": "THR",
+    "rmsf_a": 0.97
+   },
+   {
+    "chain": "A",
+    "resnum": 232,
+    "resname": "SER",
+    "rmsf_a": 1.2
+   },
+   {
+    "chain": "A",
+    "resnum": 233,
+    "resname": "MET",
+    "rmsf_a": 0.91
+   },
+   {
+    "chain": "A",
+    "resnum": 234,
+    "resname": "PRO",
+    "rmsf_a": 1.02
+   },
+   {
+    "chain": "A",
+    "resnum": 235,
+    "resname": "ASP",
+    "rmsf_a": 0.84
+   },
+   {
+    "chain": "A",
+    "resnum": 236,
+    "resname": "TYR",
+    "rmsf_a": 0.78
+   },
+   {
+    "chain": "A",
+    "resnum": 237,
+    "resname": "LYS",
+    "rmsf_a": 0.95
+   },
+   {
+    "chain": "A",
+    "resnum": 238,
+    "resname": "PRO",
+    "rmsf_a": 1.2
+   },
+   {
+    "chain": "A",
+    "resnum": 239,
+    "resname": "SER",
+    "rmsf_a": 1.21
+   },
+   {
+    "chain": "A",
+    "resnum": 240,
+    "resname": "PHE",
+    "rmsf_a": 0.83
+   },
+   {
+    "chain": "A",
+    "resnum": 241,
+    "resname": "PRO",
+    "rmsf_a": 0.85
+   },
+   {
+    "chain": "A",
+    "resnum": 242,
+    "resname": "LYS",
+    "rmsf_a": 1.0
+   },
+   {
+    "chain": "A",
+    "resnum": 243,
+    "resname": "TRP",
+    "rmsf_a": 0.88
+   },
+   {
+    "chain": "A",
+    "resnum": 244,
+    "resname": "ALA",
+    "rmsf_a": 1.13
+   },
+   {
+    "chain": "A",
+    "resnum": 245,
+    "resname": "ARG",
+    "rmsf_a": 0.78
+   },
+   {
+    "chain": "A",
+    "resnum": 246,
+    "resname": "GLN",
+    "rmsf_a": 0.76
+   },
+   {
+    "chain": "A",
+    "resnum": 247,
+    "resname": "ASP",
+    "rmsf_a": 1.03
+   },
+   {
+    "chain": "A",
+    "resnum": 248,
+    "resname": "PHE",
+    "rmsf_a": 0.94
+   },
+   {
+    "chain": "A",
+    "resnum": 249,
+    "resname": "SER",
+    "rmsf_a": 0.94
+   },
+   {
+    "chain": "A",
+    "resnum": 250,
+    "resname": "LYS",
+    "rmsf_a": 1.0
+   },
+   {
+    "chain": "A",
+    "resnum": 251,
+    "resname": "VAL",
+    "rmsf_a": 0.91
+   },
+   {
+    "chain": "A",
+    "resnum": 252,
+    "resname": "VAL",
+    "rmsf_a": 0.78
+   },
+   {
+    "chain": "A",
+    "resnum": 253,
+    "resname": "PRO",
+    "rmsf_a": 0.9
+   },
+   {
+    "chain": "A",
+    "resnum": 254,
+    "resname": "PRO",
+    "rmsf_a": 0.96
+   },
+   {
+    "chain": "A",
+    "resnum": 255,
+    "resname": "LEU",
+    "rmsf_a": 0.75
+   },
+   {
+    "chain": "A",
+    "resnum": 256,
+    "resname": "ASP",
+    "rmsf_a": 0.86
+   },
+   {
+    "chain": "A",
+    "resnum": 257,
+    "resname": "GLU",
+    "rmsf_a": 0.77
+   },
+   {
+    "chain": "A",
+    "resnum": 258,
+    "resname": "ASP",
+    "rmsf_a": 0.62
+   },
+   {
+    "chain": "A",
+    "resnum": 259,
+    "resname": "GLY",
+    "rmsf_a": 0.48
+   },
+   {
+    "chain": "A",
+    "resnum": 260,
+    "resname": "ARG",
+    "rmsf_a": 0.53
+   },
+   {
+    "chain": "A",
+    "resnum": 261,
+    "resname": "SER",
+    "rmsf_a": 0.58
+   },
+   {
+    "chain": "A",
+    "resnum": 262,
+    "resname": "LEU",
+    "rmsf_a": 0.44
+   },
+   {
+    "chain": "A",
+    "resnum": 263,
+    "resname": "LEU",
+    "rmsf_a": 0.41
+   },
+   {
+    "chain": "A",
+    "resnum": 264,
+    "resname": "SER",
+    "rmsf_a": 0.49
+   },
+   {
+    "chain": "A",
+    "resnum": 265,
+    "resname": "GLN",
+    "rmsf_a": 0.45
+   },
+   {
+    "chain": "A",
+    "resnum": 266,
+    "resname": "MET",
+    "rmsf_a": 0.38
+   },
+   {
+    "chain": "A",
+    "resnum": 267,
+    "resname": "LEU",
+    "rmsf_a": 0.39
+   },
+   {
+    "chain": "A",
+    "resnum": 268,
+    "resname": "HIS",
+    "rmsf_a": 0.46
+   },
+   {
+    "chain": "A",
+    "resnum": 269,
+    "resname": "TYR",
+    "rmsf_a": 0.46
+   },
+   {
+    "chain": "A",
+    "resnum": 270,
+    "resname": "ASP",
+    "rmsf_a": 0.57
+   },
+   {
+    "chain": "A",
+    "resnum": 271,
+    "resname": "PRO",
+    "rmsf_a": 0.67
+   },
+   {
+    "chain": "A",
+    "resnum": 272,
+    "resname": "ASN",
+    "rmsf_a": 0.85
+   },
+   {
+    "chain": "A",
+    "resnum": 273,
+    "resname": "LYS",
+    "rmsf_a": 0.71
+   },
+   {
+    "chain": "A",
+    "resnum": 274,
+    "resname": "ARG",
+    "rmsf_a": 0.48
+   },
+   {
+    "chain": "A",
+    "resnum": 275,
+    "resname": "ILE",
+    "rmsf_a": 0.47
+   },
+   {
+    "chain": "A",
+    "resnum": 276,
+    "resname": "SER",
+    "rmsf_a": 0.5
+   },
+   {
+    "chain": "A",
+    "resnum": 277,
+    "resname": "ALA",
+    "rmsf_a": 0.51
+   },
+   {
+    "chain": "A",
+    "resnum": 278,
+    "resname": "LYS",
+    "rmsf_a": 0.62
+   },
+   {
+    "chain": "A",
+    "resnum": 279,
+    "resname": "ALA",
+    "rmsf_a": 0.59
+   },
+   {
+    "chain": "A",
+    "resnum": 280,
+    "resname": "ALA",
+    "rmsf_a": 0.48
+   },
+   {
+    "chain": "A",
+    "resnum": 281,
+    "resname": "LEU",
+    "rmsf_a": 0.54
+   },
+   {
+    "chain": "A",
+    "resnum": 282,
+    "resname": "ALA",
+    "rmsf_a": 0.66
+   },
+   {
+    "chain": "A",
+    "resnum": 283,
+    "resname": "HIS",
+    "rmsf_a": 0.68
+   },
+   {
+    "chain": "A",
+    "resnum": 284,
+    "resname": "PRO",
+    "rmsf_a": 0.8
+   },
+   {
+    "chain": "A",
+    "resnum": 285,
+    "resname": "PHE",
+    "rmsf_a": 0.63
+   },
+   {
+    "chain": "A",
+    "resnum": 286,
+    "resname": "PHE",
+    "rmsf_a": 0.57
+   },
+   {
+    "chain": "A",
+    "resnum": 287,
+    "resname": "GLN",
+    "rmsf_a": 0.84
+   },
+   {
+    "chain": "A",
+    "resnum": 288,
+    "resname": "ASP",
+    "rmsf_a": 1.06
+   },
+   {
+    "chain": "A",
+    "resnum": 289,
+    "resname": "VAL",
+    "rmsf_a": 0.65
+   },
+   {
+    "chain": "A",
+    "resnum": 290,
+    "resname": "THR",
+    "rmsf_a": 0.71
+   },
+   {
+    "chain": "A",
+    "resnum": 291,
+    "resname": "LYS",
+    "rmsf_a": 0.67
+   },
+   {
+    "chain": "A",
+    "resnum": 292,
+    "resname": "PRO",
+    "rmsf_a": 0.65
+   },
+   {
+    "chain": "A",
+    "resnum": 293,
+    "resname": "VAL",
+    "rmsf_a": 0.69
+   },
+   {
+    "chain": "A",
+    "resnum": 294,
+    "resname": "PRO",
+    "rmsf_a": 0.73
+   },
+   {
+    "chain": "A",
+    "resnum": 295,
+    "resname": "HIS",
+    "rmsf_a": 1.14
+   },
+   {
+    "chain": "A",
+    "resnum": 296,
+    "resname": "LEU",
+    "rmsf_a": 1.47
+   },
+   {
+    "chain": "A",
+    "resnum": 297,
+    "resname": "ARG",
+    "rmsf_a": 2.43
+   },
+   {
+    "chain": "A",
+    "resnum": 298,
+    "resname": "LEU",
+    "rmsf_a": 2.96
+   }
+  ],
+  "not_assessed": [
+   "The water-mediated contact to Lys89 and Gln85. The analysed trajectory carries the crystal waters but a bridge can be handed on between exchanging waters, and a solute-only trajectory cannot follow that."
+  ],
+  "trajectory": {
+   "topology": "dynamics/8UV0_md.pdb",
+   "xtc": "dynamics/8UV0_md.xtc",
+   "frames": 200,
+   "atoms": 2366,
+   "bytes": 1856244
+  }
+ }
+}
