@@ -443,6 +443,26 @@ def main() -> int:
                   md.get("hasPlay") == expected_play and md.get("withheld") != expected_play,
                   f"verdict {md.get('verdict')}, play control {md.get('hasPlay')}, "
                   f"withheld notice {md.get('withheld')}")
+
+            # The limits, beside the claims. This renders from not_assessed, which reached the
+            # report and stopped there until today: the page published the conclusions and
+            # dropped what the method could not reach. Asserted on the substance rather than
+            # the mere presence of a chip, because a grey pill reading "not assessed" would
+            # satisfy a weaker test while telling the reader nothing about what was not
+            # assessed. Inside this branch on purpose: a paper with no MD bundled has no
+            # caveats to show, and asserting one there would fail for the right reason at the
+            # wrong time.
+            caveat = tab.js("""(() => {
+                const c = document.querySelector('#structure-dynamics .claim-untested');
+                if (!c) return null;
+                return {text: c.textContent, title: c.title,
+                        dashed: getComputedStyle(c).borderTopStyle === 'dashed'};
+            })()""")
+            check("a run says what it could not test, beside what it did",
+                  bool(caveat) and caveat["dashed"]
+                  and len(caveat["title"]) >= len(caveat["text"])
+                  and "not assessed" in caveat["text"],
+                  f"{caveat}")
         else:
             print("  skip  no MD run bundled for CDK2 yet, so the dynamics row is not asserted")
 
@@ -672,7 +692,14 @@ def main() -> int:
         # this plot at assays most compounds do not carry (compound 2 has 3 measurements,
         # compound 17 has 30), so it can legitimately draw no points at all. Five clicks then
         # land on nothing and the failure reads exactly like broken wiring.
-        tab.goto(args.base + "/#cdk2/properties?cmpd=2")
+        # The AXES are pinned, not just the compound. Navigating to a URL that differs only in
+        # the hash is a same-document navigation: the page does not reload and AppState
+        # survives, so the edit-card test's assayX and assayY carry over here. Those are that
+        # edit's consequence assays, which most compounds do not have, and the plot drew 4
+        # points instead of 14. Going to an "explicit URL" was the earlier fix for this and was
+        # not enough, because a hash that names only the compound leaves the axes to whatever
+        # ran before.
+        tab.goto(args.base + "/#cdk2/properties?cmpd=2&x=sgf_solubility&y=cdk2_e1_ic50")
         # Waited on the POINTS, not on the svg that contains them, and not on a fixed sleep.
         # .main-svg appears before Plotly has positioned the scatter, so a flat 1.0 s was the
         # only thing standing between this and a race: it held three runs and failed the
