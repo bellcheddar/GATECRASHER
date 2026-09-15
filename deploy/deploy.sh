@@ -101,6 +101,11 @@ check_type "js/app.js"                      "javascript"
 check_type "data/index.json"                "application/json"
 check_type "icon.svg"                       "image/svg+xml"
 check_type "js/vendor/RDKit_minimal.wasm"   "application/wasm"
+# The faces have been served from this origin since 2026-09-15. A woff2 sent as
+# application/octet-stream is refused by the browser, which then falls back to the system
+# stacks without a word: the page still renders, in the wrong type, and every status code is
+# still 200. That is the same shape as the octet-stream incident this function exists for.
+check_type "fonts/archivo-narrow-latin.woff2" "font/woff2"
 [[ $ct_fail -eq 0 ]] || { echo "    content types are wrong: the page will not render"; exit 1; }
 
 echo "==> Live: https://${SERVER_NAME}"
