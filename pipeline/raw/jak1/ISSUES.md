@@ -137,23 +137,45 @@ Zhuo et al., *J. Med. Chem.* 2026, drug annotation. DOI 10.1021/acs.jmedchem.5c0
     | `hinge-glu957` | present | 0% | 5.67 A | 3.5 A |
     | `ploop-groove-cf3` | present | 0% | 8.27 A | 5.0 A |
 
-    **The two failures are most likely faults in how the claims were framed, not findings
-    about the paper**, and item 4b above anticipated the first of them before the run existed.
-    The pyrazole NH can sit on either ring nitrogen, a deposited structure carries no
-    hydrogens to settle it, and PLIP places it on the nitrogen that accepts from Leu959. The
-    force field made the same choice: the leucine contact held in 96% of frames and the
-    glutamate, left with no hydrogen to donate, never formed. A fixed protonation state cannot
-    test a contact whose existence depends on which tautomer is present.
+    **Neither failure is a finding about the paper. Both are ours, and they are different
+    kinds of fault**, which took measuring to separate. An earlier draft of this item blamed
+    the force field for the first one. That was wrong, and the correction matters because it
+    moves the defect from chemistry into the pipeline.
 
-    The CF3 claim is a plainer error. PLIP reports His885 only as a **water bridge** at 3.48 A,
-    not a direct contact, and this bundle's own `not_assessed` list already records that a
-    bridge handed on between exchanging waters cannot be followed in a solute-only trajectory.
-    Testing it with a 5.0 A direct-distance cutoff asked the method for something it states it
-    cannot provide.
+    **13a. The simulated ligand carried the wrong tautomer, and the pipeline chose it.** The
+    deposited coordinates of chain A put ligand N6 2.81 A from the Glu957 carbonyl and N5 2.93
+    A from the Leu959 amide: the ordinary pyrazole hinge pair, one NH donating and one lone
+    pair accepting. The prepared ligand had its NH on N5, the nitrogen that must accept. The
+    run was therefore physically unable to form the Glu957 bond, and reported 0% at a 5.67 A
+    median. Leu959 still scored 96% only because that claim measures a heavy-atom N to N
+    distance, which is blind to where the proton sits.
 
-    Left as measured rather than quietly rescoped: the verdict stands as `does_not_support`
-    until the two claims are either reframed as `not_assessed` with the reasons above, or
-    replaced with something a solute trajectory can actually decide. Whichever way that goes,
-    the falsification machinery is working as intended, and the KRAS bundle demonstrates the
-    same gate in the other direction, where the paper's own assertion that the ligand makes no
-    contact with Asp12 was reproduced at 0% occupancy.
+    Why it happened: `molecule_from_crystal` maps our verified SMILES onto the crystal atoms by
+    substructure match, and for a 3,5-dimethyl-4-aryl pyrazole the two tautomers are the same
+    molecule. Moving the `[nH]` across the ring gives an identical canonical SMILES, so the
+    spec cannot express which nitrogen donates, and RDKit returns **two symmetry-equivalent
+    matches**. The pick is deterministic, not random, which is the better failure: it is
+    reproducibly wrong rather than intermittently wrong. Only this ligand is exposed, since the
+    other three bundles have no aromatic NH at all.
+
+    The durable fix is a tie-break in `molecule_from_crystal` that resolves equivalent matches
+    by geometry, preferring the mapping that puts the NH nearest a receptor hydrogen-bond
+    acceptor. Until that lands, the correction is a hand-placed proton in
+    `pipeline/cache/md/10PI/A1C68.sdf`, and `pipeline/cache/` is not tracked, so running
+    `gc dynamics jak1 --stage prepare` would silently restore the inverted tautomer.
+
+    **13b. The CF3 claim named the wrong residue.** It tested His885 at 5.0 A and scored 0% at
+    a 8.27 A median while the ligand held a 0.79 A RMSD, and a stationary ligand cannot drift
+    past a cutoff. Measured in chain A, the CF3 is 3.05 A from the Phe886 side chain, 3.21 from
+    Gly887, 3.39 from His918 and 3.83 from Leu910; His885 is 7.09 A away and PLIP sees it only
+    as a water bridge. The groove the caption describes is real and the group sits in it. The
+    caption names no residue, and His885 was a proxy chosen here: the measurement was right
+    about the distance and wrong about what the distance meant. The claim now names Phe886's
+    phenyl ring at 4.5 A.
+
+    **Status: a corrected run is in progress**, started 2026-09-15 08:08 with the tautomer
+    fixed and the CF3 claim respecified. The `does_not_support` verdict above is the record of
+    what the first run measured, kept because a withheld trajectory is a result rather than an
+    absence, and superseded by whatever the corrected run reports. The falsification machinery
+    itself is sound in both directions: the KRAS bundle reproduced that paper's own assertion
+    of no contact with Asp12 at 0% occupancy.
