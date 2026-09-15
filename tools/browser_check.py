@@ -938,8 +938,44 @@ def main() -> int:
         # after this block and quietly change what it measures.
         tab.send("Emulation.setTouchEmulationEnabled", enabled=False)
 
-        # --------------------------------------------------------- console
-        print("\nconsole")
+        # ---------------------------------------------------- where it phones
+        # BUILD_SPEC acceptance: no network request at runtime except to the app's own origin
+        # and the pinned CDNs. That was a stated hard constraint with nothing asserting it,
+        # which is how a stray analytics tag or an embedded widget arrives unnoticed.
+        #
+        # The allowlist is deliberately explicit rather than a pattern. Google Fonts is the
+        # only third party the app contacts today, and whether it belongs here at all or the
+        # three faces should be self-hosted from this origin is a deployment decision, not the
+        # test's to make. Encoding the current set means a NEW third party fails the build
+        # while the existing choice stays visible and reviewable on this line.
+        print("\nwhere the page phones")
+        tab.goto(args.base + "/")
+        time.sleep(2.0)
+        allowed = {
+            # Coordinates are fetched from RCSB at view time and never redistributed here,
+            # which BUILD_SPEC 1.3 requires and the About sheet states. The first version of
+            # this list left it out, having been written from a Lighthouse trace of the
+            # landing page that never loaded a structure, and the test caught it immediately.
+            "https://files.rcsb.org",
+            # The three faces. Whether these should be self-hosted from this origin instead is
+            # a deployment decision, not the test's to make; listing them keeps the choice
+            # visible rather than implicit.
+            "https://fonts.googleapis.com",
+            "https://fonts.gstatic.com",
+        }
+        external = tab.js("""(() => {
+            const here = location.origin;
+            const seen = new Set();
+            for (const r of performance.getEntriesByType('resource')) {
+                try { const o = new URL(r.name).origin; if (o !== here) seen.add(o); }
+                catch (e) { /* data: and blob: URLs have no origin worth checking */ }
+            }
+            return [...seen].sort();
+        })()""") or []
+        unexpected = [o for o in external if o not in allowed]
+        check("the page contacts no origin beyond its own and the pinned font CDN",
+              not unexpected,
+              f"unexpected: {unexpected}; all external: {external}")
         errors = [c for c in tab.console if c.startswith("error") or c.startswith("EXCEPTION")]
         check("no console errors or exceptions", not errors,
               "\n          ".join(errors[:6]))
