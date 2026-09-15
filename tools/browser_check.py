@@ -565,9 +565,15 @@ def main() -> int:
         # ---------------------------------------------------------- about
         print("\nabout sheet")
         tab.click("#tab-strip button[data-tab='about']")
-        check("the about sheet renders its pipeline",
-              tab.wait_for("document.querySelectorAll('#about-flow .about-stage').length === 6", 15),
-              f"{tab.js('document.querySelectorAll(\"#about-flow .about-stage\").length')} stages")
+        # Counted against software.json rather than a literal, which is the whole point of the
+        # About sheet being generated from it: adding the dynamics stage broke this assertion
+        # while the page was perfectly correct. A test that hard-codes what the data decides
+        # fails every time the data is right.
+        stages = len(json.loads((Path("web/data/software.json")).read_text())["pipeline"])
+        check("the about sheet renders every pipeline stage in software.json",
+              tab.wait_for(f"document.querySelectorAll('#about-flow .about-stage').length === {stages}", 15),
+              f"{tab.js('document.querySelectorAll(\"#about-flow .about-stage\").length')} drawn, "
+              f"{stages} in software.json")
         check("the software table lists what this stands on",
               (tab.js("document.querySelectorAll('#about-software tbody tr').length") or 0) >= 10,
               f"{tab.js('document.querySelectorAll(\"#about-software tbody tr\").length')} rows")
@@ -748,6 +754,12 @@ def main() -> int:
         print("\nphone (390 x 844)")
         tab.send("Emulation.setDeviceMetricsOverride", width=390, height=844,
                  deviceScaleFactor=3, mobile=True)
+        # A phone is a coarse pointer as well as a narrow screen, and setDeviceMetricsOverride
+        # supplies only the screen. Measured on this harness: with mobile=True alone,
+        # (pointer: coarse) is false and navigator.maxTouchPoints is 0, so anything gated on
+        # touch never fires and the test reports the feature broken when it is working. With
+        # touch emulation, (pointer: coarse) is true and maxTouchPoints is 5.
+        tab.send("Emulation.setTouchEmulationEnabled", enabled=True, maxTouchPoints=5)
         tab.goto(args.base + "/")
         time.sleep(1.5)
         # Against clientWidth, not innerWidth. Under mobile emulation an overflowing page
@@ -804,6 +816,9 @@ def main() -> int:
               f"{colours} distinct colours in the centre of the canvas")
         tab.shot(out / "phone.png")
         tab.send("Emulation.clearDeviceMetricsOverride")
+        # Cleared too: a coarse pointer left switched on would follow into anything added
+        # after this block and quietly change what it measures.
+        tab.send("Emulation.setTouchEmulationEnabled", enabled=False)
 
         # --------------------------------------------------------- console
         print("\nconsole")
