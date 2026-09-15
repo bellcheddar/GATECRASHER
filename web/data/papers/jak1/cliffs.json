@@ -1,10 +1,31 @@
 [
  {
   "from_compound": "20",
+  "to_compound": "18",
+  "fold": 1256.0,
+  "atoms_changed": 12,
+  "fold_per_atom": 104.67
+ },
+ {
+  "from_compound": "20",
+  "to_compound": "19",
+  "fold": 1256.0,
+  "atoms_changed": 13,
+  "fold_per_atom": 96.62
+ },
+ {
+  "from_compound": "20",
   "to_compound": "17",
   "fold": 682.6,
   "atoms_changed": 15,
   "fold_per_atom": 45.51
+ },
+ {
+  "from_compound": "20",
+  "to_compound": "16",
+  "fold": 560.7,
+  "atoms_changed": 13,
+  "fold_per_atom": 43.13
  },
  {
   "from_compound": "20",

@@ -91,3 +91,61 @@ Ye et al., *J. Med. Chem.* 2025, 68, 1924-1939. DOI 10.1021/acs.jmedchem.4c02662
 12. **Compound 18's non-human primate oral AUC is BQL, below the quantifiable limit.** It is
     recorded as an absent value with its bioavailability of 0 per cent, which is the reported
     result, rather than as a zero AUC that would plot as a real measurement.
+
+## The activity cliff table was not reproducible, and is now
+
+16. **A five second limit inside the chemistry made this table a function of machine
+    load.** Two compounds from different series only count as a matched pair if they
+    share enough of a common substructure, and that search ran with a five second
+    budget. When it ran out of time the pair was recorded as sharing nothing, which is
+    indistinguishable from a real negative: nothing failed, no test caught it, and the
+    published file simply differed between builds depending on what else the machine
+    was doing. Found on 2026-09-15 because `cliffs.json` appeared as an unstaged
+    modification while something unrelated was being committed.
+
+    This bundle published 25 cliffs and now publishes 29. Five were being dropped:
+
+    | Pair | Fold | Per atom | Rank now |
+    |---|---|---|---|
+    | 3 to 8 | 223.7 | 7.22 | 10 |
+    | 13 to 7 | 26.1 | 0.64 | 23 |
+    | 7 to 14 | 5.8 | 0.14 | 26 |
+    | 4 to 8 | 4.0 | 0.11 | 27 |
+    | 7 to 11 | 3.9 | 0.10 | 28 |
+
+    **One cliff went the other way, and that is a loss rather than a correction.**
+    Compounds 13 and 23 are an 88.9-fold pair within the tricyclic indole series, and
+    the table no longer carries them. Same-series pairs never reach the scaffold test
+    at all, so this is nothing to do with the timeout above: the search that works out
+    which atoms changed between the two molecules does not converge inside 300 s, and
+    every atom outside a truncated core counts as changed. Publishing it anyway would
+    have overstated the edit and mis-sorted the whole table, since fold per atom is the
+    key it is ranked by. Dropped and recorded rather than guessed.
+
+    That is a judgement, not a measurement, and there is a defensible alternative: keep
+    the row and mark the per atom figure unavailable, the way this app already marks a
+    withheld trajectory or an untested claim. It is left open here rather than settled
+    quietly, because the present behaviour removes a real, correctly measured cliff from
+    what a reader sees.
+
+17. **Seven pairs cannot be resolved at all, and are listed rather than hidden.** Six
+    are the scaffold test giving up: every one involves compound 7, a 50 heavy atom
+    tricyclic, against partners of 49 to 53 atoms, where the search finds a core of 4
+    or 8 atoms against the 29 to 30 it would need. Those are not close calls. The same
+    comparison was measured at 30 s, 300 s and 1800 s and returned the identical core
+    every time, so more time is not the answer.
+
+    | Pair | Heavy atoms | Core found | Core needed | Given |
+    |---|---|---|---|---|
+    | 7 and 8 | 50, 50 | 8 | 30.0 | 30 s |
+    | 7 and 9 | 50, 50 | 8 | 30.0 | 30 s |
+    | 7 and 10 | 50, 53 | 8 | 30.0 | 30 s |
+    | 7 and 20 | 50, 49 | 4 | 29.4 | 30 s |
+    | 7 and 21 | 50, 51 | 4 | 30.0 | 30 s |
+    | 7 and 22 | 50, 51 | 4 | 30.0 | 30 s |
+    | 13 and 23 | 45, 48 | edit log | did not converge | 300 s |
+
+    The other three bundles have no unresolved pairs. Both passes of the rebuild
+    produced byte identical tables and byte identical exclusion lists, and CDK2 and
+    FGFR came out unchanged from what was already published, which is the evidence that
+    the fix corrected the defect rather than merely moving it.

@@ -63,6 +63,13 @@
   "fold_per_atom": 8.46
  },
  {
+  "from_compound": "3",
+  "to_compound": "8",
+  "fold": 223.7,
+  "atoms_changed": 31,
+  "fold_per_atom": 7.22
+ },
+ {
   "from_compound": "13",
   "to_compound": "22",
   "fold": 139.6,
@@ -120,13 +127,6 @@
  },
  {
   "from_compound": "13",
-  "to_compound": "23",
-  "fold": 88.9,
-  "atoms_changed": 29,
-  "fold_per_atom": 3.06
- },
- {
-  "from_compound": "13",
   "to_compound": "18",
   "fold": 56.7,
   "atoms_changed": 23,
@@ -154,6 +154,13 @@
   "fold_per_atom": 1.03
  },
  {
+  "from_compound": "13",
+  "to_compound": "7",
+  "fold": 26.1,
+  "atoms_changed": 41,
+  "fold_per_atom": 0.64
+ },
+ {
   "from_compound": "7",
   "to_compound": "5",
   "fold": 5.2,
@@ -166,6 +173,27 @@
   "fold": 5.2,
   "atoms_changed": 16,
   "fold_per_atom": 0.32
+ },
+ {
+  "from_compound": "7",
+  "to_compound": "14",
+  "fold": 5.8,
+  "atoms_changed": 40,
+  "fold_per_atom": 0.14
+ },
+ {
+  "from_compound": "4",
+  "to_compound": "8",
+  "fold": 4.0,
+  "atoms_changed": 36,
+  "fold_per_atom": 0.11
+ },
+ {
+  "from_compound": "7",
+  "to_compound": "11",
+  "fold": 3.9,
+  "atoms_changed": 39,
+  "fold_per_atom": 0.1
  },
  {
   "from_compound": "18",

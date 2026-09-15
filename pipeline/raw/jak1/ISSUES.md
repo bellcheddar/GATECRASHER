@@ -212,3 +212,33 @@ Zhuo et al., *J. Med. Chem.* 2026, drug annotation. DOI 10.1021/acs.jmedchem.5c0
     of no contact with Asp12 at 0% occupancy. A test that can only ever agree proves nothing;
     this one disagreed, loudly, and was right to, about our own ligand rather than their
     chemistry.
+
+## The activity cliff table was missing its top of the list
+
+14. **This bundle published 36 cliffs and now publishes 39, and the three that were
+    absent ranked first, second and fourth.** The cause was not in this paper's data at
+    all: the test deciding whether two compounds from different series count as a
+    matched pair ran a common substructure search with a five second budget, and when
+    that ran out the pair was recorded as sharing nothing. A timeout was therefore
+    indistinguishable from a real negative, and the published file changed between
+    builds depending on how busy the machine was.
+
+    | Pair | Fold | Per atom | Rank now |
+    |---|---|---|---|
+    | 20 to 18 | 1256.0 | 104.67 | 1 |
+    | 20 to 19 | 1256.0 | 96.62 | 2 |
+    | 20 to 16 | 560.7 | 43.13 | 4 |
+
+    Every one involves compound 20, and the effect on a reader was specific rather than
+    diffuse: the panel is sorted by fold per atom, so it headlined 45.51 while the true
+    top of the table was 104.67, more than twice as steep. The pair that first exposed
+    the fault was 20 and 14, whose shared core is 28 of 34 heavy atoms, a ratio of 0.82
+    against a threshold of 0.60. It answered False, False, True, True, True across five
+    runs on an idle machine.
+
+    The search now takes a short look first and only spends the full budget on pairs
+    close enough to be worth it, a cancelled result is treated as the lower bound it
+    actually is rather than as a negative, and anything still unresolved is recorded
+    instead of dropped in silence. Both passes of the rebuild produced byte identical
+    tables. This bundle has no unresolved pairs; the KRAS bundle has seven, and lists
+    them.
