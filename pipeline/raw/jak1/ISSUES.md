@@ -122,3 +122,38 @@ Zhuo et al., *J. Med. Chem.* 2026, drug annotation. DOI 10.1021/acs.jmedchem.5c0
     composite drawing with three shared cores and six capping groups, with no IUPAC names in
     the main text and no coordinates. They are flagged as such in `compounds.tsv`, and they
     are the least certain identities in this bundle.
+
+## Short molecular dynamics: the trajectory is withheld
+
+13. **The 5 ns run does not support two of the three claims made of it, and the trajectory is
+    therefore not published.** Recorded here because `gc dynamics` asks for it, and because a
+    withheld trajectory is a result rather than an absence. Measured 2026-09-15 over 5000 ps
+    at 300 K, 250 frames, ligand heavy-atom RMSD 0.79 A median against the crystal pose, so
+    the ligand is stable and the run did not come apart.
+
+    | Claim | Expected | Occupancy | Median distance | Cutoff |
+    |---|---|---|---|---|
+    | `hinge-leu959` | present | 96% | 3.14 A | 3.5 A |
+    | `hinge-glu957` | present | 0% | 5.67 A | 3.5 A |
+    | `ploop-groove-cf3` | present | 0% | 8.27 A | 5.0 A |
+
+    **The two failures are most likely faults in how the claims were framed, not findings
+    about the paper**, and item 4b above anticipated the first of them before the run existed.
+    The pyrazole NH can sit on either ring nitrogen, a deposited structure carries no
+    hydrogens to settle it, and PLIP places it on the nitrogen that accepts from Leu959. The
+    force field made the same choice: the leucine contact held in 96% of frames and the
+    glutamate, left with no hydrogen to donate, never formed. A fixed protonation state cannot
+    test a contact whose existence depends on which tautomer is present.
+
+    The CF3 claim is a plainer error. PLIP reports His885 only as a **water bridge** at 3.48 A,
+    not a direct contact, and this bundle's own `not_assessed` list already records that a
+    bridge handed on between exchanging waters cannot be followed in a solute-only trajectory.
+    Testing it with a 5.0 A direct-distance cutoff asked the method for something it states it
+    cannot provide.
+
+    Left as measured rather than quietly rescoped: the verdict stands as `does_not_support`
+    until the two claims are either reframed as `not_assessed` with the reasons above, or
+    replaced with something a solute trajectory can actually decide. Whichever way that goes,
+    the falsification machinery is working as intended, and the KRAS bundle demonstrates the
+    same gate in the other direction, where the paper's own assertion that the ligand makes no
+    contact with Asp12 was reproduced at 0% occupancy.

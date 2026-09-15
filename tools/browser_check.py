@@ -718,10 +718,35 @@ def main() -> int:
         points = tab.js("document.querySelectorAll('#plot-property .points path').length")
         selected = "(new URLSearchParams((location.hash.split('?')[1] || ''))).get('cmpd')"
         before = tab.js(selected)
+        # Clicking indices 0..4 and hoping one is a different molecule left a residual flake of
+        # roughly one run in nine, surviving the axis fix: Plotly draws the selected compound as
+        # its own trace on top, so the DOM order of .points path spans both traces and need not
+        # put a different compound first, and markers that overlap resolve to whichever is
+        # topmost. Both produce "14 points drawn, compound 2 -> 2" with the wiring perfectly
+        # sound. The target is now chosen rather than guessed, which removes the nondeterminism
+        # instead of reducing its rate.
+        #
+        # Where the id lives was probed, not assumed, and the first attempt at this was wrong:
+        # d.customdata and d.data.customdata are both undefined on these markers, so a filter
+        # on them matched nothing, fell through to the unfiltered list, and left the selector
+        # behaving exactly as before while looking fixed. Plotly binds the trace's customdata
+        # entry to __data__.data on each marker, with trace.customdata[d.i] as the fallback.
         after, changed = before, False
         for index in range(5):
             box = tab.js(f"""(() => {{
-                const p = document.querySelectorAll('#plot-property .points path')[{index}];
+                const pts = [...document.querySelectorAll('#plot-property .points path')];
+                const idOf = (p) => {{
+                    const d = p.__data__;
+                    if (!d) return undefined;
+                    if (d.data !== undefined && typeof d.data !== 'object') return d.data;
+                    const cd = d.trace && d.trace.customdata;
+                    return cd ? cd[d.i] : undefined;
+                }};
+                const other = pts.filter((p) => {{
+                    const id = idOf(p);
+                    return id !== undefined && String(id) !== {before!r};
+                }});
+                const p = (other.length ? other : pts)[{index}];
                 if (!p) return null;
                 const r = p.getBoundingClientRect();
                 return {{x: Math.round(r.x + r.width / 2), y: Math.round(r.y + r.height / 2)}};
