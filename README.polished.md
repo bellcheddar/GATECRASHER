@@ -125,6 +125,7 @@ Roadmap, roughly in dependency order.
 - [x] **Papers checked against themselves.** An `ISSUES.md` per bundle recording every internal contradiction, both readings kept and neither averaged
 - [x] **In-browser search.** BM25 over this project's own prose and data, indexed once on the Mac and scored in the page, with "not stated in this project" as a first-class answer. Embeddings were the plan, but a static site cannot embed a query without a server or a model shipped to the page
 - [x] **Take the view away.** A PyMOL script, session and still image per structure, so the pocket leaves the browser
+- [x] **Gates in CI.** The schema, provenance, chemistry and cross-reference checks run on every push, along with the copy gate, so a bundle that contradicts itself cannot reach the branch. Proved by breaking one on purpose: a blanked `source_table` fails the build rather than warning, which is the behaviour the gate exists for
 - [ ] **Short molecular dynamics.** A 5 ns run per primary structure with an RMSF track on the pocket ruler and a playable trajectory, and no trajectory ships that does not support what the paper claims. The verdict logic is proved in both directions; the production runs are in progress
 - [ ] **Per-residue dynamics on the anti-target.** The twin view compares two crystal poses; comparing their flexibility is the obvious next question and is not answered yet
 
