@@ -324,6 +324,15 @@ html[data-booting] main { visibility: hidden; }
  * carries the occupancy as a number, and its title says what was expected. */
 .chip.claim-held { border-color: var(--gain); color: var(--gain); }
 .chip.claim-broke { border-color: var(--loss); color: var(--loss); }
+
+/* Neither held nor broken: something the run was never able to test. Muted and dashed, so it
+ * cannot be mistaken at a glance for a claim that passed or one that failed. Both of those
+ * are verdicts; this is the absence of one. */
+.chip.claim-untested {
+  border-style: dashed;
+  border-color: var(--line);
+  color: var(--ink-dim);
+}
 .ruler-cell { cursor: pointer; }
 .ruler-cell:hover { stroke: var(--ink); stroke-width: 1; }
 .ruler-cell[aria-selected="true"] { stroke: var(--focus); stroke-width: 1.5; }

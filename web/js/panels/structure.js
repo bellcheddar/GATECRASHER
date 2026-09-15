@@ -395,6 +395,20 @@ export function initStructure(state) {
       + `Ligand drift ${run.ligand_rmsd_median_a} Å median.`;
     host.append(summary);
 
+    /* What the method cannot reach, beside what it measured. The first clause goes in the
+     * chip and the whole sentence in the title: a chip reading only "not assessed" would
+     * signal that a limit exists without saying what it is, which is a gesture at honesty
+     * rather than the thing itself, and a title alone is invisible to a reader on a phone. */
+    for (const caveat of run.not_assessed || []) {
+      const chip = document.createElement('span');
+      chip.className = 'chip no-dot claim-untested';
+      const stop = caveat.indexOf('. ');
+      const lead = stop > 0 && stop < 80 ? caveat.slice(0, stop) : caveat.slice(0, 72).trimEnd();
+      chip.textContent = `not assessed: ${lead}${lead.length < caveat.length ? '…' : ''}`;
+      chip.title = caveat;
+      host.append(chip);
+    }
+
     for (const claim of run.claims || []) {
       const chip = document.createElement('span');
       chip.className = `chip no-dot ${claim.pass ? 'claim-held' : 'claim-broke'}`;

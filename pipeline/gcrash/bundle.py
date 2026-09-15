@@ -193,6 +193,12 @@ def build(slug: str) -> dict:
                 # and the alternative is a second fetch per structure for a track that is
                 # part of the first view.
                 "rmsf": report.get("rmsf", []),
+                # What the run could NOT test, written before it ran: the water-mediated
+                # bridges a solute-only trajectory cannot follow, an activation loop whose
+                # phosphotyrosines were reverted for want of parameters. The manifest carried
+                # the conclusions and dropped the limits, which is the wrong asymmetry for an
+                # app that already refuses to draw a measure line without a measurement.
+                "not_assessed": report.get("not_assessed", []),
             }
             trajectory = report.get("trajectory")
             if trajectory:

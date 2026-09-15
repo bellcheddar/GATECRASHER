@@ -673,8 +673,21 @@ def main() -> int:
         # compound 17 has 30), so it can legitimately draw no points at all. Five clicks then
         # land on nothing and the failure reads exactly like broken wiring.
         tab.goto(args.base + "/#cdk2/properties?cmpd=2")
-        tab.wait_for("!!document.querySelector('#plot-property .main-svg')", 20)
-        time.sleep(1.0)
+        # Waited on the POINTS, not on the svg that contains them, and not on a fixed sleep.
+        # .main-svg appears before Plotly has positioned the scatter, so a flat 1.0 s was the
+        # only thing standing between this and a race: it held three runs and failed the
+        # fourth, on nothing but a heavier landing fetch once the real 5 ns trajectory
+        # replaced the 500 ps one and the cdk2 bundle went from 2.8 to 4.3 MB. Every bundle
+        # gains a trajectory shortly, so that margin was about to get thinner everywhere.
+        # A flaky check in the suite that validates the MD results is worse than a failing
+        # one: it teaches you to re-run until green.
+        tab.wait_for("document.querySelectorAll('#plot-property .points path').length > 0", 25)
+        tab.wait_for("""(() => {
+            const p = document.querySelector('#plot-property .points path');
+            if (!p) return false;
+            const r = p.getBoundingClientRect();
+            return r.width > 0 && r.height > 0;
+        })()""", 15)
         points = tab.js("document.querySelectorAll('#plot-property .points path').length")
         selected = "(new URLSearchParams((location.hash.split('?')[1] || ''))).get('cmpd')"
         before = tab.js(selected)
