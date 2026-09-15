@@ -15,7 +15,7 @@
 ![molstar](https://img.shields.io/badge/mol*-5.11.0-1B6FA8)
 ![plotly](https://img.shields.io/badge/plotly-2.35.2-3F4F75?logo=plotly&logoColor=white)
 ![rdkit.js](https://img.shields.io/badge/rdkit.js-2025.3.4-8B0000)
-![browser checks](https://img.shields.io/badge/browser%20checks-119%20passing-00d084)
+![browser checks](https://img.shields.io/badge/browser%20checks-120%20passing-00d084)
 ![bundles](https://img.shields.io/badge/bundles-4%20validating-00d084)
 ![data](https://img.shields.io/badge/data-RCSB%20PDB%20·%20KLIFS%20·%20PubChem-fcb900)
 ![licence](https://img.shields.io/badge/licence-MIT-blue)
@@ -85,9 +85,53 @@ Each run carries the paper's own claims, written as testable statements before t
 | A contact the paper says is absent | Present in at most **20%** of frames |
 | The ligand stays where it was crystallised | Median heavy-atom RMSD to the crystal pose at most **2 Å** |
 
-**A trajectory that fails its claims is not published.** The verdict is written either way, so the page can say what was run and what it showed, rather than offering a control that quietly does nothing. This runs in both directions in practice: the KRAS paper's assertion that the ligand does not contact Asp12 is reproduced at 0% occupancy, and a deliberately impossible claim, added as a control, correctly withheld its trajectory.
+**A trajectory that fails its claims is not published.** The verdict is written either way, so the page can say what was run and what it showed, rather than offering a control that quietly does nothing.
+
+### What the runs found
+
+All four support their papers. Twelve claims, every one scored against a threshold fixed before the run:
+
+| Campaign | Claim | Expected | Occupancy | Median |
+|---|---|---|---|---|
+| **CDK2** | 2-aminopyrimidine to the Leu83 hinge | present | 100% | 2.78 Å |
+| | Sulfonamide oxygen from the Asp86 backbone amide | present | 92.8% | 3.07 Å |
+| | C5 trifluoromethyl at the Phe80 gatekeeper | present | 100% | 3.19 Å |
+| **FGFR** | Hinge contact to Ala567 | present | 99.6% | 3.02 Å |
+| | **The designed hydrogen bond to Asn571** | present | **64.8%** | 3.17 Å |
+| | Pyridine nitrogen at the Val564 gatekeeper | present | 86.0% | 3.92 Å |
+| **KRAS** | Bicyclic amine to Tyr96 | present | 100% | 2.85 Å |
+| | **No direct contact with Asp12** | **absent** | **0%** | 4.65 Å |
+| | Amine to the Glu62 carboxylate | present | 99.2% | 2.81 Å |
+| **JAK1** | Pyrazole nitrogen from the Leu959 amide | present | 100% | 3.05 Å |
+| | Pyrazole NH to the Glu957 carbonyl | present | 100% | 2.83 Å |
+| | Trifluoromethyl in the P-loop groove at Phe886 | present | 98.0% | 3.22 Å |
+
+Two rows repay reading. **FGFR's Asn571 bond is the one the chemists designed**, and it is real but intermittent: present in 64.8% of frames, which a single crystal structure cannot tell you and which no amount of staring at a 3.17 Å distance would reveal. **KRAS's Asp12 row runs the other way**: the paper asserts the ligand does *not* reach Asp12, contrary to the original design hypothesis, and the run reproduces that absence at 0% occupancy. A test that can only ever agree proves nothing; this one is scored in both directions.
+
+JAK1's Glu957 contact lands at 2.83 Å against 2.81 Å measured in the deposited coordinates, agreement to 0.02 Å.
+
+### What the runs could not test
+
+Each run names its limits before it starts, and those reach the page beside the claims rather than stopping at the report. They are drawn as neither a pass nor a failure, because a limit is the absence of a verdict rather than one:
+
+- **CDK2 and KRAS** each declare a water-mediated contact they cannot follow. The trajectory carries the crystal waters, but a bridge handed on between exchanging waters is invisible to a solute-only analysis.
+- **FGFR** declares its activation loop, whose two phosphotyrosines are reverted to tyrosine for want of parameters, so its conformation is not the deposited one.
+- **JAK1** declares the selectivity explanation itself, which the authors call a hypothesis under investigation, and which would need the JAK2 twin simulated alongside to say anything about at all.
 
 Where a run passes, the page gains a per-residue RMSF band on the pocket ruler and a decimated trajectory of the pocket and ligand that plays in the viewer.
+
+## 📈 Where potency actually comes from
+
+Activity cliffs are ranked by fold change per heavy atom changed, so a large gain bought with a large edit does not outrank a small edit that bought the same thing:
+
+| Campaign | Steepest pair | Fold | Atoms changed | Per atom |
+|---|---|---|---|---|
+| JAK1 | 20 to 18 | 1256 | 12 | 104.7 |
+| FGFR | 13 to 25 | 858 | 12 | 71.5 |
+| KRAS | 13 to 11 | 103 | **2** | 51.5 |
+| CDK2 | 4 to 7 | 3.6 | **1** | 3.6 |
+
+The KRAS and CDK2 rows are the interesting shape: a hundredfold from two atoms, and CDK2's flattest table in the set, where potency was never the hard part and selectivity and exposure were.
 
 ## ⚖️ What this app does not reproduce
 
@@ -123,16 +167,16 @@ Roadmap, roughly in dependency order.
 - [x] **Chemical verification.** OPSIN name-to-structure checking and `molzip` fragment assembly on verified cores, after a formula check passed a molecule with the wrong connectivity
 - [x] **Structural annotation.** DSSP secondary structure, KLIFS pocket numbering, PLIP contacts per structure, and a gate that every cited residue exists in the coordinates it is cited against, which caught a hinge labelled on an arginine
 - [x] **Selectivity analysis.** The anti-target twin view with the two structures superposed before drawing, the selectivity matrix, and activity cliffs ranked from the primary potency only
-- [x] **In-browser search.** BM25 over this project's own prose and data, indexed once on the Mac and scored in the page, with "not stated in this project" as a first-class answer. Embeddings were the plan, but a static site cannot embed a query without a server or a model shipped to the page
+- [x] **In-browser search.** BM25 over this project's own prose and data, indexed once on the Mac and scored in the page, with "not stated in this project" as a first-class answer
 - [x] **Take the view away.** A PyMOL script, session and still image per structure, so the pocket leaves the browser
 - [x] **Gates in CI.** The schema, provenance, chemistry and cross-reference checks run on every push, along with the copy gate, so a bundle that contradicts itself cannot reach the branch. Proved by breaking one on purpose: a blanked `source_table` fails the build rather than warning, which is the behaviour the gate exists for
 - [x] **Every cross-link asserted.** Each row of the interaction matrix is now tested for the state change it causes rather than for the element being drawn: a plot point, an R-group cell, a substituent, a cliff pair and an edit card all have to move the selection, not merely exist. Writing them found the last unimplemented row, so a substituent now filters the table to the compounds carrying it
 - [x] **Where the page phones.** The app contacts its own origin and the RCSB, for coordinates it never redistributes, and nothing else. The three faces are served from here rather than a font CDN, so the rule holds strictly rather than by interpretation, and a test pins the page to exactly that list: a new third party has to be added deliberately rather than arriving unnoticed
 - [x] **Reachable without a mouse, legible in both themes.** Every control that answers Enter or Space is now tested on the key as well as the click, and the contrast of the prose, the grid ground and the provenance rail is measured in the dark theme as well as the light one. Dark is what most readers see and was the half going unmeasured
 - [x] **What the run could not test, published with what it did.** Each simulation names its own limits before it starts, and those now reach the page beside the claims rather than stopping at the report: the water-mediated bridges a solute-only trajectory cannot follow, an activation loop modelled without its phosphotyrosines, a selectivity argument that would need the anti-target simulated alongside. Drawn as neither a pass nor a failure, because a limit is the absence of a verdict rather than one
-- [x] **Short molecular dynamics.** Four 5 ns runs, one per primary structure, each carrying the paper's own claims as testable statements written before it started. All four support theirs and publish their trajectories, but JAK1 only on the second attempt: the first run returned `does_not_support` and its trajectory was withheld. That verdict was right about what it was given and wrong about the paper. The prepared ligand carried the wrong pyrazole tautomer, so the hinge bond to Glu957 had no proton to donate and could not form in any of 250 frames, and a second claim named a residue the trifluoromethyl never touches. Rebuilt and rerun, that contact holds in every frame at a 2.83 Å median against 2.81 Å in the deposited coordinates, and the pipeline now resolves the tautomer from the receptor rather than from a hand-placed proton. The withholding rule stands unchanged: it published nothing until the measurement agreed. The result that most repays reading is still FGFR's designed hydrogen bond to Asn571, present in 65% of frames at a 3.17 Å median: real, and intermittent. Every run also publishes what it could not test
-- [x] **Cliff tables that say the same thing twice.** The activity cliff panels were a function of machine load: deciding whether two compounds count as a matched pair runs a common substructure search, that search had a five second budget, and a timeout was recorded as "these molecules share nothing", which is indistinguishable from a real negative. Nothing failed and no test caught it. JAK1 was missing the first, second and fourth entries of its own table, so the panel headlined 45.51 fold per atom when the true top was 104.67; KRAS was missing five. The search now treats a cancelled result as the lower bound it is, spends its full budget only on pairs close enough to deserve it, and records what it still cannot resolve rather than dropping it silently. Two consecutive rebuilds now produce byte identical tables and byte identical exclusion lists for all four campaigns. One cliff went the other way and is listed as a loss rather than absorbed into the total: a genuine 88.9-fold KRAS pair whose atom level edit will not converge, and which is withheld rather than published with a core that would mis-sort the table
-- [ ] **Per-residue dynamics on the anti-target.** The twin view compares two crystal poses; comparing their flexibility is the obvious next question and is not answered yet
+- [x] **Short molecular dynamics.** Four 5 ns runs, one per primary structure, each carrying the paper's own claims as testable statements written before it started. All four support theirs. JAK1 took two attempts: the first returned `does_not_support` and withheld its trajectory, correctly, because the prepared ligand carried the wrong pyrazole tautomer and the hinge bond to Glu957 had no proton to donate. The verdict was about our ligand, not the paper. `molecule_from_crystal` now resolves symmetric substructure matches by receptor geometry, which puts the NH 2.81 Å from the Glu957 carbonyl and leaves the other ring nitrogen 2.93 Å from the Leu959 amide, both reproducing the deposited distances exactly
+- [x] **Cliff tables that say the same thing twice.** Matched-pair detection ran a common substructure search on a five second budget, and a timeout was recorded as "these molecules share nothing", which is indistinguishable from a real negative. The published tables were therefore a function of machine load: JAK1 was missing the first, second and fourth entries of its own table, so the panel headlined 45.5 fold per atom when the true top was 104.7, and KRAS was missing five. A cancelled search is now treated as the lower bound it actually is, the full budget is spent only on pairs close enough to deserve it, and anything still unresolved is recorded rather than dropped. Two consecutive rebuilds produce byte identical tables for all four campaigns. One 88.9-fold KRAS pair is withheld rather than published with a truncated core that would mis-sort the table, and is listed as a loss rather than absorbed into the total
+- [ ] **Per-residue dynamics on the anti-target.** Povorcitinib is the only ligand in this set crystallised in both its target and its anti-target, and the authors' explanation for its JAK1 over JAK2 selectivity is explicitly labelled speculative in their own paper. The twin view compares the two crystal poses; simulating 10PJ alongside 10PI would compare their flexibility, which is the first measurement that could bear on that hypothesis. JAK1's run already names this as the thing it could not test
 
 ## 📚 Citations
 
