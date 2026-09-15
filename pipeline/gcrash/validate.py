@@ -238,8 +238,84 @@ def run(slug: str) -> Report:
             report.fail(f"structure {entry['pdb_id']} names ligand compound "
                         f"{ligand_compound}, which is not in compounds.csv")
 
+    # dynamics gate: nothing checked the MD products at all, so a report could cite a residue
+    # the structure does not have, call itself a verdict that is not one of the two, or promise
+    # a trajectory that is absent or a different size than the manifest claims. The last of
+    # those is not hypothetical: a failed analysis once left a 200 frame file beside a report
+    # still describing 250 frames, because the exception landed between writing the two.
+    dynamics_file = bundle / "dynamics.json"
+    dynamics_runs = 0
+    if dynamics_file.exists():
+        manifest = json.loads(dynamics_file.read_text())
+        for pdb_id, entry in sorted(manifest.items()):
+            dynamics_runs += 1
+            verdict = entry.get("verdict")
+            if verdict not in ("supports", "does_not_support"):
+                report.fail(f"dynamics {pdb_id}: verdict {verdict!r} is neither supports "
+                            f"nor does_not_support")
+
+            # The rule the whole stage exists for: a run that does not support its claims does
+            # not ship its trajectory. Stated here as well as in analyse_md, because a rule
+            # enforced only at the point of writing is one refactor away from being lost.
+            trajectory = entry.get("trajectory")
+            if verdict == "does_not_support" and trajectory:
+                report.fail(f"dynamics {pdb_id}: verdict is does_not_support but a trajectory "
+                            f"is published anyway")
+
+            report_path = bundle / entry.get("report", "")
+            if not report_path.is_file():
+                report.fail(f"dynamics {pdb_id}: report {entry.get('report')} is missing")
+                continue
+            detail = json.loads(report_path.read_text())
+
+            if detail.get("production_ps") != entry.get("production_ps"):
+                report.fail(f"dynamics {pdb_id}: manifest says {entry.get('production_ps')} ps "
+                            f"but the report says {detail.get('production_ps')} ps")
+
+            if trajectory:
+                for key in ("topology", "xtc"):
+                    path = bundle / trajectory[key]
+                    if not path.is_file():
+                        report.fail(f"dynamics {pdb_id}: {key} {trajectory[key]} is missing")
+                    elif key == "xtc" and path.stat().st_size != trajectory.get("bytes"):
+                        report.fail(f"dynamics {pdb_id}: manifest claims {trajectory.get('bytes')} "
+                                    f"bytes but {trajectory[key]} is {path.stat().st_size}")
+
+            # Same structure gate the edits, beats and contacts already pass: a claim about a
+            # residue the deposited structure does not contain is the mistake that put a hinge
+            # on an arginine, and it must fail rather than warn.
+            known = keys_by_structure.get(pdb_id)
+            for claim in detail.get("claims", []):
+                ref = claim.get("residue")
+                if known and ref and ref not in known:
+                    report.fail(f"dynamics {pdb_id}: claim {claim.get('id')} cites residue "
+                                f"{ref}, which is not in residues.csv for {pdb_id}")
+            # The RMSF track may legitimately carry residues residues.csv does not have:
+            # PDBFixer rebuilds the internal gaps before simulating, so 8UV0 has RMSF for
+            # A:38-43 and A:74-75, which the deposited coordinates lack. The first version of
+            # this gate failed on exactly those and was wrong to. What must not happen is a
+            # track numbered on something other than the author numbering, which would push
+            # rows outside the structure's range entirely, so that is what is checked.
+            numbers = [int(k.split(":")[1]) for k in known] if known else []
+            chains = {k.split(":")[0] for k in known} if known else set()
+            if numbers:
+                low, high = min(numbers), max(numbers)
+                for row in detail.get("rmsf", []):
+                    chain, resnum = row.get("chain"), row.get("resnum")
+                    if chain not in chains:
+                        report.fail(f"dynamics {pdb_id}: RMSF names chain {chain}, and "
+                                    f"residues.csv has only {sorted(chains)}")
+                        break
+                    if not (low <= int(resnum) <= high):
+                        report.fail(f"dynamics {pdb_id}: RMSF residue {chain}:{resnum} is "
+                                    f"outside the structure's numbering, {low} to {high}. A "
+                                    f"track numbered on anything but the author numbering "
+                                    f"looks exactly like this")
+                        break
+
     report.counts = {
         "compounds": len(compounds),
+        "dynamics_runs": dynamics_runs,
         "measurements": len(measurements),
         "assays": len(assays),
         "structures": len(structures),
