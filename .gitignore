@@ -28,3 +28,13 @@ __pycache__/
 pipeline/build/
 deploy/.env
 .env
+
+# readme_forge.py output. These are deliverables to paste into the Elementor widget on
+# marcdeller.com (the .html into an HTML widget, the CSS into Advanced > Custom CSS), not
+# repository artefacts. They were tracked here from 2026-09-14 to 2026-09-15 by inertia
+# rather than by decision. Anchored to the root, because an unanchored rule in this very
+# file once matched web/data/papers/ and kept every data bundle out of the repository.
+/*.polished.md
+/*.preview.html
+/README.html
+/elementor-widget-markdown.css
