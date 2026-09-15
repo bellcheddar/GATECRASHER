@@ -1,0 +1,58 @@
+# The gates from BUILD_SPEC section 11, run on every push.
+#
+# Only the ones that can run without the Mac: `gc validate` reads the published bundles and
+# needs jsonschema and RDKit, and the copy check is grep. The stages that fetch coordinates or
+# shell out to DSSP, PLIP, PyMOL or OpenMM stay on the machine that has them, so this workflow
+# never tries to rebuild a bundle. It checks that what is committed is internally consistent,
+# which is the thing a push can actually break.
+name: gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      # The bundles are validated, not rebuilt, so only what validate.py imports is needed.
+      # Installing the whole pipeline would drag in pandas, gemmi, biotite and pypdfium2 for
+      # no benefit here.
+      - name: Install what the schema gate needs
+        # Every version pin is quoted: unquoted, bash reads the >= as a redirect and installs
+        # the bare package while creating a file called "=4.23". It would still pass, which is
+        # worse than failing, because the pin would be silently gone.
+        run: python -m pip install --upgrade pip "jsonschema>=4.23" "rdkit>=2024.3.5" "typer>=0.12" "rich>=13.7"
+
+      - name: Schema, provenance, chemistry and cross-reference gates
+        working-directory: pipeline
+        env:
+          PYTHONPATH: .
+        run: |
+          failed=0
+          for slug in cdk2 fgfr kras jak1; do
+            echo "::group::$slug"
+            python -m gcrash.cli validate "$slug" || failed=1
+            echo "::endgroup::"
+          done
+          exit $failed
+
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The company is never named, and no em dashes. Both are hard rules from BUILD_SPEC
+      # section 1, and both are the kind of thing that slips in during an edit rather than
+      # being written deliberately.
+      - name: Copy gate
+        run: bash tools/copy_check.sh

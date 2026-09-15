@@ -161,9 +161,17 @@ def run(slug: str) -> Report:
     for assay_id in assays:
         if assay_id not in measured:
             report.warn(f"assay {assay_id} is declared but never measured")
+    # A reference drug or a structure's tool compound has no SAR row by construction: it was
+    # never in the paper's assay panel. Warning about those four every run taught the reader
+    # to skim past warnings, which is exactly when a real one gets missed. Silence here means
+    # silence is informative.
+    roles = {row["compound_id"]: (row.get("role") or "") for row in compounds}
     for compound_id in compound_ids:
-        if not any(row["compound_id"] == compound_id for row in measurements):
-            report.warn(f"compound {compound_id} has no measurements")
+        if any(row["compound_id"] == compound_id for row in measurements):
+            continue
+        if roles.get(compound_id) in ("reference", "tool"):
+            continue
+        report.warn(f"compound {compound_id} has no measurements")
 
     # structure gate: every cited residue must exist in the structure it is cited against
     residue_keys = {f"{row['chain']}:{row['resnum']}" for row in residues}
