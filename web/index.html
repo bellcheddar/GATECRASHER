@@ -10,12 +10,22 @@
      and nginx gives it a short cache so returning visitors are counted too. -->
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Fonts load without blocking the first paint: the system fallbacks in tokens.css draw
-     the page until they arrive, and display=swap hands over when they do. -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap"></noscript>
+<!-- The three faces are served from this origin, from web/fonts/. They came from
+     fonts.googleapis.com until 2026-09-15, which put two DNS lookups and two TLS handshakes
+     in front of the first glyph and a third party in the runtime request list that the
+     acceptance criteria do not allow for. The system fallbacks in tokens.css still draw the
+     page until the faces arrive, and display=swap hands over when they do.
+
+     Only the two small faces used above the fold are preloaded. Newsreader is 131 kB and sets
+     the narrative prose in a drawer that is closed on arrival, so preloading it would put the
+     largest file on the critical path to typeset text nobody has asked for yet.
+
+     crossorigin is required on a font preload even same-origin, because font fetches are
+     always made in CORS mode. Without it the file is fetched twice and the preload is worse
+     than useless. -->
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/archivo-narrow-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/ibm-plex-mono-400-latin.woff2">
+<link rel="stylesheet" href="css/fonts.css">
 
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/blueprint.css">

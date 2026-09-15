@@ -243,12 +243,11 @@ gc all      &lt;slug&gt;                             # the pipeline, in order
 <li><span class="emd-check">&#9989;</span> <strong>Chemical verification.</strong> OPSIN name-to-structure checking and <code>molzip</code> fragment assembly on verified cores, after a formula check passed a molecule with the wrong connectivity</li>
 <li><span class="emd-check">&#9989;</span> <strong>Structural annotation.</strong> DSSP secondary structure, KLIFS pocket numbering, PLIP contacts per structure, and a gate that every cited residue exists in the coordinates it is cited against, which caught a hinge labelled on an arginine</li>
 <li><span class="emd-check">&#9989;</span> <strong>Selectivity analysis.</strong> The anti-target twin view with the two structures superposed before drawing, the selectivity matrix, and activity cliffs ranked from the primary potency only</li>
-<li><span class="emd-check">&#9989;</span> <strong>Papers checked against themselves.</strong> An <code>ISSUES.md</code> per bundle recording every internal contradiction, both readings kept and neither averaged</li>
 <li><span class="emd-check">&#9989;</span> <strong>In-browser search.</strong> BM25 over this project's own prose and data, indexed once on the Mac and scored in the page, with "not stated in this project" as a first-class answer. Embeddings were the plan, but a static site cannot embed a query without a server or a model shipped to the page</li>
 <li><span class="emd-check">&#9989;</span> <strong>Take the view away.</strong> A PyMOL script, session and still image per structure, so the pocket leaves the browser</li>
 <li><span class="emd-check">&#9989;</span> <strong>Gates in CI.</strong> The schema, provenance, chemistry and cross-reference checks run on every push, along with the copy gate, so a bundle that contradicts itself cannot reach the branch. Proved by breaking one on purpose: a blanked <code>source_table</code> fails the build rather than warning, which is the behaviour the gate exists for</li>
 <li><span class="emd-check">&#9989;</span> <strong>Every cross-link asserted.</strong> Each row of the interaction matrix is now tested for the state change it causes rather than for the element being drawn: a plot point, an R-group cell, a substituent, a cliff pair and an edit card all have to move the selection, not merely exist. Writing them found the last unimplemented row, so a substituent now filters the table to the compounds carrying it</li>
-<li><span class="emd-check">&#9989;</span> <strong>Where the page phones.</strong> The app contacts its own origin, the RCSB for coordinates it never redistributes, and the font CDN, and a test now holds it to exactly that list, so a new third party has to be added deliberately rather than arriving unnoticed</li>
+<li><span class="emd-check">&#9989;</span> <strong>Where the page phones.</strong> The app contacts its own origin and the RCSB, for coordinates it never redistributes, and nothing else. The three faces are served from here rather than a font CDN, so the rule holds strictly rather than by interpretation, and a test pins the page to exactly that list: a new third party has to be added deliberately rather than arriving unnoticed</li>
 <li><span class="emd-check">&#9989;</span> <strong>Reachable without a mouse, legible in both themes.</strong> Every control that answers Enter or Space is now tested on the key as well as the click, and the contrast of the prose, the grid ground and the provenance rail is measured in the dark theme as well as the light one. Dark is what most readers see and was the half going unmeasured</li>
 <li><span class="emd-check">&#11036;</span> <strong>Short molecular dynamics.</strong> A 5 ns run per primary structure with an RMSF track on the pocket ruler and a playable trajectory, and no trajectory ships that does not support what the paper claims. The verdict logic is proved in both directions; the production runs are in progress</li>
 <li><span class="emd-check">&#11036;</span> <strong>Per-residue dynamics on the anti-target.</strong> The twin view compares two crystal poses; comparing their flexibility is the obvious next question and is not answered yet</li>
@@ -369,6 +368,21 @@ gc all      &lt;slug&gt;                             # the pipeline, in order
 <td data-label="Tool"><a href="https://github.com/rdkit/rdkit-js">RDKit.js</a></td>
 <td data-label="Used for">In-browser depiction and highlighting</td>
 <td data-label="Licence">BSD-3-Clause</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://fonts.google.com/specimen/Archivo+Narrow">Archivo Narrow</a></td>
+<td data-label="Used for">The interface face</td>
+<td data-label="Licence">SIL Open Font Licence 1.1</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://fonts.google.com/specimen/IBM+Plex+Mono">IBM Plex Mono</a></td>
+<td data-label="Used for">Every measured value and residue label</td>
+<td data-label="Licence">SIL Open Font Licence 1.1</td>
+</tr>
+<tr>
+<td data-label="Tool"><a href="https://fonts.google.com/specimen/Newsreader">Newsreader</a></td>
+<td data-label="Used for">The narrative prose</td>
+<td data-label="Licence">SIL Open Font Licence 1.1</td>
 </tr>
 <tr>
 <td data-label="Tool"><a href="https://klifs.net/">KLIFS</a></td>

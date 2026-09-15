@@ -1028,11 +1028,9 @@ def main() -> int:
             # this list left it out, having been written from a Lighthouse trace of the
             # landing page that never loaded a structure, and the test caught it immediately.
             "https://files.rcsb.org",
-            # The three faces. Whether these should be self-hosted from this origin instead is
-            # a deployment decision, not the test's to make; listing them keeps the choice
-            # visible rather than implicit.
-            "https://fonts.googleapis.com",
-            "https://fonts.gstatic.com",
+            # The font CDN used to be here. The three faces are now served from this origin,
+            # so the acceptance criterion holds strictly rather than by interpretation, and
+            # this list is down to the one origin the app genuinely cannot avoid.
         }
         external = tab.js("""(() => {
             const here = location.origin;
@@ -1044,7 +1042,7 @@ def main() -> int:
             return [...seen].sort();
         })()""") or []
         unexpected = [o for o in external if o not in allowed]
-        check("the page contacts no origin beyond its own and the pinned font CDN",
+        check("the page contacts no origin beyond its own and the RCSB",
               not unexpected,
               f"unexpected: {unexpected}; all external: {external}")
         errors = [c for c in tab.console if c.startswith("error") or c.startswith("EXCEPTION")]

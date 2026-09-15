@@ -35,9 +35,15 @@ not this one.
 """
 
 VENDORED = {
-    "Mol*": "`molstar.LICENSE.txt`",
-    "Plotly.js": "`plotly.LICENSE.txt`, and `plotly-basic.min.js.LICENSE.txt` for the libraries it bundles",
-    "RDKit.js": "`RDKit_minimal.LICENSE.txt` (RDKit.js and RDKit)",
+    "Mol*": "`js/vendor/molstar.LICENSE.txt`",
+    "Plotly.js": "`js/vendor/plotly.LICENSE.txt`, and `plotly-basic.min.js.LICENSE.txt` for the libraries it bundles",
+    "RDKit.js": "`js/vendor/RDKit_minimal.LICENSE.txt` (RDKit.js and RDKit)",
+    # Self-hosting a font IS redistribution, and the Open Font Licence requires its text to
+    # travel with the files. Google's CDN was carrying that obligation for us until the faces
+    # moved to this origin.
+    "Archivo Narrow": "`fonts/OFL-archivonarrow.txt`",
+    "IBM Plex Mono": "`fonts/OFL-ibmplexmono.txt`",
+    "Newsreader": "`fonts/OFL-newsreader.txt`",
 }
 
 
