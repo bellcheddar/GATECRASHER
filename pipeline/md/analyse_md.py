@@ -185,8 +185,14 @@ def main() -> int:
     # 2 MB budget allows.
     pocket = traj.topology.select(
         f"(protein and not element H) or resname {ligand_name}")
-    stride = max(1, traj.n_frames // args.frames)
-    shipped = traj.atom_slice(pocket)[::stride]
+    # Evenly spaced indices, not a fixed step. `n // target` floor-divides to 1 whenever the
+    # source has fewer than twice the target, so a 250 frame run against a 200 frame target
+    # gave stride 1 and shipped all 250: the decimation was a no-op in exactly the regime it
+    # exists for. CDK2 came out at 2261 kB gzipped against a 2048 kB budget, and XTC is
+    # already compressed, so the only way under is to ship less.
+    keep = np.unique(np.linspace(0, traj.n_frames - 1,
+                                 min(traj.n_frames, args.frames)).round().astype(int))
+    shipped = traj.atom_slice(pocket)[keep]
     topology_path = out / f"{args.pdb_id}_md.pdb"
     trajectory_path = out / f"{args.pdb_id}_md.xtc"
     if supported:
@@ -226,7 +232,8 @@ def main() -> int:
             "rmsd_p90_a": round(float(np.percentile(rmsd_a, 90)), 2),
             "rmsd_max_a": round(rmsd_max, 2),
             "within_budget": not drifted,
-            "series_a": [round(float(v), 2) for v in rmsd_a[::stride]],
+            # The same frames the trajectory ships, so the series lines up with what plays.
+            "series_a": [round(float(v), 2) for v in rmsd_a[keep]],
         },
         "rmsf": rmsf_rows,
         "claims": claim_rows,
