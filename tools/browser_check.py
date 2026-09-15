@@ -35,6 +35,31 @@ import websocket
 
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
+# WCAG contrast on the grid ground as well as on a sheet, because the grid lines sit behind
+# everything. Hoisted to a constant so the light and dark passes run the SAME code: two
+# copies of luminance maths can drift and then disagree about what they are measuring.
+CONTRAST_PROBE = """(() => {
+  const lum = (c) => {
+    const [r,g,b] = c.match(/\\d+/g).slice(0,3).map(Number).map(v => {
+      v /= 255; return v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4);
+    });
+    return 0.2126*r + 0.7152*g + 0.0722*b;
+  };
+  const ratio = (a,b) => {
+    const [x,y] = [lum(a), lum(b)].sort((m,n) => n-m);
+    return (x + 0.05) / (y + 0.05);
+  };
+  const body = getComputedStyle(document.body);
+  const beat = document.querySelector('#beats .beat .prose');
+  const sheet = beat ? getComputedStyle(beat.closest('.sheet')) : body;
+  const rail = document.getElementById('rail-paper');
+  return {
+    prose: ratio(getComputedStyle(beat).color, sheet.backgroundColor),
+    onGrid: ratio(body.color, body.backgroundColor),
+    rail: ratio(getComputedStyle(rail).color, getComputedStyle(rail.parentElement.parentElement).backgroundColor),
+  };
+})()"""
+
 
 class Tab:
     """A minimal CDP client: evaluate, click, hover, screenshot."""
@@ -497,6 +522,54 @@ def main() -> int:
         check("clicking the same substituent again clears the filter",
               restored == before, f"{restored} rows, expected {before}")
 
+        # Keyboard operability. Six controls across sar.js and editlog.js declare Enter and
+        # Space handlers and not one of them had ever been exercised: the suite dispatched only
+        # the global shortcuts. An accessibility score of 100 makes that worse rather than
+        # better, because the score implies a coverage that was not there. Sent as a DOM event
+        # from the focused element, which is what the app's own handler receives.
+        tab.js("document.querySelector('#rgroup-grid th.is-substituent').focus()")
+        check("a substituent header takes keyboard focus",
+              tab.js("!!document.activeElement && "
+                     "document.activeElement.classList.contains('is-substituent')"),
+              tab.js("document.activeElement ? document.activeElement.tagName + '.' "
+                     "+ document.activeElement.className : 'none'"))
+        tab.dom_key("Enter")
+        by_key = tab.js("document.querySelectorAll('#compound-table tbody tr').length")
+        check("Enter on a substituent filters the table, as the pointer does",
+              isinstance(by_key, int) and isinstance(before, int) and 0 < by_key < before,
+              f"{before} rows before, {by_key} after Enter")
+        tab.dom_key("Enter")
+        check("Enter again clears the substituent filter",
+              tab.js("document.querySelectorAll('#compound-table tbody tr').length") == before)
+
+        # Space, on a different control, because the two keys are separate branches in every
+        # one of those handlers and testing one proves nothing about the other.
+        # Asserted on the selection CHANGING, and without clearing the hash first. Clearing it
+        # with replaceState does not clear AppState, so pressing Space on the cell that is
+        # already selected is a no-op that writes nothing: the same confound that made the
+        # plot-point assertion fail earlier in this file, reintroduced here by reaching for a
+        # tidy starting state. The cell clicked a few checks above is exactly the one focus
+        # lands on first, so this would never have passed.
+        picked = "(new URLSearchParams((location.hash.split('?')[1] || ''))).get('cmpd')"
+        was = tab.js(picked)
+        now, moved = was, False
+        for index in range(6):
+            focused = tab.js(f"""(() => {{
+                const c = document.querySelectorAll('#rgroup-grid .rgroup-cell:not(.is-empty)')[{index}];
+                if (!c) return false;
+                c.focus();
+                return document.activeElement === c;
+            }})()""")
+            if not focused:
+                continue
+            tab.dom_key(" ")
+            now = tab.js(picked)
+            if now and now != was:
+                moved = True
+                break
+        check("Space on an R-group cell selects its compound",
+              moved, f"compound {was} -> {now} after Space on up to 6 cells")
+
         # Only 4 of cdk2's 40 cliffs have an edit linking the pair, and none of them is the
         # first row: a cliff is a potency jump, and the paper does not always document the
         # change that made it. Asserting edit= on whatever row came first tested the data's
@@ -841,32 +914,30 @@ def main() -> int:
         # Measured, not assumed, and measured on the grid ground as well as on a sheet,
         # because the grid lines sit behind everything.
         print("\ncontrast")
-        contrast = tab.js("""(() => {
-          const lum = (c) => {
-            const [r,g,b] = c.match(/\\d+/g).slice(0,3).map(Number).map(v => {
-              v /= 255; return v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4);
-            });
-            return 0.2126*r + 0.7152*g + 0.0722*b;
-          };
-          const ratio = (a,b) => {
-            const [x,y] = [lum(a), lum(b)].sort((m,n) => n-m);
-            return (x + 0.05) / (y + 0.05);
-          };
-          const body = getComputedStyle(document.body);
-          const beat = document.querySelector('#beats .beat .prose');
-          const sheet = beat ? getComputedStyle(beat.closest('.sheet')) : body;
-          const rail = document.getElementById('rail-paper');
-          return {
-            prose: ratio(getComputedStyle(beat).color, sheet.backgroundColor),
-            onGrid: ratio(body.color, body.backgroundColor),
-            rail: ratio(getComputedStyle(rail).color, getComputedStyle(rail.parentElement.parentElement).backgroundColor),
-          };
-        })()""") or {}
+        contrast = tab.js(CONTRAST_PROBE) or {}
         for name, minimum in (("prose", 4.5), ("onGrid", 4.5), ("rail", 4.5)):
             value = contrast.get(name)
             check(f"{name} contrast at least {minimum}:1 in the light theme",
                   isinstance(value, (int, float)) and value >= minimum,
                   f"{name} = {value}")
+
+        # And in dark, which is the theme most readers actually see. Only light was measured,
+        # which is the wrong way round: the default shipped unmeasured while the alternative
+        # was checked. Same probe, so the two numbers are comparable rather than a lookalike
+        # that could disagree about what it is measuring.
+        tab.js("localStorage.setItem('gatecrasher.theme', 'dark')")
+        tab.goto(args.base + "/")
+        time.sleep(1.0)
+        check("the stored dark theme is applied on load",
+              tab.js("document.documentElement.dataset.theme") == "dark",
+              tab.js("document.documentElement.dataset.theme"))
+        dark = tab.js(CONTRAST_PROBE) or {}
+        for name, minimum in (("prose", 4.5), ("onGrid", 4.5), ("rail", 4.5)):
+            value = dark.get(name)
+            check(f"{name} contrast at least {minimum}:1 in the dark theme",
+                  isinstance(value, (int, float)) and value >= minimum,
+                  f"{name} = {value}")
+        tab.js("localStorage.removeItem('gatecrasher.theme')")
 
         # --------------------------------------------------------- a phone
         print("\nphone (390 x 844)")
